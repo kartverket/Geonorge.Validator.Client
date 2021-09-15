@@ -1,0 +1,67 @@
+.file-list {
+   display: flex;
+   flex-direction: column;
+   margin-bottom: 25px;
+   border: 1px solid #dee2e6;
+
+   .file {
+      display: flex;
+      border-top: 1px solid #dee2e6;
+      padding: 10px;
+
+      &:first-child {
+         margin-top: 0;
+         border: 0 none;
+      }
+   }
+
+   .type {
+      width: 10%;
+   }
+
+   .info {
+      width: 85%;
+      flex-direction: column;
+      display: flex;
+      justify-content: center;
+
+      .size {
+         font-size: 12px;
+      }
+   }
+
+   .remove {
+      width: 5%;
+      align-items: center;
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+         background: url("../../../assets/gfx/icon-remove.svg") no-repeat center center;
+         border: 0 none;
+         width: 12px;
+         height: 12px;
+         padding: 0;
+         background-size: 12px;
+         opacity: 0.6;
+      }
+   }
+
+   .icon {
+      background-image: url("../../../assets/gfx/icon-file.svg");
+      width: 42px;
+      height: 54px;
+      background-size: 42px 54px;
+      display: flex;
+      justify-content: center;
+
+      span {
+         display: flex;
+         align-self: end;
+         text-transform: uppercase;
+         color: #ffffff;
+         font-size: 12px;
+         font-weight: 600;
+      }
+   }
+}
