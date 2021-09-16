@@ -1,13 +1,16 @@
 import React, { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Files from 'react-files'
-import Button from 'react-bootstrap/Button';
+import { Button, Spinner } from 'react-bootstrap';
 import UploadFileList from '../UploadFileList/UploadFileList';
 import { sendAsync } from 'utils/api';
+import './Validate.scss';
 
 const VALIDATE_URL = process.env.REACT_APP_VALIDATE_URL;
 
 function Validate({ validator, onApiResponse }) {
    const [files, setFiles] = useState([]);
+   const apiLoading = useSelector(state => state.api.loading);
    const uploadElement = useRef(null);
 
    if (!validator) {
@@ -28,7 +31,7 @@ function Validate({ validator, onApiResponse }) {
 
       if (response) {
          onApiResponse(response);
-        // uploadElement.current.removeFiles();
+         uploadElement.current.removeFiles();
       }
    }
 
@@ -50,7 +53,16 @@ function Validate({ validator, onApiResponse }) {
 
          <UploadFileList files={files} uploadElement={uploadElement} />
 
-         <Button variant="primary" onClick={validate} disabled={!files.length}>Validér</Button>
+         <div className="validate-button">
+            <Button variant="primary" onClick={validate} disabled={!files.length}>Validér</Button>
+            {
+               apiLoading ?
+                  <Spinner animation="border" /> :
+                  null
+            }
+         </div>
+
+
       </React.Fragment>
    )
 }

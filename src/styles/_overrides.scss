@@ -67,3 +67,16 @@
    border-radius: 0;
 }
 
+.selectDropdown {
+   .dropdown-menu {
+      font-size: 14px;
+      border-color: rgb(222 226 230);
+      width: 100%;
+
+      .dropdown-item {
+         cursor: pointer;
+         user-select: none;
+      }
+   }   
+}
+

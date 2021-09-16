@@ -8,13 +8,6 @@
    max-width: 1000px !important;
 }
 
-.section {
-   background: #ffffff;
-   border: 1px solid #dee2e6;
-   padding: 24px 28px;
-   margin: 0 0 40px;
-}
-
 header {
    display: flex;
    flex-direction: column;
@@ -33,6 +26,13 @@ header {
    }
 }
 
+.section {
+   background: #ffffff;
+   border: 1px solid #dee2e6;
+   padding: 24px 28px;
+   margin: 0 0 40px;
+}
+
 .select-validator {
    display: flex;
 
@@ -48,35 +48,6 @@ header {
          margin-right: 5px;
       }
    }
-
-}
-
-.form-control,
-.btn {
-   font-size: 14px !important;
-}
-
-.files-dropzone {
-   border: 2px dashed #d8e4eb;
-   padding: 30px;
-   margin: 25px 0;
-   text-align: center;
-   font-style: italic;
-   cursor: pointer;   
-   user-select: none;
-}
-
-.selectDropdown {
-   .dropdown-menu {
-      font-size: 14px;
-      border-color: rgb(222 226 230);
-      width: 100%;
-
-      .dropdown-item {
-         cursor: pointer;
-         user-select: none;
-      }
-   }   
 }
 
 .label {

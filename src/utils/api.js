@@ -20,7 +20,7 @@ export const sendAsync = async (url, data, options = {}) => {
    } catch (error) {
       const message = (error.response && error.response.data) ? error.response.data : error.message;
       store.dispatch(toggleLoading({ loading: false }));
-      store.dispatch(showDialog({ title: 'Feil', body: message }));
+      store.dispatch(showDialog({ title: 'Feil', body: message, className: 'error-dialog' }));
       
       return null;
    }

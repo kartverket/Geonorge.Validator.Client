@@ -16,6 +16,10 @@ function App() {
    useEffect(() => {
       sendAsync(VALIDATOR_INFO_URL, null, { method: 'GET' })
          .then(data => {
+            if (!data) {
+               return;
+            }
+
             const options = data.map(validator => {
                return { value: validator.namespace, label: validator.name };
             });
@@ -34,10 +38,6 @@ function App() {
       setSelectedValidator(validator);
    }
 
-   if (!validatorOptions.length) {
-      return null;
-   }
-
    return (
       <div className="app">
          <div className="container">
@@ -48,29 +48,34 @@ function App() {
                </h1>
             </header>
 
-            <div className="section">
-               <div className="select-validator">
-                  <SelectDropdown
-                     className="selectDropdown"
-                     options={validatorOptions}
-                     placeholder="Velg validator..."
-                     onSelect={handleSelect}
-                  />
-
-                  <RuleInfo validator={selectedValidator} />
-               </div>
-
-               <Validate validator={selectedValidator} onApiResponse={handleApiResponse} />
-            </div>
-
             {
-               apiResponse !== null ?
-                  <div className="section">
-                     <ValidationReponse apiResponse={apiResponse} />
-                  </div> :
+               validatorOptions.length ?
+                  <React.Fragment>
+                     <div className="section">
+                        <div className="select-validator">
+                           <SelectDropdown
+                              className="selectDropdown"
+                              options={validatorOptions}
+                              placeholder="Velg validator..."
+                              onSelect={handleSelect}
+                           />
+
+                           <RuleInfo validator={selectedValidator} />
+                        </div>
+
+                        <Validate validator={selectedValidator} onApiResponse={handleApiResponse} />
+                     </div>
+
+                     {
+                        apiResponse !== null ?
+                           <div className="section">
+                              <ValidationReponse apiResponse={apiResponse} />
+                           </div> :
+                           null
+                     }
+                  </React.Fragment> :
                   null
             }
-
          </div>
 
          <Dialog />
