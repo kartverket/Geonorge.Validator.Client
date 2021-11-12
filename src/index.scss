@@ -4,7 +4,7 @@
 @import './styles/overrides';
 
 html {
-  min-height: 1800px;
+  //min-height: 1800px;
   overflow-y: scroll;
 }
 
@@ -16,7 +16,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: #f7f7f7;
   color: #333333;  
-  font-size: 14px;
+  font-size: 13px;
 }
 
 b, strong {

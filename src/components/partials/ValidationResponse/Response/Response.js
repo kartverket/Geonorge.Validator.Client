@@ -17,28 +17,32 @@ function Response({ data }) {
       <React.Fragment>
          <div className="summary">
             <div className="row">
-               <div className="col-3">Datasett:</div>
-               <div className="col-9">{data.files.join(', ')}</div>
+               <div className="col-2">Navneområde:</div>
+               <div className="col-10">{data.namespace}</div>
             </div>
             <div className="row">
-               <div className="col-3">Antall feil:</div>
-               <div className="col-9">{data.errors}</div>
+               <div className="col-2">Datasett:</div>
+               <div className="col-10">{data.files.join(', ')}</div>
             </div>
             <div className="row">
-               <div className="col-3">Antall advarsler:</div>
-               <div className="col-9">{data.warnings}</div>
+               <div className="col-2">Antall feil:</div>
+               <div className="col-10">{data.errors}</div>
             </div>
             <div className="row">
-               <div className="col-3">Antall regler sjekket:</div>
-               <div className="col-9">{rulesCheckedCount}</div>
+               <div className="col-2">Antall advarsler:</div>
+               <div className="col-10">{data.warnings}</div>
             </div>
             <div className="row">
-               <div className="col-3">Antall regler totalt:</div>
-               <div className="col-9">{data.rules.length}</div>
+               <div className="col-2">Antall regler sjekket:</div>
+               <div className="col-10">{rulesCheckedCount}</div>
             </div>
             <div className="row">
-               <div className="col-3">Tidsbruk:</div>
-               <div className="col-9">{timeUsed} sek.</div>
+               <div className="col-2">Antall regler totalt:</div>
+               <div className="col-10">{data.rules.length}</div>
+            </div>
+            <div className="row">
+               <div className="col-2">Tidsbruk:</div>
+               <div className="col-10">{timeUsed} sek.</div>
             </div>
          </div>
 

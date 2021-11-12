@@ -1,5 +1,11 @@
-.form-group {
-   margin-bottom: 1rem;
+h4 {
+   font-size: 20px;
+   margin-bottom: 15px;
+}
+
+h6 {
+   font-size: 16px;
+   margin-bottom: 0;
 }
 
 .modal-open {
@@ -8,7 +14,7 @@
 
 .form-control,
 .btn {
-   font-size: 14px !important;
+   font-size: 13px !important;
 }
 
 .btn-link {
@@ -23,21 +29,6 @@
    transition: none;
 }
 
-.was-validated .custom-file-input:valid ~ .custom-file-label,
-.custom-file-input.is-valid ~ .custom-file-label,
-.was-validated .form-control:valid,
-.form-control.is-valid {
-   border-color: #ced4da;
-}
-
-.was-validated .custom-file-input:valid:focus ~ .custom-file-label,
-.custom-file-input.is-valid:focus ~ .custom-file-label,
-.was-validated .form-control:valid:focus,
-.form-control.is-valid:focus {
-   border-color: #80bdff;
-   box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
-}
-
 .modal-dialog {
    max-width: 1000px;
    transform: none !important;
@@ -45,13 +36,13 @@
 
 .modal-header {
    background-color: #8aaec3;
-   color: white;
+   color: #ffffff;
    border-bottom: 0;
-   padding: 12px 16px;
+   padding: 7px 15px;
    border-radius: 0;
 
    .modal-title {
-      font-size: 16px;
+      font-size: 13px;
       line-height: 20px;
       font-weight: 400;
       margin-bottom: -1px;
@@ -65,18 +56,5 @@
 .modal-content {
    border: 0 none;
    border-radius: 0;
-}
-
-.selectDropdown {
-   .dropdown-menu {
-      font-size: 14px;
-      border-color: rgb(222 226 230);
-      width: 100%;
-
-      .dropdown-item {
-         cursor: pointer;
-         user-select: none;
-      }
-   }   
 }
 

@@ -8,61 +8,73 @@ import './Validate.scss';
 
 const VALIDATE_URL = process.env.REACT_APP_VALIDATE_URL;
 
-function Validate({ validator, onApiResponse }) {
-   const [files, setFiles] = useState([]);
+function Validate({ onApiResponse }) {
+   const [xmlFiles, setXmlFiles] = useState([]);
+   const [xsdFiles, setXsdFiles] = useState([]);
    const apiLoading = useSelector(state => state.api.loading);
-   const uploadElement = useRef(null);
-
-   if (!validator) {
-      return null;
-   }
-
-   function onFilesChange(files) {
-      setFiles(files);
-   }
+   const xmlUploadElement = useRef(null);
+   const xsdUploadElement = useRef(null);
 
    async function validate() {
       const formData = new FormData();
 
-      formData.append('namespace', validator.namespace);
-      files.forEach(file => formData.append('files', file));
+      xmlFiles.forEach(file => formData.append('xmlFiles', file));
+      xsdFiles.forEach(file => formData.append('xsdFile', file));
 
       const response = await sendAsync(VALIDATE_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 
       if (response) {
          onApiResponse(response);
-         uploadElement.current.removeFiles();
+         xmlUploadElement.current.removeFiles();
+         xsdUploadElement.current.removeFiles();
       }
    }
 
    return (
       <React.Fragment>
-         <Files
-            ref={uploadElement}
-            className='files-dropzone'
-            onChange={onFilesChange}
-            accepts={validator.fileTypes}
-            multiple
-            maxFiles={10}
-            maxFileSize={10000000}
-            minFileSize={0}
-            clickable
-         >
-            Slipp filer her eller klikk for å laste opp
-         </Files>
+         <div className="uploads">
+            <div>
+               <Files
+                  ref={xmlUploadElement}
+                  className='files-dropzone'
+                  onChange={setXmlFiles}
+                  accepts={['.xml', '.gml']}
+                  multiple
+                  maxFiles={10}
+                  maxFileSize={10000000}
+                  minFileSize={0}
+                  clickable
+               >
+                  Klikk for å legge til XML- eller GML-filer
+               </Files>
 
-         <UploadFileList files={files} uploadElement={uploadElement} />
+               <UploadFileList files={xmlFiles} uploadElement={xmlUploadElement} />
+            </div>
+            <div>
+               <Files
+                  ref={xsdUploadElement}
+                  className='files-dropzone'
+                  onChange={setXsdFiles}
+                  accepts={['.xsd']}
+                  maxFiles={1}
+                  maxFileSize={10000000}
+                  minFileSize={0}
+                  clickable
+               >
+                  Klikk for å legge til applikasjonsskjema (XSD)
+               </Files>
 
+               <UploadFileList files={xsdFiles} uploadElement={xsdUploadElement} />
+            </div>
+         </div>
          <div className="validate-button">
-            <Button variant="primary" onClick={validate} disabled={!files.length}>Validér</Button>
+            <Button variant="primary" onClick={validate} disabled={!xmlFiles.length}>Validér</Button>
             {
                apiLoading ?
                   <Spinner animation="border" /> :
                   null
             }
          </div>
-
-
       </React.Fragment>
    )
 }

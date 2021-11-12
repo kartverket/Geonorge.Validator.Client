@@ -1,3 +1,14 @@
+.uploads {
+   display: flex;
+
+   > div {
+      width: 50%;
+      
+      &:first-child {
+         margin-right: 28px;
+      }
+   }
+}
 .files-dropzone {
    border: 2px dashed #d8e4eb;
    padding: 30px;

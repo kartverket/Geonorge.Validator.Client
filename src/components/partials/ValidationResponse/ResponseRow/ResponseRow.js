@@ -36,9 +36,9 @@ function ResponseRow({ data }) {
          </div>
          {
             hasMessages ?
-               <ul className="messages" style={{ display: expanded ? 'block' : 'none' }}>
+               <ol className="messages" style={{ display: expanded ? 'block' : 'none' }}>
                   {data.messages.map((message, index) => <li key={index}>{message.message}</li>)}
-               </ul> :
+               </ol> :
                ''
          }
       </div>
