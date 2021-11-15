@@ -16,6 +16,8 @@ function Validate({ onApiResponse }) {
    const xsdUploadElement = useRef(null);
 
    async function validate() {
+      onApiResponse(null);
+      
       const formData = new FormData();
 
       xmlFiles.forEach(file => formData.append('xmlFiles', file));
