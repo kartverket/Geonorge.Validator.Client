@@ -17,7 +17,7 @@ function Validate({ onApiResponse }) {
 
    async function validate() {
       onApiResponse(null);
-      
+
       const formData = new FormData();
 
       xmlFiles.forEach(file => formData.append('xmlFiles', file));
@@ -47,7 +47,7 @@ function Validate({ onApiResponse }) {
                   minFileSize={0}
                   clickable
                >
-                  Klikk for å legge til XML- eller GML-filer
+                  Klikk for å legge til XML- eller GML-dokumenter *
                </Files>
 
                <UploadFileList files={xmlFiles} uploadElement={xmlUploadElement} />
@@ -63,19 +63,25 @@ function Validate({ onApiResponse }) {
                   minFileSize={0}
                   clickable
                >
-                  Klikk for å legge til applikasjonsskjema (XSD)
+                  Klikk for å legge til applikasjonsskjema (XSD) **
                </Files>
 
                <UploadFileList files={xsdFiles} uploadElement={xsdUploadElement} />
             </div>
          </div>
-         <div className="validate-button">
-            <Button variant="primary" onClick={validate} disabled={!xmlFiles.length}>Validér</Button>
-            {
-               apiLoading ?
-                  <Spinner animation="border" /> :
-                  null
-            }
+         <div className="bottom">
+            <div className="validate-button">
+               <Button variant="primary" onClick={validate} disabled={!xmlFiles.length}>Validér</Button>
+               {
+                  apiLoading ?
+                     <Spinner animation="border" /> :
+                     null
+               }
+            </div>
+            <div className="footnotes">
+               * Må tilhøre samme navneområde med samme versjon av applikasjonsskjema<br />
+               ** Valgfri dersom attributten "xsi:schemaLocation" er spesifisert
+            </div>
          </div>
       </React.Fragment>
    )

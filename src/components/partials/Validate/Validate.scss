@@ -3,34 +3,45 @@
 
    > div {
       width: 50%;
-      
+
       &:first-child {
          margin-right: 28px;
       }
    }
-}
-.files-dropzone {
-   border: 2px dashed #d8e4eb;
-   padding: 30px;
-   margin: 25px 0;
-   text-align: center;
-   font-style: italic;
-   cursor: pointer;   
-   user-select: none;
+
+   .files-dropzone {
+      border: 2px dashed #d8e4eb;
+      padding: 30px;
+      margin: 25px 0;
+      text-align: center;
+      font-style: italic;
+      cursor: pointer;
+      user-select: none;
+   }
 }
 
-.validate-button {
+.bottom {
    display: flex;
-   align-items: center;
+   justify-content: space-between;
+   
+   .validate-button {
+      display: flex;
+      align-items: center;
 
-   button {
-      margin-right: 12px;
+      button {
+         margin-right: 12px;
+      }
+
+      .spinner-border {
+         border-color: #72a7cf;
+         border-right-color: transparent;
+         width: 25px;
+         height: 25px;
+      }
    }
 
-   .spinner-border {
-      border-color: #72a7cf;
-      border-right-color: transparent;
-      width: 25px;
-      height: 25px;
+   .footnotes {
+      text-align: right;
+      font-size: 12px;
    }
 }
