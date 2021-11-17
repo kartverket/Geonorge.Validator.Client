@@ -43,7 +43,7 @@ function Validate({ onApiResponse }) {
                   accepts={['.xml', '.gml']}
                   multiple
                   maxFiles={10}
-                  maxFileSize={10000000}
+                  maxFileSize={200000000}
                   minFileSize={0}
                   clickable
                >
