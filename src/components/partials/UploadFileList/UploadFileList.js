@@ -1,3 +1,4 @@
+import fileSize from 'filesize';
 import './UploadFileList.scss';
 
 function UploadFileList({ files, uploadElement }) {
@@ -23,7 +24,7 @@ function UploadFileList({ files, uploadElement }) {
 
                      <div className="info">
                         <span className="name">{file.name}</span>
-                        <span className="size">{file.sizeReadable}</span>
+                        <span className="size">{fileSize(file.size, { separator: ','})}</span>
                      </div>
 
                      <div className="remove">

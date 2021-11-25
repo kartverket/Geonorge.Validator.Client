@@ -4,6 +4,8 @@ import { Validate, ValidationReponse } from 'components/partials';
 import Logo from 'assets/gfx/logo-geonorge.svg';
 import './App.scss';
 
+const OPEN_API_URL = process.env.REACT_APP_OPEN_API_URL;
+
 function App() {
    const [apiResponse, setApiResponse] = useState(null);
 
@@ -22,6 +24,8 @@ function App() {
             </header>
 
             <div className="section">
+               <a href={OPEN_API_URL} target="_blank" rel="noreferrer">Klikk her for å gå til API</a>
+
                <Validate onApiResponse={handleApiResponse} />
             </div>
 
