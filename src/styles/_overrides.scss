@@ -58,3 +58,11 @@ h6 {
    border-radius: 0;
 }
 
+.progress {
+   width: 250px;
+   font-size: 13px;
+
+   .progress-bar {
+      transition: none;
+   }
+}

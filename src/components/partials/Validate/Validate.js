@@ -1,20 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Files from 'react-files'
-import { Button, Spinner } from 'react-bootstrap';
+import { Button, ProgressBar } from 'react-bootstrap';
 import UploadFileList from '../UploadFileList/UploadFileList';
 import { sendAsync } from 'utils/api';
 import fileSize from 'filesize';
 import './Validate.scss';
 
-const VALIDATE_URL = process.env.REACT_APP_VALIDATE_URL;
-const MAX_FILE_SIZE_TOTAL = 200000000;
+const API_URL = process.env.REACT_APP_VALIDATE_URL;
+const MAX_FILE_SIZE_TOTAL = process.env.REACT_APP_MAX_FILE_SIZE_TOTAL;
 
 function Validate({ onApiResponse }) {
    const [xmlFiles, setXmlFiles] = useState([]);
    const [xsdFiles, setXsdFiles] = useState([]);
    const [fileSizeTotal, setFileSizeTotal] = useState(0);
    const apiLoading = useSelector(state => state.api.loading);
+   const uploadProgress = useSelector(state => state.api.uploadProgress);
    const xmlUploadElement = useRef(null);
    const xsdUploadElement = useRef(null);
 
@@ -38,7 +39,7 @@ function Validate({ onApiResponse }) {
       xmlFiles.forEach(file => formData.append('xmlFiles', file));
       xsdFiles.forEach(file => formData.append('xsdFile', file));
 
-      const response = await sendAsync(VALIDATE_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      const response = await sendAsync(API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 
       if (response) {
          onApiResponse(response);
@@ -99,13 +100,14 @@ function Validate({ onApiResponse }) {
 
          <div className="bottom">
             <div className="validate-button">
-               <Button variant="primary" onClick={validate} disabled={!xmlFiles.length || fileSizeTotal > MAX_FILE_SIZE_TOTAL}>Validér</Button>
-               {
-                  apiLoading ?
-                     <Spinner animation="border" /> :
-                     null
-               }
+               <Button variant="primary" onClick={validate} disabled={!xmlFiles.length || fileSizeTotal > MAX_FILE_SIZE_TOTAL || apiLoading}>Validér</Button>
+
+               <div className={`validating-progress ${!apiLoading ? 'validating-progress-hidden' : ''}`}>
+                  <ProgressBar now={uploadProgress} animated />
+                  <span className="loading">{uploadProgress !== 100 ? 'Laster opp' : 'Validerer'}</span>
+               </div>
             </div>
+
             <div className="footnotes">
                * Må tilhøre samme navneområde med samme versjon av applikasjonsskjema<br />
                ** Valgfri dersom attributten "xsi:schemaLocation" er spesifisert
