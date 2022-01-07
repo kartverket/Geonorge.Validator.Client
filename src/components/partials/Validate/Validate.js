@@ -75,7 +75,7 @@ function Validate({ onApiResponse }) {
                   multiple
                   clickable
                >
-                  Klikk for å legge til XML- eller GML-dokumenter *
+                  Klikk for å legge til GML- eller XML-dokumenter <sup>(1, 2)</sup>
                </Files>
 
                <UploadFileList files={xmlFiles} uploadElement={xmlUploadElement} />
@@ -89,7 +89,7 @@ function Validate({ onApiResponse }) {
                   maxFiles={1}
                   clickable
                >
-                  Klikk for å legge til applikasjonsskjema (XSD) **
+                  Klikk for å legge til applikasjonsskjema (XSD) <sup>(3)</sup>
                </Files>
 
                <UploadFileList files={xsdFiles} uploadElement={xsdUploadElement} />
@@ -109,8 +109,9 @@ function Validate({ onApiResponse }) {
             </div>
 
             <div className="footnotes">
-               * Må tilhøre samme navneområde med samme versjon av applikasjonsskjema<br />
-               ** Valgfri dersom attributten "xsi:schemaLocation" er spesifisert
+               <sup>1)</sup> GML-dokumenter må være GML-versjon 3.2.1 eller nyere<br />
+               <sup>2)</sup> Må tilhøre samme navneområde med samme versjon av applikasjonsskjema<br />
+               <sup>3)</sup> Valgfri dersom attributtet "schemaLocation" er spesifisert
             </div>
          </div>
       </React.Fragment>
