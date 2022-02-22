@@ -5,9 +5,10 @@ import { Button, ProgressBar } from 'react-bootstrap';
 import UploadFileList from '../UploadFileList/UploadFileList';
 import { sendAsync } from 'utils/api';
 import fileSize from 'filesize';
+import { validateForMapView } from 'utils/helpers';
 import './Validate.scss';
 
-const API_URL = process.env.REACT_APP_VALIDATE_URL;
+const VALIDATE_API_URL = process.env.REACT_APP_VALIDATE_API_URL;
 const MAX_FILE_SIZE_TOTAL = process.env.REACT_APP_MAX_FILE_SIZE_TOTAL;
 
 function Validate({ onApiResponse }) {
@@ -37,15 +38,37 @@ function Validate({ onApiResponse }) {
       const formData = new FormData();
 
       xmlFiles.forEach(file => formData.append('xmlFiles', file));
-      xsdFiles.forEach(file => formData.append('xsdFile', file));
+      xsdFiles.forEach(file => formData.append('xsdFile', file));      
 
-      const response = await sendAsync(API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      const response = await sendAsync(VALIDATE_API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 
       if (response) {
-         onApiResponse(response);
+         onApiResponse({ 
+            validationResult: response,
+            mapFiles: await getMapFiles(xmlFiles, response)
+         });
+
          xmlUploadElement.current.removeFiles();
          xsdUploadElement.current.removeFiles();
       }
+   }
+
+   async function getMapFiles(xmlFiles, validationResult) {
+      const mapFiles = [];
+
+      for (let i = 0; i < xmlFiles.length; i++) {
+         const xmlFile = xmlFiles[i];
+         const messages = await validateForMapView(xmlFile, validationResult);
+         const fileInfo = { messages, fileName: xmlFile.name };
+
+         if (!messages.length) {
+            fileInfo.file = new File([xmlFile], xmlFile.name);
+         }
+         
+         mapFiles.push(fileInfo);
+      }
+
+      return mapFiles;
    }
 
    function getTotalFileSize() {

@@ -18,7 +18,7 @@ function ValidationReponse({ apiResponse }) {
          <div className="section">
             <div className="paper">
                <h4>Svar fra API</h4>
-               <JsonPrint data={apiResponse} />
+               <JsonPrint data={apiResponse?.validationResult} />
             </div>
          </div>
       </React.Fragment>

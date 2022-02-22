@@ -1,36 +1,69 @@
 import React from 'react';
+import { Button, Overlay } from 'react-bootstrap';
+import { sendAsync } from 'utils/api';
 import ResponseBlock from '../ResponseBlock/ResponseBlock';
+import Tooltip from 'hooks/useTooltip';
 import './Response.scss';
 
+const MAP_DOCUMENT_API_URL = process.env.REACT_APP_MAP_DOCUMENT_API_URL;
+
 function Response({ data }) {
+   
    if (!data) {
       return null;
    }
 
-   const rulesWithMessages = data.rules.filter(rule => rule.messages.length > 0);
-   const passedRules = data.rules.filter(rule => rule.status === 'PASSED');
-   const skippedRules = data.rules.filter(rule => rule.status === 'SKIPPED');
+   const validationResult = data.validationResult;
+   const rulesWithMessages = validationResult.rules.filter(rule => rule.messages.length > 0);
+   const passedRules = validationResult.rules.filter(rule => rule.status === 'PASSED');
+   const skippedRules = validationResult.rules.filter(rule => rule.status === 'SKIPPED');
    const rulesCheckedCount = rulesWithMessages.length + passedRules.length;
-   const timeUsed = data.timeUsed.toString().replace('.', ',');
+   const timeUsed = validationResult.timeUsed.toString().replace('.', ',');
+   
+   async function createMapDocument(file) {
+      debugger
+      const formData = new FormData();
+
+      formData.append('gmlFile', file);
+      formData.append('validate', false);
+
+      const response = await sendAsync(MAP_DOCUMENT_API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+
+      debugger;
+   }
+
+   function getFileLinks(mapFiles) {
+      return mapFiles.map((mapFile, index) => {
+         if (!mapFile.messages.length) {
+            return <Button key={'file-' + index} variant="link" onClick={() => createMapDocument(mapFile.file)}>{mapFile.fileName}</Button>
+         } else {
+            return (
+               <Tooltip key={'file-' + index} tooltip={'Blah'} trigger={<span>Hore</span>}>
+                  
+               </Tooltip>
+            )
+         }
+      });
+   }
 
    return (
       <React.Fragment>
          <div className="summary">
             <div className="row">
                <div className="col-2">Navneområde:</div>
-               <div className="col-10">{data.namespace}</div>
+               <div className="col-10">{validationResult.namespace}</div>
             </div>
             <div className="row">
                <div className="col-2">Datasett:</div>
-               <div className="col-10">{data.files.join(', ')}</div>
+               <div className="col-10">{getFileLinks(data.mapFiles)}</div>
             </div>
             <div className="row">
                <div className="col-2">Antall feil:</div>
-               <div className="col-10">{data.errors}</div>
+               <div className="col-10">{validationResult.errors}</div>
             </div>
             <div className="row">
                <div className="col-2">Antall advarsler:</div>
-               <div className="col-10">{data.warnings}</div>
+               <div className="col-10">{validationResult.warnings}</div>
             </div>
             <div className="row">
                <div className="col-2">Antall regler sjekket:</div>
@@ -38,7 +71,7 @@ function Response({ data }) {
             </div>
             <div className="row">
                <div className="col-2">Antall regler totalt:</div>
-               <div className="col-10">{data.rules.length}</div>
+               <div className="col-10">{validationResult.rules.length}</div>
             </div>
             <div className="row">
                <div className="col-2">Tidsbruk:</div>
