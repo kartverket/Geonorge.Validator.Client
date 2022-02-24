@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import dialogReducer from './slices/dialogSlice';
 import apiReducer from './slices/apiSlice';
+import mapReducer from './slices/mapSlice';
+import tabReducer from './slices/tabSlice';
 
 export default configureStore({
    reducer: {
-      dialog: dialogReducer,
-      api: apiReducer
+      api: apiReducer,
+      map: mapReducer,
+      tab: tabReducer
    }
 });

@@ -1,6 +1,5 @@
-import Response from './Response/Response';
-import { JsonPrint } from 'components/custom-elements';
 import React from 'react';
+import Response from './Response/Response';
 
 function ValidationReponse({ apiResponse }) {
    if (!apiResponse) {
@@ -10,15 +9,9 @@ function ValidationReponse({ apiResponse }) {
    return (
       <React.Fragment>
          <div className="section">
-            <div className="paper">
-               <h4>Resultat</h4>
+            <div>
+               <h3>Resultat</h3>
                <Response data={apiResponse} />
-            </div>
-         </div>
-         <div className="section">
-            <div className="paper">
-               <h4>Svar fra API</h4>
-               <JsonPrint data={apiResponse?.validationResult} />
             </div>
          </div>
       </React.Fragment>

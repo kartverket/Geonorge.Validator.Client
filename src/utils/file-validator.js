@@ -6,9 +6,26 @@ const VALID_EPSG_CODES = process.env.REACT_APP_MAP_VALID_EPSG_CODES.split(',');
 const XSD_RULE_ID = process.env.REACT_APP_XSD_RULE_ID;
 const GML_REGEX = /<\?xml.*?<gml:FeatureCollection.*?xmlns:gml="http:\/\/www\.opengis\.net\/gml\/3\.2"/s;
 const DIMENSIONS_REGEX = /srsDimension="(?<dimensions>\d)"/;
-const EPSG_REGEX = /srsName="(http:\/\/www\.opengis\.net\/def\/crs\/EPSG\/0\/|^urn:ogc:def:crs:EPSG::)(?<epsg>\d+)"/;
+const EPSG_REGEX = /srsName="(http:\/\/www\.opengis\.net\/def\/crs\/EPSG\/0\/|urn:ogc:def:crs:EPSG::)(?<epsg>\d+)"/;
 
-export async function validateForMapView(file, validationResult) {
+export async function validateFilesForMapView(files, validationResult) {
+   const validatedFiles = [];
+
+   for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const messages = await validateFileForMapView(file, validationResult);
+      
+      validatedFiles.push({ 
+         messages, 
+         fileName: file.name,
+         blob: !messages.length ? new File([file], file.name) : null
+      });
+   }
+
+   return validatedFiles;   
+}
+
+async function validateFileForMapView(file, validationResult) {
     const validFileSize = file.size <= MAX_FILE_SIZE_MAP;
     const messages = [];
 
@@ -32,7 +49,7 @@ export async function validateForMapView(file, validationResult) {
     const epsgMatch = EPSG_REGEX.exec(fileContents);
 
     if (epsgMatch === null || !VALID_EPSG_CODES.includes(epsgMatch.groups.epsg)) {
-        messages.push(`GML-filen har ugyldig koordinatsystem. Gyldige koordinatsystem: ${VALID_EPSG_CODES.join(', ')}`);
+        messages.push(`GML-filen har ugyldig koordinatsystem. Gyldige koordinatsystem er: ${VALID_EPSG_CODES.join(', ')}`);
     }
 
     const dimensionsMatch = DIMENSIONS_REGEX.exec(fileContents);

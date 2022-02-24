@@ -1,13 +1,13 @@
 .response-block {
    margin-bottom: 15px;
 
-   h6 {
+   h3 {
       display: inline-block;
       border-bottom: 1px solid transparent;
    }
 
    &.response-block-expandable {
-      h6 {
+      h3 {
          cursor: pointer;
          user-select: none;
    
@@ -30,7 +30,7 @@
    }   
 
    &.response-block-collapsed {
-      h6::after {
+      h3::after {
          transform: rotate(0deg);
       }
 

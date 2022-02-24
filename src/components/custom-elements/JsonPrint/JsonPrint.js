@@ -1,13 +1,14 @@
+import React, { useEffect, useState } from 'react';
 import './JsonPrint.scss';
 
 const jsonLineRegex = /^( *)("[\w]+": )?("[^"]*"|[\w.+-]*|\[\])?([,[{])?$/mg;
 
-const replacer = (match, pIndent, pKey, pValue, pEnd) => {
+const replacer = (_, pIndent, pKey, pValue, pEnd) => {
    const key = '<span class="json-key">';
    const value = '<span class="json-value">';
    const string = '<span class="json-string">';
    let replaced = pIndent || '';
-   
+
    if (pKey) {
       replaced = replaced + key + pKey.replace(/[": ]/g, '') + '</span>: ';
    }
@@ -19,21 +20,38 @@ const replacer = (match, pIndent, pKey, pValue, pEnd) => {
    return replaced + (pEnd || '');
 };
 
-function JsonPrint({ data }) {
+function JsonPrint({ data, title }) {
+   const [expanded, setExpanded] = useState(false);
+   const [htmlString, setHtmlString] = useState(null);
+
+   useEffect(
+      () => {
+         const htmlStr = JSON.stringify(data, null, 2)
+            .replace(/&/g, '&amp;').replace(/\\"/g, '&quot;')
+            .replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(jsonLineRegex, replacer);
+
+         setHtmlString(htmlStr);
+      },
+      [data]
+   );
+
    if (!data) {
-      return '';
+      return null;
    }
 
-   const htmlString = JSON.stringify(data, null, 2)
-      .replace(/&/g, '&amp;').replace(/\\"/g, '&quot;')
-      .replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(jsonLineRegex, replacer);
+   function handleClick() {
+      setExpanded(!expanded);
+   }
 
    return (
-      <div className="jsonPrint">
-         <code>
-            <pre dangerouslySetInnerHTML={{__html: htmlString}}></pre>
-         </code>
+      <div className={`json-print-container ${!expanded ? 'json-print-collapsed' : ''}`}>
+         <h3 onClick={handleClick}>{title}</h3>
+         <div className="json-print">
+            <code>
+               <pre dangerouslySetInnerHTML={{ __html: htmlString }}></pre>
+            </code>
+         </div>
       </div>
    );
 }

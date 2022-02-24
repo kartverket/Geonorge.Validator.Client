@@ -7,17 +7,20 @@ export default function useApi() {
    const { openModal } = useModals();
    const dispatch = useDispatch();
 
-   async function sendAsync(url, data, options = {}) {
+   async function sendAsync(url, data, options = {}, progressBar = true) {
       try {
-         dispatch(toggleLoading({ loading: true }));
+         if (progressBar) {
+            dispatch(toggleLoading({ loading: true }));
+         }
+
          const defaultOptions = { method: 'post', url, data };
          const response = await axios({ ...defaultOptions, ...options });
          dispatch(toggleLoading({ loading: false }));
 
          return response.data || null;
-      } catch (error) {
+      } catch (error) {       
          dispatch(toggleLoading({ loading: false }));
-         openModal('ERROR', { message: getMessage(error) });
+         openModal('ERROR', { title: 'Feil', message: getMessage(error) });
 
          return null;
       }

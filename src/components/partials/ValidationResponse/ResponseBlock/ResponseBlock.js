@@ -16,7 +16,7 @@ function ResponseBlock({ title, list, expandable = true, maxHeight = true }) {
 
    return (
       <div className={`response-block ${expandable ? 'response-block-expandable' : ''} ${!expanded && expandable ? 'response-block-collapsed' : ''}`}>
-         <h6  {...(expandable && { onClick: handleClick })}>{title} ({list.length})</h6>
+         <h3 {...(expandable && { onClick: handleClick })}>{title} ({list.length})</h3>
          <div className={`response ${maxHeight ? 'response-max-height' : ''}`}>
             {list.map((element, index) => <ResponseRow key={index} data={element} />)}
          </div>

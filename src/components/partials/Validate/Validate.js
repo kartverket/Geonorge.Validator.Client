@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useApi } from 'hooks';
 import Files from 'react-files'
 import { Button, ProgressBar } from 'react-bootstrap';
 import UploadFileList from '../UploadFileList/UploadFileList';
-import { sendAsync } from 'utils/api';
 import fileSize from 'filesize';
-import { validateForMapView } from 'utils/helpers';
+import { validateFilesForMapView } from 'utils/file-validator';
 import './Validate.scss';
 
 const VALIDATE_API_URL = process.env.REACT_APP_VALIDATE_API_URL;
@@ -16,9 +16,11 @@ function Validate({ onApiResponse }) {
    const [xsdFiles, setXsdFiles] = useState([]);
    const [fileSizeTotal, setFileSizeTotal] = useState(0);
    const apiLoading = useSelector(state => state.api.loading);
+   const apiLoading2 = true;
    const uploadProgress = useSelector(state => state.api.uploadProgress);
    const xmlUploadElement = useRef(null);
    const xsdUploadElement = useRef(null);
+   const sendAsync = useApi();
 
    useEffect(
       () => {
@@ -45,30 +47,12 @@ function Validate({ onApiResponse }) {
       if (response) {
          onApiResponse({ 
             validationResult: response,
-            mapFiles: await getMapFiles(xmlFiles, response)
+            files: await validateFilesForMapView(xmlFiles, response)
          });
 
          xmlUploadElement.current.removeFiles();
          xsdUploadElement.current.removeFiles();
       }
-   }
-
-   async function getMapFiles(xmlFiles, validationResult) {
-      const mapFiles = [];
-
-      for (let i = 0; i < xmlFiles.length; i++) {
-         const xmlFile = xmlFiles[i];
-         const messages = await validateForMapView(xmlFile, validationResult);
-         const fileInfo = { messages, fileName: xmlFile.name };
-
-         if (!messages.length) {
-            fileInfo.file = new File([xmlFile], xmlFile.name);
-         }
-         
-         mapFiles.push(fileInfo);
-      }
-
-      return mapFiles;
    }
 
    function getTotalFileSize() {
@@ -125,7 +109,7 @@ function Validate({ onApiResponse }) {
             <div className="validate-button">
                <Button variant="primary" onClick={validate} disabled={!xmlFiles.length || fileSizeTotal > MAX_FILE_SIZE_TOTAL || apiLoading}>Validér</Button>
 
-               <div className={`validating-progress ${!apiLoading ? 'validating-progress-hidden' : ''}`}>
+               <div className={`validating-progress ${!apiLoading2 ? 'validating-progress-hidden' : ''}`}>
                   <ProgressBar now={uploadProgress} animated />
                   <span className="loading">{uploadProgress !== 100 ? 'Laster opp' : 'Validerer'}</span>
                </div>

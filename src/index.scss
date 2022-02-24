@@ -1,7 +1,9 @@
-@import '~bootstrap/scss/bootstrap';
-@import './styles/buttons';
-@import './styles/dialogs';
-@import './styles/overrides';
+@import "~bootstrap/scss/bootstrap";
+@import "~ol/ol.css";
+@import "./styles/_buttons";
+@import "./styles/_dialogs";
+@import "./styles/_forms";
+@import "./styles/_overrides";
 
 html {
   overflow-y: scroll;
