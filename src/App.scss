@@ -52,7 +52,8 @@
 .content {
    display: flex;
    position: relative;
-   //border-top: 1px solid #8aaec3;
+   padding-top: 20px;
+   background-color: #ffffff;
 
    .left-content {
       display: flex;
@@ -60,9 +61,6 @@
       width: 400px;
 
       .box {
-         /*border-left: 0 !important;
-         border-right: 1px solid #8aaec3;
-         border-top: 0 !important;*/
          position: static;
       }
    }
