@@ -1,14 +1,6 @@
-.spinner {
-   position: absolute;
-   width: 70px;
-   text-align: center;
-   top: calc(50% - 35px);
-   left: calc(50% - 35px);
- }
- 
  .spinner > div {
-   width: 18px;
-   height: 18px;
+   width: 8px;
+   height: 8px;
    background-color: #8aaec3;
    border-radius: 100%;
    display: inline-block;   

@@ -52,12 +52,15 @@
 .content {
    display: flex;
    position: relative;
-   padding-top: 20px;
+   padding: 20px 20px 0 20px;
    background-color: #ffffff;
+   border-left: 1px solid #dee2e6;
+   border-right: 1px solid #dee2e6;
 
    .left-content {
       display: flex;
       flex-direction: column;
+      margin-right: 20px;
       width: 400px;
 
       .box {
@@ -89,7 +92,6 @@
          .box-content {
             border: 1px solid #8aaec3;
             background: #ffffff;
-            border-right: 0;
             width: 100%;
          }
       }
@@ -143,13 +145,13 @@ header {
    .box-header {
       display: flex;
       line-height: 16px;
-      padding: 7px 15px;
+      padding: 7px 10px;
       //border-bottom: 1px solid #8aaec3;
       background-color: #f1f1f1;
    }
 
    .box-content {
-      padding: 10px 15px;
+      padding: 10px;
 
       .box-row {
          display: flex;

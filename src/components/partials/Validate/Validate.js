@@ -10,17 +10,25 @@ import './Validate.scss';
 
 const VALIDATE_API_URL = process.env.REACT_APP_VALIDATE_API_URL;
 const MAX_FILE_SIZE_TOTAL = process.env.REACT_APP_MAX_FILE_SIZE_TOTAL;
+const API_TASK_ID = 'validation';
 
 function Validate({ onApiResponse }) {
    const [xmlFiles, setXmlFiles] = useState([]);
    const [xsdFiles, setXsdFiles] = useState([]);
    const [fileSizeTotal, setFileSizeTotal] = useState(0);
-   const apiLoading = useSelector(state => state.api.loading);
-   const apiLoading2 = true;
+   const [validating, setValidating] = useState(false);
+   const apiTasks = useSelector(state => state.api.tasks);
    const uploadProgress = useSelector(state => state.api.uploadProgress);
    const xmlUploadElement = useRef(null);
    const xsdUploadElement = useRef(null);
    const sendAsync = useApi();
+
+   useEffect(
+      () => {
+         setValidating(apiTasks.includes(API_TASK_ID));
+      },
+      [apiTasks]
+   );
 
    useEffect(
       () => {
@@ -42,7 +50,7 @@ function Validate({ onApiResponse }) {
       xmlFiles.forEach(file => formData.append('xmlFiles', file));
       xsdFiles.forEach(file => formData.append('xsdFile', file));      
 
-      const response = await sendAsync(VALIDATE_API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      const response = await sendAsync(API_TASK_ID, VALIDATE_API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 
       if (response) {
          onApiResponse({ 
@@ -107,9 +115,9 @@ function Validate({ onApiResponse }) {
 
          <div className="bottom">
             <div className="validate-button">
-               <Button variant="primary" onClick={validate} disabled={!xmlFiles.length || fileSizeTotal > MAX_FILE_SIZE_TOTAL || apiLoading}>Validér</Button>
+               <Button variant="primary" onClick={validate} disabled={!xmlFiles.length || fileSizeTotal > MAX_FILE_SIZE_TOTAL || validating}>Validér</Button>
 
-               <div className={`validating-progress ${!apiLoading2 ? 'validating-progress-hidden' : ''}`}>
+               <div className={`validating-progress ${!validating ? 'validating-progress-hidden' : ''}`}>
                   <ProgressBar now={uploadProgress} animated />
                   <span className="loading">{uploadProgress !== 100 ? 'Laster opp' : 'Validerer'}</span>
                </div>

@@ -1,21 +1,10 @@
-import React, { useContext } from 'react';
-import { Button } from 'react-bootstrap';
-import { useApi } from 'hooks';
+import React from 'react';
 import ResponseBlock from '../ResponseBlock/ResponseBlock';
+import ValidatedFile from '../ValidatedFile/ValidatedFile';
 import './Response.scss';
-import { JsonPrint, Tooltip } from 'components/custom-elements';
-import { MapViewContext } from 'App';
-import { useDispatch } from 'react-redux';
-import { setActiveTab } from 'store/slices/tabSlice';
-import { createId } from 'utils/map/helpers';
-
-const MAP_DOCUMENT_API_URL = process.env.REACT_APP_MAP_DOCUMENT_API_URL;
+import { JsonPrint } from 'components/custom-elements';
 
 function Response({ data }) {
-   const sendAsync = useApi();
-   const [mapViews, setMapViews] = useContext(MapViewContext);
-   const dispatch = useDispatch();
-
    if (!data) {
       return null;
    }
@@ -28,59 +17,6 @@ function Response({ data }) {
    const timeUsed = result.timeUsed.toString().replace('.', ',');
    const groupedValidationResult = groupValidationResultByFileName(result);
 
-   async function showInMap(file) {
-      let index = mapViews.findIndex(mapView => mapView.mapDocument.fileName === file.name);
-
-      if (index === -1) {
-         setMapViews([...mapViews, { mapId: createId(), mapDocument: await fetchMapDocument(file) }]);
-      } else {
-         const mapId = mapViews[index].mapId;
-         dispatch(setActiveTab({ activeTab: mapId }));
-      }
-   }
-
-   async function fetchMapDocument(file) {
-      const formData = new FormData();
-
-      formData.append('gmlFile', file);
-      formData.append('validate', false);
-
-      const mapDocument = await sendAsync(MAP_DOCUMENT_API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } }, false);
-      mapDocument.validationResult.rules = groupedValidationResult.find(result => result.fileName === file.name)?.rules;
-
-      return mapDocument;
-   }
-
-   function renderDataSet(files) {
-      return files.map((file, index) => {
-         if (!file.messages.length) {
-            return (
-               <div className="file" key={'file-' + index}>
-                  {file.fileName}<Button variant="link" onClick={() => showInMap(file.blob)}>(Vis i kart)</Button>
-               </div>
-            )
-         } else {
-            return (
-               <div className="file file-no-map" key={'file-' + index}>
-                  {file.fileName}
-
-                  <Tooltip
-                     tooltip={
-                        <ul className="file-messages">
-                           {file.messages.map((message, idx) => <li key={`msg-${index}-${idx}`}>{message}</li>)}
-                        </ul>
-                     }
-                     trigger={
-                        <span>(Vis i kart)</span>
-                     }
-                  >
-                  </Tooltip>
-               </div>
-            )
-         }
-      });
-   }
-
    return (
       <React.Fragment>
          <div className="summary">
@@ -91,7 +27,13 @@ function Response({ data }) {
             <div className="row">
                <div className="col-2">Datasett:</div>
                <div className="col-10">
-                  <div className="dataset">{renderDataSet(data.files)}</div>
+                  <div className="dataset">
+                     {                        
+                        data.files.map((file, index) => {
+                           return <ValidatedFile key={'file-' + index} file={file} rules={groupedValidationResult[file.fileName]} />
+                        })
+                     }
+                  </div>
                </div>
             </div>
             <div className="row">
@@ -125,7 +67,7 @@ function Response({ data }) {
 }
 
 function groupValidationResultByFileName(validationResult) {
-   const groupedValidationResult = [];
+   const groupedValidationResult = {};
 
    for (let i = 0; i < validationResult.files.length; i++) {
       const fileName = validationResult.files[i];
@@ -141,7 +83,7 @@ function groupValidationResultByFileName(validationResult) {
          }
       }
 
-      groupedValidationResult.push({ fileName, rules });
+      groupedValidationResult[fileName] = rules;
    }
 
    return groupedValidationResult;

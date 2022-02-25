@@ -1,0 +1,29 @@
+.dataset {
+   display: flex;
+   flex-direction: column;
+
+   .file {
+      display: flex;
+      align-items: center;
+
+      span,
+      button {
+         margin-left: 10px;
+      }
+
+      span {
+         color: #d9534f;
+         text-decoration: line-through;
+      }
+
+      button {
+         margin-right: 10px;
+      }
+   }
+}
+
+.file-messages {
+   font-size: 12px;
+   margin: 0;
+   padding: 4px 0px  4px 16px;
+}
