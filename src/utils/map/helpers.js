@@ -1,11 +1,9 @@
 import { extend, getCenter } from 'ol/extent';
 import colorsys from 'colorsys';
-import detect from 'detect-file-type';
 import filesize from 'filesize';
 import { getArea, getLength } from 'ol/sphere';
 
 const MAX_ZOOM = 18;
-const VALID_MIME = process.env.REACT_APP_VALID_MIME;
 
 export function getLayer(map, id) {
    return map.getLayers().getArray()
@@ -27,7 +25,6 @@ export function getSymbolById(legend, id) {
 }
 
 export function zoomTo(map, features) {
-   debugger
    const featureExtent = features[0].getGeometry().getExtent();
 
    for (let i = 0; i < features.length; i++) {
@@ -102,21 +99,6 @@ export function debounce(func, wait, immediate) {
       }
    };
 };
-
-export async function isValidFileType(file) {
-   return new Promise((resolve) => {
-      file.slice(0, 50).arrayBuffer()
-         .then(buffer => {
-            detect.fromBuffer(buffer, (error, result) => {
-               if (error !== null || result.mime !== VALID_MIME) {
-                  resolve(false);
-               }
-
-               resolve(true);
-            });
-         });
-   })
-}
 
 export function getAreaFormatted(polygon) {
    const area = getArea(polygon);
