@@ -17,6 +17,10 @@ h6 {
    font-size: 13px !important;
 }
 
+.nav-link {
+   transition: none;
+}
+
 .btn-link {
    padding: 0;
 
@@ -25,8 +29,26 @@ h6 {
    }
 }
 
-.nav-link {
-   transition: none;
+.btn-primary {
+   background-color: #8aaec3;
+   border-color: #8aaec3;
+   border-radius: 0;
+
+   &:hover,
+   &:focus {
+      background-color: #5c7d91;
+      border-color: #5c7d91;
+      box-shadow: none;
+   }
+
+   &:active {
+      background-color: #8aaec3;
+      border-color: #8aaec3;
+   }
+
+   &:active:focus {
+      box-shadow: none;
+   }
 }
 
 .modal-dialog {
@@ -57,7 +79,6 @@ h6 {
    border: 0 none;
    border-radius: 0;
 }
-
 .progress {
    width: 250px;
    font-size: 13px;
@@ -153,26 +174,40 @@ h6 {
          padding: 0 15px;
 
          &.map-tab {
-            padding-left: 42px;
+            display: flex;
+            align-items: center;
 
-            > span {
-               display: flex;
-               align-items: center;               
+            &::after {
+               content: "";
+               background: url("../assets/gfx/icon-map.svg") no-repeat center;
+               background-size: 18px;
+               width: 18px;
+               height: 18px;
+               margin-left: 10px;
+            }
+         }
+
+         &.api-link {
+            display: flex;
+            align-items: center;
+            border: 0;
+            color: #3867c8;
+            text-decoration: underline;
+
+            &:hover {
+               text-decoration: none;
             }
 
             &::after {
                content: "";
-               background: url('../assets/gfx/icon-map.svg') no-repeat center;
-               display: block;
-               background-size: 18px;
-               width: 18px;
-               height: 18px;
-               position: absolute;
-               left: 15px;
-               top: 15px;             
+               background: url("../assets/gfx/icon-api.svg") no-repeat center;
+               width: 21px;
+               height: 21px;
+               background-size: 21px;
+               margin-left: 7px;
             }
          }
-         
+
          &.active {
             background-color: #ffffff;
             font-weight: 500;

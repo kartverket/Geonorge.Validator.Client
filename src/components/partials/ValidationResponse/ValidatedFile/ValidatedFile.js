@@ -3,7 +3,7 @@ import { Spinner, Tooltip } from 'components/custom-elements';
 import { useApi } from 'hooks';
 import { useSelector } from 'react-redux';
 import { useContext, useEffect, useState } from 'react';
-import { MapViewContext } from 'App';
+import MapViewContext from 'context/MapViewContext';
 import { useDispatch } from 'react-redux';
 import { createId } from 'utils/map/helpers';
 import { setActiveTab } from 'store/slices/tabSlice';

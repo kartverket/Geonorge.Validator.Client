@@ -1,7 +1,7 @@
 .file-list {
    display: flex;
    flex-direction: column;
-   margin-bottom: 25px;
+   margin-bottom: 15px;
    border: 1px solid #dee2e6;
 
    .file {
@@ -16,7 +16,7 @@
    }
 
    .type {
-      width: 10%;
+      width: 34px;
    }
 
    .info {
@@ -30,10 +30,6 @@
          overflow: hidden;
          white-space: nowrap;
          text-overflow: ellipsis;
-      }
-
-      .size {
-         //font-size: 12px;
       }
    }
 
@@ -56,9 +52,9 @@
 
    .icon {
       background-image: url("../../../assets/gfx/icon-file.svg");
-      width: 42px;
-      height: 54px;
-      background-size: 42px 54px;
+      width: 34px;
+      height: 44px;
+      background-size: 34px 44px;
       display: flex;
       justify-content: center;
 
@@ -67,7 +63,7 @@
          align-self: end;
          text-transform: uppercase;
          color: #ffffff;
-         font-size: 12px;
+         font-size: 10px;
          font-weight: 600;
       }
    }

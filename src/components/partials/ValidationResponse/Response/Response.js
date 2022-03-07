@@ -1,8 +1,8 @@
 import React from 'react';
 import ResponseBlock from '../ResponseBlock/ResponseBlock';
 import ValidatedFile from '../ValidatedFile/ValidatedFile';
-import './Response.scss';
 import { JsonPrint } from 'components/custom-elements';
+import './Response.scss';
 
 function Response({ data }) {
    if (!data) {

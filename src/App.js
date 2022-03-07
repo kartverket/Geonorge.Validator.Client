@@ -3,10 +3,10 @@ import { MapView, Validate, ValidationReponse } from 'components/partials';
 import { Tabs, Tab } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveTab } from 'store/slices/tabSlice';
+import MapViewContext from 'context/MapViewContext';
 import './App.scss';
 
 const OPEN_API_URL = process.env.REACT_APP_OPEN_API_URL;
-const MapViewContext = React.createContext(null);
 
 function App() {
    const [apiResponse, setApiResponse] = useState(null);
@@ -22,11 +22,17 @@ function App() {
       [activeTab]
    );
 
-   function handleTabSelect(tabKey) {
+   function handleTabSelect(tabKey, event) {
+      if (tabKey === 'api-link') {
+         window.open(OPEN_API_URL, '_blank');
+         event.preventDefault();
+         return;
+      }
+
       dispatch(setActiveTab({ activeTab: tabKey }));
    }
 
-   function handleApiResponse(response) {     
+   function handleApiResponse(response) {
       setApiResponse(response);
 
       if (response === null) {
@@ -42,8 +48,6 @@ function App() {
                   <div className="validator">
                      <div className="section">
                         <div>
-                           <a href={OPEN_API_URL} target="_blank" rel="noreferrer">Klikk her for å gå til API</a>
-
                            <Validate onApiResponse={handleApiResponse} />
                         </div>
                      </div>
@@ -61,6 +65,9 @@ function App() {
                      </Tab>
                   );
                })}
+               <Tab tabClassName="api-link" eventKey="api-link" title="Open API">
+                  <span></span>
+               </Tab>
             </Tabs>
          </div>
       </MapViewContext.Provider>
@@ -68,4 +75,3 @@ function App() {
 }
 
 export default App;
-export { MapViewContext }

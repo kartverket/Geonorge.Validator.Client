@@ -11,8 +11,8 @@
 
    .files-dropzone {
       border: 2px dashed #d8e4eb;
-      padding: 30px;
-      margin: 25px 0;
+      padding: 20px;
+      margin: 0 0 20px 0;
       text-align: center;
       font-style: italic;
       cursor: pointer;
@@ -20,37 +20,37 @@
    }
 }
 
-.total-file-size {
-   &.total-file-size-exceeded .file-size-total {
-      color: #d9534f;
-      font-weight: 500;
-   }
-}
-
-.bottom {
+.validator-info {
    display: flex;
    justify-content: space-between;
-   align-items: flex-end;
+   margin-bottom: 15px;
 
-   .validate-button {
-      display: flex;
-      align-items: center;
-
-      button {
-         margin-right: 12px;
-      }
-
-      .spinner-border {
-         border-color: #72a7cf;
-         border-right-color: transparent;
-         width: 25px;
-         height: 25px;
+   .total-file-size {
+      &.total-file-size-exceeded .file-size-total {
+         color: #d9534f;
+         font-weight: 500;
       }
    }
 
    .footnotes {
       text-align: right;
       font-size: 12px;
+   }
+}
+
+.validate-button {
+   display: flex;
+   align-items: center;
+
+   button {
+      margin-right: 12px;
+   }
+
+   .spinner-border {
+      border-color: #72a7cf;
+      border-right-color: transparent;
+      width: 25px;
+      height: 25px;
    }
 }
 

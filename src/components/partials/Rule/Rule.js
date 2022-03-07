@@ -4,6 +4,7 @@ import './Rule.scss';
 
 function Rule({ rule, onMessageClick }) {
    const [expanded, setExpanded] = useState(true);
+   const title = `${rule.id}: ${rule.name} (${rule.messages.length})`;
 
    function toggle() {
       setExpanded(!expanded);
@@ -11,7 +12,9 @@ function Rule({ rule, onMessageClick }) {
 
    return (
       <div className={`rule ${!expanded ? 'rule-collapsed' : ''}`} role="button">
-         <div className="rule-name" onClick={toggle}>{rule.id}: {rule.name} ({rule.messages.length})</div>
+         <div className="rule-name" onClick={toggle}>
+            <span title={title}>{title}</span>
+         </div>
          <ol className="messages">
             {
                rule.messages.map((message, index) => {

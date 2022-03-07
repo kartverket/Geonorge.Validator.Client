@@ -8,20 +8,28 @@
    .rule-name {
       font-style: italic;
       cursor: pointer;
-      user-select: none;
-      border-bottom: 1px solid transparent;
-   
-      &:hover {
-         border-bottom: 1px solid #212529;       
+      display: flex;
+      align-items: center;
+
+      span {
+         user-select: none;
+         border-bottom: 1px solid transparent;
+         max-width: 92%;
+         overflow: hidden;
+         white-space: nowrap;
+         text-overflow: ellipsis;
+      
+         &:hover {
+            border-bottom: 1px solid #212529;       
+         }
       }
-   
+
       &::after {
          content: "";
          background: url('../../../assets/gfx/icon-arrow.svg') no-repeat center;
-         width: 10px;
-         height: 14px;
-         display: inline-block;
-         background-size: 14px;
+         width: 11px;
+         height: 11px;
+         background-size: 11px;
          margin-left: 10px;
          transform: rotate(90deg);
          transition: all 0.25s ease;

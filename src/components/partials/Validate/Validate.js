@@ -48,12 +48,12 @@ function Validate({ onApiResponse }) {
       const formData = new FormData();
 
       xmlFiles.forEach(file => formData.append('xmlFiles', file));
-      xsdFiles.forEach(file => formData.append('xsdFile', file));      
+      xsdFiles.forEach(file => formData.append('xsdFile', file));
 
       const response = await sendAsync(API_TASK_ID, VALIDATE_API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 
       if (response) {
-         onApiResponse({ 
+         onApiResponse({
             validationResult: response,
             files: await validateFilesForMapView(xmlFiles, response)
          });
@@ -63,7 +63,7 @@ function Validate({ onApiResponse }) {
       }
    }
 
-   function getTotalFileSize() {
+   function renderTotalFileSize() {
       const options = { separator: ',' };
       const maxTotalSize = fileSize(MAX_FILE_SIZE_TOTAL, options);
 
@@ -90,7 +90,7 @@ function Validate({ onApiResponse }) {
                   multiple
                   clickable
                >
-                  Klikk for å legge til GML- eller XML-dokumenter <sup>(1, 2)</sup>
+                  Klikk for å legge til GML- eller XML-dokumenter <sup>(1)</sup>
                </Files>
 
                <UploadFileList files={xmlFiles} uploadElement={xmlUploadElement} />
@@ -104,29 +104,28 @@ function Validate({ onApiResponse }) {
                   maxFiles={1}
                   clickable
                >
-                  Klikk for å legge til applikasjonsskjema (XSD) <sup>(3)</sup>
+                  Klikk for å legge til applikasjonsskjema (XSD) <sup>(2)</sup>
                </Files>
 
                <UploadFileList files={xsdFiles} uploadElement={xsdUploadElement} />
             </div>
          </div>
 
-         {getTotalFileSize()}
-
-         <div className="bottom">
-            <div className="validate-button">
-               <Button variant="primary" onClick={validate} disabled={!xmlFiles.length || fileSizeTotal > MAX_FILE_SIZE_TOTAL || validating}>Validér</Button>
-
-               <div className={`validating-progress ${!validating ? 'validating-progress-hidden' : ''}`}>
-                  <ProgressBar now={uploadProgress} animated />
-                  <span className="loading">{uploadProgress !== 100 ? 'Laster opp' : 'Validerer'}</span>
-               </div>
-            </div>
+         <div className="validator-info">
+            {renderTotalFileSize()}
 
             <div className="footnotes">
-               <sup>1)</sup> GML-dokumenter må være GML-versjon 3.2.1 eller nyere<br />
-               <sup>2)</sup> Må tilhøre samme navneområde med samme versjon av applikasjonsskjema<br />
-               <sup>3)</sup> Valgfri dersom attributtet "schemaLocation" er spesifisert
+               <sup>1)</sup> Må tilhøre samme navneområde med samme versjon av applikasjonsskjema<br />
+               <sup>2)</sup> Valgfri dersom attributtet "schemaLocation" er spesifisert
+            </div>
+         </div>
+
+         <div className="validate-button">
+            <Button variant="primary" onClick={validate} disabled={!xmlFiles.length || fileSizeTotal > MAX_FILE_SIZE_TOTAL || validating}>Validér</Button>
+
+            <div className={`validating-progress ${!validating ? 'validating-progress-hidden' : ''}`}>
+               <ProgressBar now={uploadProgress} animated />
+               <span className="loading">{uploadProgress !== 100 ? 'Laster opp' : 'Validerer'}</span>
             </div>
          </div>
       </React.Fragment>
