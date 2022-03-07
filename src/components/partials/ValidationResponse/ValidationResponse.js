@@ -8,12 +8,8 @@ function ValidationReponse({ apiResponse }) {
 
    return (
       <React.Fragment>
-         <div className="section">
-            <div>
-               <h3>Resultat</h3>
-               <Response data={apiResponse} />
-            </div>
-         </div>
+         <h3>Resultat</h3>
+         <Response data={apiResponse} />
       </React.Fragment>
    );
 }

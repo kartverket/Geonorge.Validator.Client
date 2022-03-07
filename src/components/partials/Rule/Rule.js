@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import './Rule.scss';
 
 function Rule({ rule, onMessageClick }) {
-   const [expanded, setExpanded] = useState(true);
+   const [expanded, setExpanded] = useState(false);
    const title = `${rule.id}: ${rule.name} (${rule.messages.length})`;
 
    function toggle() {

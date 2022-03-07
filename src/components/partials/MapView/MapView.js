@@ -4,8 +4,9 @@ import { click } from 'ol/events/condition';
 import { Select } from 'ol/interaction';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { toggleFeatureInfo } from 'store/slices/mapSlice';
 import { setActiveTab } from 'store/slices/tabSlice';
-import { addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from 'utils/map/features';
+import { addGeometryInfo, addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from 'utils/map/features';
 import { debounce, getLayer } from 'utils/map/helpers';
 import { createLegend } from 'utils/map/legend';
 import { createMap } from 'utils/map/map';
@@ -50,10 +51,12 @@ function MapView({ mapDocument, mapId }) {
 
    const selectFeature = useCallback(
       features => {
+         addGeometryInfo(features);
          highlightSelectedFeatures(map, features);
          setSelectedFeatures([...features]);
+         dispatch(toggleFeatureInfo({ expanded: true }));
       },
-      [map]
+      [map, dispatch]
    );
 
    const addMapInteraction = useCallback(

@@ -64,5 +64,5 @@ async function validateFileForMapView(file, validationResult) {
 function xsdRuleFailed(file, validationResult) {
     const xsdRule = validationResult.rules.find(rule => rule.id === XSD_RULE_ID);
 
-    return xsdRule !== undefined && xsdRule.messages.some(message => message.fileName === file.name)
+    return xsdRule !== undefined && xsdRule.messages.some(message => message.fileName === file.name);
 }

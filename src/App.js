@@ -46,14 +46,14 @@ function App() {
             <Tabs defaultActiveKey="validator" activeKey={activeTabKey} onSelect={handleTabSelect} transition={false}>
                <Tab eventKey="validator" title="Validator">
                   <div className="validator">
-                     <div className="section">
-                        <div>
-                           <Validate onApiResponse={handleApiResponse} />
-                        </div>
+                     <div>
+                        <Validate onApiResponse={handleApiResponse} />
                      </div>
                      {
                         apiResponse !== null ?
-                           <ValidationReponse apiResponse={apiResponse} /> :
+                           <div>
+                              <ValidationReponse apiResponse={apiResponse} />
+                           </div> :
                            null
                      }
                   </div>
