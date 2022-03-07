@@ -1,9 +1,10 @@
-import { FeatureContextMenu, FeatureInfo, Legend, MapInfo, ValidationErrors } from 'components/partials';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FeatureContextMenu, FeatureInfo, Legend, MapInfo, MapNorthArrow, ScaleBar, ValidationErrors } from 'components/partials';
 import { ZoomToExtent } from 'ol/control';
 import { click } from 'ol/events/condition';
 import { Select } from 'ol/interaction';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { toggleMapLoading } from 'store/slices/apiSlice';
 import { toggleFeatureInfo } from 'store/slices/mapSlice';
 import { setActiveTab } from 'store/slices/tabSlice';
 import { addGeometryInfo, addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from 'utils/map/features';
@@ -43,10 +44,11 @@ function MapView({ mapDocument, mapId }) {
    
                view.fit(extent, map.getSize());
                setMapRendered(true);
+               dispatch(toggleMapLoading({ mapLoading: false }));
             }
          }, 1);
       },
-      [map, mapId, mapRendered, activeTab]
+      [map, mapId, mapRendered, activeTab, dispatch]
    );
 
    const selectFeature = useCallback(
@@ -159,7 +161,7 @@ function MapView({ mapDocument, mapId }) {
 
    useEffect(
       () => {
-         if (symbol.name) {
+         if (symbol.name && map) {
             toggleFeatures(symbol, map);
          }
       },
@@ -188,6 +190,8 @@ function MapView({ mapDocument, mapId }) {
                <div ref={mapElement} className="map"></div>
             </div>
 
+            <ScaleBar map={map} numberOfSteps={4} minWidth={150} />
+            <MapNorthArrow map={map} />
             <FeatureContextMenu map={map} data={contextMenuData} legend={legend} onFeatureSelect={selectFeature} />
             <FeatureInfo map={map} features={selectedFeatures} legend={legend} />
             <ValidationErrors map={map} validationResult={mapDocument?.validationResult} onMessageClick={selectFeature} />

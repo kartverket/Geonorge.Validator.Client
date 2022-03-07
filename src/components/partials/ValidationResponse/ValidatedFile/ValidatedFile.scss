@@ -17,7 +17,18 @@
       }
 
       button {
-         margin-right: 10px;
+         display: flex;
+         align-items: center;
+         margin-right: 10px; 
+
+         &::after {
+            content: "";
+            background: url('../../../../assets/gfx/icon-map-blue.svg') no-repeat center;
+            background-size: 15px;
+            width: 15px;
+            height: 15px;
+            margin-left: 5px;
+         }
       }
    }
 }

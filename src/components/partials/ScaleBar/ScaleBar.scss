@@ -1,6 +1,9 @@
 .scaleBar {
    display: flex;
    font-size: 13px;
+   position: absolute;
+   left: 15px;
+   bottom: 15px;
 
    > span {
       position: relative;

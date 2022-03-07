@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MapView, Validate, ValidationReponse } from 'components/partials';
+import { MapView, Validator } from 'components/partials';
 import { Tabs, Tab } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveTab } from 'store/slices/tabSlice';
@@ -9,9 +9,9 @@ import './App.scss';
 const OPEN_API_URL = process.env.REACT_APP_OPEN_API_URL;
 
 function App() {
-   const [apiResponse, setApiResponse] = useState(null);
    const [mapViews, setMapViews] = useState([]);
    const [activeTabKey, setActiveTabKey] = useState(null);
+   const [fullscreen, setFullscreen] = useState(false);
    const activeTab = useSelector(state => state.tab.activeTab);
    const dispatch = useDispatch();
 
@@ -20,6 +20,21 @@ function App() {
          setActiveTabKey(activeTab);
       },
       [activeTab]
+   );
+
+   useEffect(
+      () => {
+         function handleFullscreenChange() {
+            setFullscreen(document.fullscreenElement !== null);
+         }
+
+         document.addEventListener('fullscreenchange', handleFullscreenChange)
+
+         return () => {
+            document.removeEventListener('fullscreenchange', handleFullscreenChange);
+         }
+      },
+      []
    );
 
    function handleTabSelect(tabKey, event) {
@@ -32,9 +47,15 @@ function App() {
       dispatch(setActiveTab({ activeTab: tabKey }));
    }
 
-   function handleApiResponse(response) {
-      setApiResponse(response);
+   function handleToggleFullscreenClick() {
+      if (!document.fullscreenElement) {
+         document.documentElement.requestFullscreen();
+      } else if (document.exitFullscreen) {
+         document.exitFullscreen();
+      }
+   }
 
+   function handleApiResponse(response) {
       if (response === null) {
          setMapViews([]);
       }
@@ -42,21 +63,18 @@ function App() {
 
    return (
       <MapViewContext.Provider value={[mapViews, setMapViews]}>
-         <div className="app">
+         <div className={`app ${fullscreen ? 'fullscreen-toggled' : ''}`}>
+            <div
+               role="button"
+               className="toggle-fullscreen"
+               title={fullscreen ? 'Avslutt fullskjerm' : 'Vis i fullskjerm'}
+               onClick={handleToggleFullscreenClick}
+            >
+            </div>
+
             <Tabs defaultActiveKey="validator" activeKey={activeTabKey} onSelect={handleTabSelect} transition={false}>
                <Tab eventKey="validator" title="Validator">
-                  <div className="validator">
-                     <div>
-                        <Validate onApiResponse={handleApiResponse} />
-                     </div>
-                     {
-                        apiResponse !== null ?
-                           <div>
-                              <ValidationReponse apiResponse={apiResponse} />
-                           </div> :
-                           null
-                     }
-                  </div>
+                  <Validator onApiResponse={handleApiResponse} />
                </Tab>
                {mapViews.map(mapView => {
                   return (

@@ -140,7 +140,12 @@ export function addValidationResultToFeatures(mapDocument, features) {
 }
 
 function getHighlightStyle(feature) {
-   const strokeColor = feature.get('errorMessages')?.length ? 'rgb(255 0 0 / 50%)' : 'rgb(0 109 173 / 50%)'; 
+   const stroke = new Stroke({
+      color: feature.get('errorMessages')?.length ? 'rgb(255 0 0 / 50%)' : 'rgb(0 109 173 / 50%)',
+      lineCap: 'butt',
+      width: 5,
+   });
+
    let style;
 
    if (feature.getGeometry().getType() === 'Point') {
@@ -150,20 +155,13 @@ function getHighlightStyle(feature) {
          image: new Circle({
             radius: image.getRadius(),
             fill: image.getFill(),
-            stroke: new Stroke({
-               color: strokeColor,
-               width: 5,
-            })
+            stroke
          })
       });
    } else {
-      style = new Style({
-         stroke: new Stroke({
-            color: feature.get('errorMessages')?.length ? 'rgb(255 0 0 / 50%)' : 'rgb(0 109 173 / 50%)',
-            lineCap: 'butt',
-            width: 5
-         })
-      })
+      style = new Style({ 
+         stroke 
+      });
    }
 
    return [

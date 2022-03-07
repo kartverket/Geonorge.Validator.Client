@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useModals } from 'context/ModalsContext';
 import { useDispatch } from 'react-redux';
-import { setUploadProgress, toggleLoading, toggleLoading2 } from 'store/slices/apiSlice';
+import { setUploadProgress, toggleLoading } from 'store/slices/apiSlice';
 
 export default function useApi() {
    const { openModal } = useModals();
@@ -9,12 +9,11 @@ export default function useApi() {
 
    async function sendAsync(taskId, url, data, options = {}, progressBar = true) {
       try {
+         dispatch(toggleLoading(taskId));
+
          if (progressBar) {
-            dispatch(toggleLoading({ loading: true }));
             dispatch(setUploadProgress({ uploadProgress: 0 }));
          }
-
-         dispatch(toggleLoading2(taskId));
 
          const defaultOptions = { 
             method: 'post', 
@@ -28,13 +27,11 @@ export default function useApi() {
 
 
          const response = await axios({ ...defaultOptions, ...options });
-         dispatch(toggleLoading({ loading: false }));
-         dispatch(toggleLoading2(taskId));
+         dispatch(toggleLoading(taskId));
 
          return response.data || null;
       } catch (error) {       
-         dispatch(toggleLoading({ loading: false }));
-         dispatch(toggleLoading2(taskId));
+         dispatch(toggleLoading(taskId));
          openModal('ERROR', { title: 'Feil', message: getMessage(error) });
 
          return null;

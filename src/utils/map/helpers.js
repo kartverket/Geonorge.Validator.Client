@@ -4,7 +4,7 @@ import detect from 'detect-file-type';
 import filesize from 'filesize';
 import { getArea, getLength } from 'ol/sphere';
 
-const MAX_ZOOM = process.env.REACT_APP_MAX_ZOOM;
+const MAX_ZOOM = 18;
 const VALID_MIME = process.env.REACT_APP_VALID_MIME;
 
 export function getLayer(map, id) {
@@ -27,6 +27,7 @@ export function getSymbolById(legend, id) {
 }
 
 export function zoomTo(map, features) {
+   debugger
    const featureExtent = features[0].getGeometry().getExtent();
 
    for (let i = 0; i < features.length; i++) {

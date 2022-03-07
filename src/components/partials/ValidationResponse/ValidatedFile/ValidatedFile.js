@@ -8,20 +8,21 @@ import { useDispatch } from 'react-redux';
 import { createId } from 'utils/map/helpers';
 import { setActiveTab } from 'store/slices/tabSlice';
 import './ValidatedFile.scss';
+import { toggleMapLoading } from 'store/slices/apiSlice';
 
 const MAP_DOCUMENT_API_URL = process.env.REACT_APP_MAP_DOCUMENT_API_URL;
 
 function ValidatedFile({ file, rules }) {
-   console.log('validatedFile');
    const [mapViews, setMapViews] = useContext(MapViewContext);
-   const [mapLoading, setMapLoading] = useState(false);
+   const [thisMapLoading, setThisMapLoading] = useState(false);
    const apiTasks = useSelector(state => state.api.tasks);
+   const mapLoading = useSelector(state => state.api.mapLoading);
    const sendAsync = useApi();
    const dispatch = useDispatch();
    
    useEffect(
       () => {
-         setMapLoading(apiTasks.includes(file.fileName));
+         setThisMapLoading(apiTasks.includes(file.fileName));
       },
       [apiTasks, file.fileName]
    );
@@ -38,6 +39,7 @@ function ValidatedFile({ file, rules }) {
    }
 
    async function fetchMapDocument(file) {
+      dispatch(toggleMapLoading({ mapLoading: true }));
       const formData = new FormData();
 
       formData.append('gmlFile', file);
@@ -52,9 +54,9 @@ function ValidatedFile({ file, rules }) {
    return (
       !file.messages.length ?
          <div className="file">
-            {file.fileName}<Button variant="link" onClick={() => showInMap(file.blob)}>Vis i kart</Button>
+            {file.fileName}<Button variant="link" onClick={() => showInMap(file.blob)} disabled={mapLoading}>Vis i kart</Button>
             {
-               mapLoading ?
+               thisMapLoading ?
                   <Spinner /> :
                   null
             }

@@ -1,4 +1,4 @@
-import fileSize from "filesize";
+import fileSize from 'filesize';
 
 const MAX_FILE_SIZE_MAP = process.env.REACT_APP_MAX_FILE_SIZE_MAP;
 const VALID_DIMENSIONS = process.env.REACT_APP_MAP_VALID_DIMENSIONS;

@@ -1,15 +1,12 @@
 import { baseMap } from 'config/baseMap.config';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getScaleForResolution } from 'utils/map/scale';
-import { ScaleBar } from 'components/partials';
-import NorthArrow from 'assets/gfx/symbol-north-arrow.svg';
-import './MapInfo.scss';
 import dayjs from 'dayjs';
+import './MapInfo.scss';
 
 function MapInfo({ mapDocument, map }) {
    const prevResolution = useRef(0);
    const [scale, setScale] = useState(null);
-   const [rotation, setRotation] = useState(0);
 
    const getScale = useCallback(
       event => {
@@ -28,15 +25,6 @@ function MapInfo({ mapDocument, map }) {
       () => {
          if (!map) {
             return;
-         }
-
-         const view = map.getView();
-
-         if (view) {
-            view.on('change:rotation', event => {
-               const rotation = event.target.getRotation();
-               setRotation(rotation);
-            });
          }
 
          map.on('moveend', getScale);
@@ -82,13 +70,6 @@ function MapInfo({ mapDocument, map }) {
                <div className="box-row">
                   <div className="label">Kartmålestokk:</div>
                   <div className="value">{scale}</div>
-               </div>
-
-               <ScaleBar map={map} numberOfSteps={4} minWidth={150} />
-
-               <div className="north-arrow">
-                  <span>N</span>
-                  <img src={NorthArrow} style={{ transform: `rotate(${rotation}rad)` }} alt="" />
                </div>
             </div>
          </div>

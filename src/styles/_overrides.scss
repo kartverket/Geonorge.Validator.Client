@@ -1,17 +1,3 @@
-h4 {
-   font-size: 20px;
-   margin-bottom: 15px;
-}
-
-h6 {
-   font-size: 16px;
-   margin-bottom: 0;
-}
-
-.modal-open {
-   padding-right: 0 !important;
-}
-
 .form-control,
 .btn {
    font-size: 13px !important;
@@ -19,14 +5,6 @@ h6 {
 
 .nav-link {
    transition: none;
-}
-
-.btn-link {
-   padding: 0;
-
-   &:focus {
-      box-shadow: none;
-   }
 }
 
 .btn-primary {
@@ -49,6 +27,29 @@ h6 {
    &:active:focus {
       box-shadow: none;
    }
+
+   &:disabled {
+      background-color: #aac4d3;
+      border-color: #aac4d3;
+   }
+}
+
+.btn-link {
+   color: #3867c8;
+   padding: 0;
+   text-decoration: underline;
+
+   &:hover {
+      text-decoration: none;
+   }
+
+   &:focus {
+      box-shadow: none;
+   }
+}
+
+.modal-open {
+   padding-right: 0 !important;
 }
 
 .modal-dialog {
@@ -78,21 +79,6 @@ h6 {
 .modal-content {
    border: 0 none;
    border-radius: 0;
-}
-.progress {
-   width: 250px;
-   font-size: 13px;
-
-   .progress-bar {
-      transition: none;
-   }
-}
-
-.spinner-border {
-   width: 23px;
-   height: 23px;
-   margin: -5px 10px;
-   color: #6f92a7;
 }
 
 .ol-full-screen,
@@ -172,6 +158,7 @@ h6 {
          line-height: 45px;
          height: 44px;
          padding: 0 15px;
+         font-weight: 500;
 
          &.map-tab {
             display: flex;
@@ -185,6 +172,10 @@ h6 {
                height: 18px;
                margin-left: 10px;
             }
+
+            &.active::after {
+               background-position: center -1px;
+            }
          }
 
          &.api-link {
@@ -193,6 +184,7 @@ h6 {
             border: 0;
             color: #3867c8;
             text-decoration: underline;
+            font-weight: 400;
 
             &:hover {
                text-decoration: none;
@@ -210,7 +202,6 @@ h6 {
 
          &.active {
             background-color: #ffffff;
-            font-weight: 500;
             height: 45px;
             margin-bottom: -1px;
 
@@ -233,20 +224,19 @@ h6 {
    }
 }
 
-.btn-primary:disabled {
-   background-color: #aac4d3;
-   border-color: #aac4d3;
-}
+.progress {
+   width: 250px;
+   font-size: 13px;
 
-.btn-link {
-   color: #3867c8;
-   text-decoration: underline;
-
-   &:hover {
-      text-decoration: none;
+   .progress-bar {
+      transition: none;
+      background-color: #8aaec3;
    }
 }
 
-.progress-bar {
-   background-color: #8aaec3;
+.spinner-border {
+   width: 23px;
+   height: 23px;
+   margin: -5px 10px;
+   color: #6f92a7;
 }
