@@ -21,10 +21,18 @@
 
       > div {
          max-width: 1280px;
-         margin: 0 auto 30px auto;
+         margin: 0 auto 25px auto;
+         border-top: 1px solid #dee2e6;
+         padding-top: 25px;
+
+         &:first-child {
+            border-top: 0;
+            padding-top: 0;
+         }
       }
 
-      h3 {
+      h3,
+      .h3 {
          font-size: 13px;
          font-weight: 500;
       }
