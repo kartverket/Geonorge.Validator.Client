@@ -31,7 +31,11 @@ function ValidatedFile({ file, rules }) {
       let index = mapViews.findIndex(mapView => mapView.mapDocument.fileName === file.name);
 
       if (index === -1) {
-         setMapViews([...mapViews, { mapId: createId(), mapDocument: await fetchMapDocument(file) }]);
+         const mapDocument = await fetchMapDocument(file);
+
+         if (mapDocument !== null) {
+            setMapViews([...mapViews, { mapId: createId(), mapDocument }]);
+         }
       } else {
          const mapId = mapViews[index].mapId;
          dispatch(setActiveTab({ activeTab: mapId }));
@@ -46,6 +50,12 @@ function ValidatedFile({ file, rules }) {
       formData.append('validate', false);
 
       const mapDocument = await sendAsync(file.name, MAP_DOCUMENT_API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } }, false);
+
+      if (mapDocument === null) {
+         dispatch(toggleMapLoading({ mapLoading: false }));
+         return null;
+      }
+
       mapDocument.validationResult.rules = rules || [];
 
       return mapDocument;
