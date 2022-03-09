@@ -1,7 +1,6 @@
 {
    "name": "geonorge-validator-client",
-   "description": "Klient for validering av GML- og XML-filer",
-   "version": "1.0.0",
+   "version": "0.1.0",
    "private": true,
    "dependencies": {
       "@reduxjs/toolkit": "^1.6.1",

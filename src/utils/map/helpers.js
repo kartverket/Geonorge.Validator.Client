@@ -3,7 +3,7 @@ import colorsys from 'colorsys';
 import filesize from 'filesize';
 import { getArea, getLength } from 'ol/sphere';
 
-const MAX_ZOOM = 18;
+const MAX_ZOOM = process.env.REACT_APP_MAX_ZOOM;
 
 export function getLayer(map, id) {
    return map.getLayers().getArray()
@@ -124,13 +124,4 @@ export const getFileSize = size => filesize(size, { separator: ',', spacer: ' ' 
 
 export const allEqual = array => array.every(value => value === array[0]);
 
-export const createId = () => '_' + Math.random().toString(36).substr(2, 9);
-
-export const getRandomColor = () => {
-   const h = Math.floor(Math.random() * 361);
-   const s = Math.floor(Math.random() * 35) + 10;
-   const v = Math.floor(Math.random() * 50) + 100;
-   const { r, g, b } = colorsys.hsv2Rgb(h, s, v);
-
-   return `rgb(${r}, ${g}, ${b})`;
-};
+export const createId = () => '_' + Math.random().toString(36).substring(2, 11);
