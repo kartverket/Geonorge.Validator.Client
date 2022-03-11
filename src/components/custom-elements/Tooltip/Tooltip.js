@@ -2,9 +2,12 @@ import React, { useRef, useState } from 'react';
 import { Overlay } from 'react-bootstrap';
 
 const defaultStyle = {
-   backgroundColor: 'rgba(0, 0, 0, 0.85)',
+   backgroundColor: 'rgb(247 247 247)',
+   border: '1px solid #dee2e6',
+   boxShadow: '2px 2px 5px 0px #efefef',
    padding: '2px 10px',
-   color: 'white',
+   color: '#333333',
+   fontSize: '12px',
    borderRadius: 3
 };
 
@@ -22,14 +25,16 @@ function Tooltip({ trigger, tooltip, style }) {
       onMouseLeave: () => setShow(false)
    });
 
+   const styling = {...defaultStyle, ...(style || {})}
+
    return (
       <React.Fragment>
          {clonedTrigger}
 
-         <Overlay target={target.current} show={true} placement="top" transition={false}>
-            {
+         <Overlay target={target.current} show={show} placement="top" transition={false}>
+            {               
                ({ placement, arrowProps, show: _show, popper, ...props }) => (
-                  <div {...props} style={{ ...defaultStyle, ...props.style }}>
+                  <div {...props} style={{ ...styling, ...props.style }}>
                      {tooltip}
                   </div>
                )

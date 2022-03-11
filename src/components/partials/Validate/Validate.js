@@ -91,7 +91,15 @@ function Validate({ onApiResponse }) {
                   multiple
                   clickable
                >
-                  Klikk for å legge til GML- eller XML-dokumenter <span className="info">?</span>
+                  Klikk for å legge til GML- eller XML-dokumenter
+
+                  <Tooltip
+                     tooltip="Må tilhøre samme navneområde med samme versjon av applikasjonsskjema"
+                     trigger={
+                        <span className="file-info">?</span>
+                     }
+                  >
+                  </Tooltip>
                </Files>
 
                <UploadFileList files={xmlFiles} uploadElement={xmlUploadElement} />
@@ -109,7 +117,7 @@ function Validate({ onApiResponse }) {
                   <Tooltip
                      tooltip={"Valgfri dersom attributtet \"schemaLocation\" er spesifisert"}
                      trigger={
-                        <span className="info">?</span>
+                        <span className="file-info">?</span>
                      }
                   >
                   </Tooltip>
@@ -121,11 +129,6 @@ function Validate({ onApiResponse }) {
 
          <div className="validator-info">
             {renderTotalFileSize()}
-
-            <div className="footnotes">
-               <sup>1)</sup> Må tilhøre samme navneområde med samme versjon av applikasjonsskjema<br />
-               <sup>2)</sup> Valgfri dersom attributtet "schemaLocation" er spesifisert
-            </div>
          </div>
 
          <div className="validate-button">

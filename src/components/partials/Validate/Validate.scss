@@ -17,6 +17,20 @@
       font-style: italic;
       cursor: pointer;
       user-select: none;
+
+      .file-info {
+         font-style: normal;
+         font-weight: bolder;
+         color: #8aaec3;
+         font-size: 14px;
+         width: 15px;
+         display: inline-block;
+         border: 1px solid #8aaec3;
+         border-radius: 50%;
+         height: 15px;
+         line-height: 13px;
+         margin-left: 5px;
+      }      
    }
 }
 
@@ -70,19 +84,6 @@
       content: ".";
       animation: dots 2s steps(5, end) infinite;
    }
-}
-
-.info {
-   font-style: normal;
-   font-weight: bolder;
-   color: #8aaec3;
-   font-size: 14px;
-   width: 15px;
-   display: inline-block;
-   border: 1px solid #8aaec3;
-   border-radius: 50%;
-   height: 15px;
-   line-height: 13px;
 }
 
 @keyframes dots {
