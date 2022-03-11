@@ -1,7 +1,7 @@
 import { extend, getCenter } from 'ol/extent';
-import colorsys from 'colorsys';
 import filesize from 'filesize';
 import { getArea, getLength } from 'ol/sphere';
+import WKT from 'ol/format/WKT';
 
 const MAX_ZOOM = process.env.REACT_APP_MAX_ZOOM;
 
@@ -34,11 +34,9 @@ export function zoomTo(map, features) {
    zoom(map, featureExtent);
 }
 
-export function zoomToPoint(map, feature) {
-   const layer = getLayer(map, 'selected-features');
-   const selectedFeature = getFeatureById(layer, feature.get('id'));
-   const zoomTo = selectedFeature.get('zoomTo');
-   const extent = zoomTo.getExtent();
+export function zoomToPoint(map, pointWkt) {
+   const point = new WKT().readGeometry(pointWkt);
+   const extent = point.getExtent()
 
    zoom(map, extent);
 }

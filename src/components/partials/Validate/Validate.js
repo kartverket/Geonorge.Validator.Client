@@ -7,6 +7,7 @@ import UploadFileList from '../UploadFileList/UploadFileList';
 import fileSize from 'filesize';
 import { validateFilesForMapView } from 'utils/file-validator';
 import './Validate.scss';
+import { Tooltip } from 'components/custom-elements';
 
 const VALIDATE_API_URL = process.env.REACT_APP_VALIDATE_API_URL;
 const MAX_FILE_SIZE_TOTAL = process.env.REACT_APP_MAX_FILE_SIZE_TOTAL;
@@ -90,7 +91,7 @@ function Validate({ onApiResponse }) {
                   multiple
                   clickable
                >
-                  Klikk for å legge til GML- eller XML-dokumenter <sup>(1)</sup>
+                  Klikk for å legge til GML- eller XML-dokumenter <span className="info">?</span>
                </Files>
 
                <UploadFileList files={xmlFiles} uploadElement={xmlUploadElement} />
@@ -104,7 +105,14 @@ function Validate({ onApiResponse }) {
                   maxFiles={1}
                   clickable
                >
-                  Klikk for å legge til applikasjonsskjema (XSD) <sup>(2)</sup>
+                  Klikk for å legge til applikasjonsskjema (XSD) 
+                  <Tooltip
+                     tooltip={"Valgfri dersom attributtet \"schemaLocation\" er spesifisert"}
+                     trigger={
+                        <span className="info">?</span>
+                     }
+                  >
+                  </Tooltip>
                </Files>
 
                <UploadFileList files={xsdFiles} uploadElement={xsdUploadElement} />

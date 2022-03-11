@@ -72,6 +72,19 @@
    }
 }
 
+.info {
+   font-style: normal;
+   font-weight: bolder;
+   color: #8aaec3;
+   font-size: 14px;
+   width: 15px;
+   display: inline-block;
+   border: 1px solid #8aaec3;
+   border-radius: 50%;
+   height: 15px;
+   line-height: 13px;
+}
+
 @keyframes dots {
    0%,
    20% {

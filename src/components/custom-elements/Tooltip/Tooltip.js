@@ -8,7 +8,7 @@ const defaultStyle = {
    borderRadius: 3
 };
 
-function Tooltip({ trigger, tooltip }) {
+function Tooltip({ trigger, tooltip, style }) {
    const [show, setShow] = useState(false);
    const target = useRef(null);
 
@@ -26,7 +26,7 @@ function Tooltip({ trigger, tooltip }) {
       <React.Fragment>
          {clonedTrigger}
 
-         <Overlay target={target.current} show={show} placement="top" transition={false}>
+         <Overlay target={target.current} show={true} placement="top" transition={false}>
             {
                ({ placement, arrowProps, show: _show, popper, ...props }) => (
                   <div {...props} style={{ ...defaultStyle, ...props.style }}>

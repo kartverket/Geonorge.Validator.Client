@@ -93,7 +93,7 @@ function FeatureInfo({ map, features, legend }) {
                         {message.message}
                         {
                            message.zoomTo ?
-                              <span role="button" onClick={() => zoomToPoint(map, feature)}>Zoom til punkt</span> :
+                              <span role="button" onClick={() => zoomToPoint(map, message.zoomTo)}>Zoom til punkt</span> :
                               null
                         }
                      </li>
