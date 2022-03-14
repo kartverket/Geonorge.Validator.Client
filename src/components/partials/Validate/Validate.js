@@ -17,6 +17,7 @@ function Validate({ onApiResponse }) {
    const [xmlFiles, setXmlFiles] = useState([]);
    const [xsdFiles, setXsdFiles] = useState([]);
    const [fileSizeTotal, setFileSizeTotal] = useState(0);
+   const [showProgressBar, setShowProgressBar] = useState(false);
    const [validating, setValidating] = useState(false);
    const apiTasks = useSelector(state => state.api.tasks);
    const uploadProgress = useSelector(state => state.api.uploadProgress);
@@ -29,6 +30,13 @@ function Validate({ onApiResponse }) {
          setValidating(apiTasks.includes(API_TASK_ID));
       },
       [apiTasks]
+   );
+
+   useEffect(
+      () => {
+         setShowProgressBar(uploadProgress.taskId === API_TASK_ID);
+      },
+      [uploadProgress]
    );
 
    useEffect(
@@ -134,9 +142,9 @@ function Validate({ onApiResponse }) {
          <div className="validate-button">
             <Button variant="primary" onClick={validate} disabled={!xmlFiles.length || fileSizeTotal > MAX_FILE_SIZE_TOTAL || validating}>Validér</Button>
 
-            <div className={`validating-progress ${!validating ? 'validating-progress-hidden' : ''}`}>
-               <ProgressBar now={uploadProgress} animated />
-               <span className="loading">{uploadProgress !== 100 ? 'Laster opp' : 'Validerer'}</span>
+            <div className={`validating-progress ${!showProgressBar ? 'validating-progress-hidden' : ''}`}>
+               <ProgressBar now={uploadProgress.completed} animated />
+               <span className="loading">{uploadProgress.completed !== 100 ? 'Laster opp' : 'Validerer'}</span>
             </div>
          </div>
       </React.Fragment>

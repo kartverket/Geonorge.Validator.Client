@@ -29,10 +29,10 @@ async function validateFileForMapView(file, validationResult) {
     const validFileSize = file.size <= MAX_FILE_SIZE_MAP;
     const messages = [];
 
-    /*if (!validFileSize) {
+    if (!validFileSize) {
         messages.push(`Maksimal filstørrelse for kartvisning er ${fileSize(MAX_FILE_SIZE_MAP)}`);        
         return messages;
-    }*/
+    }
 
     if (xsdRuleFailed(file, validationResult)) {
         messages.push('GML-filen er ugyldig i henhold til applikasjonsskjemaet');

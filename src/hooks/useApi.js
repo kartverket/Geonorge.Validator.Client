@@ -7,31 +7,30 @@ export default function useApi() {
    const { openModal } = useModals();
    const dispatch = useDispatch();
 
-   async function sendAsync(taskId, url, data, options = {}, progressBar = true) {
+   async function sendAsync(taskId, url, data, options = {}) {
       try {
          dispatch(toggleLoading(taskId));
+         dispatch(setUploadProgress({ uploadProgress: { completed: 0, taskId } }));
 
-         if (progressBar) {
-            dispatch(setUploadProgress({ uploadProgress: 0 }));
-         }
-
-         const defaultOptions = { 
-            method: 'post', 
-            url, 
+         const defaultOptions = {
+            method: 'post',
+            url,
             data,
             onUploadProgress: progressEvent => {
                const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-               dispatch(setUploadProgress({ uploadProgress: percentCompleted }));
+               dispatch(setUploadProgress({ uploadProgress: { completed: percentCompleted, taskId } }));
             }
          };
 
 
          const response = await axios({ ...defaultOptions, ...options });
          dispatch(toggleLoading(taskId));
+         dispatch(setUploadProgress({ uploadProgress: {}}));
 
          return response.data || null;
-      } catch (error) {       
+      } catch (error) {
          dispatch(toggleLoading(taskId));
+         dispatch(setUploadProgress({ uploadProgress: {}}));
          openModal('ERROR', { title: 'Feil', message: getMessage(error) });
 
          return null;

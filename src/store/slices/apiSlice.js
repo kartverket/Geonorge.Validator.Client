@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
    tasks: [],
    mapLoading: false,
-   uploadProgress: 0
+   uploadProgress: {}
 };
 
 export const apiSlice = createSlice({

@@ -6,12 +6,24 @@
       display: flex;
       align-items: center;
 
+      .validating-progress {
+         .progress {
+            width: 150px;
+            height: 13px;
+            margin-top: 1px;      
+         }
+
+         span {
+            margin-left: 0;
+         }
+      }
+
       span,
       button {
          margin-left: 10px;
       }
 
-      span {
+      &.file-no-map span {
          color: #d9534f;
          text-decoration: line-through;
       }

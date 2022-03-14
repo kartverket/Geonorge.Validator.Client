@@ -1,5 +1,5 @@
-import { Button } from 'react-bootstrap';
-import { Spinner, Tooltip } from 'components/custom-elements';
+import { Button, ProgressBar } from 'react-bootstrap';
+import { Tooltip } from 'components/custom-elements';
 import { useApi } from 'hooks';
 import { useSelector } from 'react-redux';
 import { useContext, useEffect, useState } from 'react';
@@ -7,24 +7,24 @@ import MapViewContext from 'context/MapViewContext';
 import { useDispatch } from 'react-redux';
 import { createId } from 'utils/map/helpers';
 import { setActiveTab } from 'store/slices/tabSlice';
-import './ValidatedFile.scss';
 import { toggleMapLoading } from 'store/slices/apiSlice';
+import './ValidatedFile.scss';
 
 const MAP_DOCUMENT_API_URL = process.env.REACT_APP_MAP_DOCUMENT_API_URL;
 
 function ValidatedFile({ file, rules }) {
    const [mapViews, setMapViews] = useContext(MapViewContext);
-   const [thisMapLoading, setThisMapLoading] = useState(false);
-   const apiTasks = useSelector(state => state.api.tasks);
+   const [showProgressBar, setShowProgressBar] = useState(false);
    const mapLoading = useSelector(state => state.api.mapLoading);
+   const uploadProgress = useSelector(state => state.api.uploadProgress);
    const sendAsync = useApi();
    const dispatch = useDispatch();
    
    useEffect(
       () => {
-         setThisMapLoading(apiTasks.includes(file.fileName));
+         setShowProgressBar(uploadProgress.taskId === file.fileName);
       },
-      [apiTasks, file.fileName]
+      [uploadProgress, file.fileName]
    );
 
    async function showInMap(file) {
@@ -65,11 +65,11 @@ function ValidatedFile({ file, rules }) {
       !file.messages.length ?
          <div className="file">
             {file.fileName}<Button variant="link" onClick={() => showInMap(file.blob)} disabled={mapLoading}>Vis i kart</Button>
-            {
-               thisMapLoading ?
-                  <Spinner /> :
-                  null
-            }
+
+            <div className={`validating-progress ${!showProgressBar ? 'validating-progress-hidden' : ''}`}>
+               <ProgressBar now={uploadProgress.completed} animated />
+               <span className="loading">{uploadProgress.completed !== 100 ? 'Laster opp' : 'Genererer kart'}</span>
+            </div>
          </div> :
          <div className="file file-no-map">
             {file.fileName}
