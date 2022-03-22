@@ -34,9 +34,9 @@ export function zoomTo(map, features) {
    zoom(map, featureExtent);
 }
 
-export function zoomToPoint(map, pointWkt) {
-   const point = new WKT().readGeometry(pointWkt);
-   const extent = point.getExtent()
+export function zoomToGeometry(map, wkt) {
+   const geometry = new WKT().readGeometry(wkt);
+   const extent = geometry.getExtent()
 
    zoom(map, extent);
 }

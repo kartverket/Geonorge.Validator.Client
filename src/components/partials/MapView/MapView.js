@@ -21,11 +21,11 @@ function MapView({ mapDocument, mapId }) {
    const [selectedFeatures, setSelectedFeatures] = useState([]);
    const [legend, setLegend] = useState([]);
    const [mapRendered, setMapRendered] = useState(false);
+   const [sidebarVisible, setSidebarVisible] = useState(true);   
    const symbol = useSelector(state => state.map.symbol);
-   const sidebar = useSelector(state => state.map.sidebar);
    const activeTab = useSelector(state => state.tab.activeTab);
-   const sidebarVisible = useRef(true);
    const mapElement = useRef();
+   const sidebarVisibleRef = useRef(true);
    const dispatch = useDispatch();
 
    useEffect(
@@ -41,7 +41,7 @@ function MapView({ mapDocument, mapId }) {
                const vectorLayer = getLayer(map, 'features');
                const extent = vectorLayer.getSource().getExtent();
                const view = map.getView();
-   
+
                view.fit(extent, map.getSize());
                setMapRendered(true);
                dispatch(toggleMapLoading({ mapLoading: false }));
@@ -170,22 +170,30 @@ function MapView({ mapDocument, mapId }) {
 
    useEffect(
       () => {
-         if (map && sidebar.visible !== sidebarVisible.current) {
+         if (map && sidebarVisible !== sidebarVisibleRef.current) {
             map.updateSize();
-            sidebarVisible.current = sidebar.visible;
+            sidebarVisibleRef.current = sidebarVisible;
          }
       },
-      [sidebar, map]
+      [sidebarVisible, map]
    );
 
    return (
-      <div className={`content ${!sidebar.visible ? 'sidebar-hidden' : ''}`}>
+      <div className={`content ${!sidebarVisible ? 'sidebar-hidden' : ''}`}>
          <div className="left-content">
             <MapInfo mapDocument={mapDocument} map={map} />
             <Legend legend={legend} />
          </div>
 
          <div className="right-content">
+            <div
+               className="toggle-sidebar"
+               role="button"
+               onClick={() => setSidebarVisible(!sidebarVisible)}
+               title={sidebarVisible ? 'Lukk sidepanel' : 'Vis sidepanel'}
+            >
+            </div>
+
             <div className="map-container">
                <div ref={mapElement} className="map"></div>
             </div>

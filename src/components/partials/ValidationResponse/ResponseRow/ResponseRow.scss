@@ -27,6 +27,12 @@
          
          .documentation {
             margin-left: 10px;
+            color: #3867c8;
+            text-decoration: underline;
+
+            &:hover {
+               text-decoration: none;
+            }
          }
 
          .description {

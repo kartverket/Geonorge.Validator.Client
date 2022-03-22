@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleFeatureInfo } from 'store/slices/mapSlice';
-import { getSymbolById, zoomTo, zoomToPoint } from 'utils/map/helpers';
+import { getSymbolById, zoomTo, zoomToGeometry } from 'utils/map/helpers';
 import featuresConfig from 'config/features.config';
 import get from 'lodash.get';
 import './FeatureInfo.scss';
@@ -71,7 +71,6 @@ function FeatureInfo({ map, features, legend }) {
       );
    }
 
-
    function getSymbolImage(id) {
       return getSymbolById(legend, id)?.image;
    }
@@ -93,7 +92,7 @@ function FeatureInfo({ map, features, legend }) {
                         {message.message}
                         {
                            message.zoomTo ?
-                              <span role="button" onClick={() => zoomToPoint(map, message.zoomTo)}>Zoom til feil</span> :
+                              <span role="button" onClick={() => zoomToGeometry(map, message.zoomTo)}>Zoom til feil</span> :
                               null
                         }
                      </li>

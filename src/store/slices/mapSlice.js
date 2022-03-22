@@ -5,9 +5,6 @@ const initialState = {
       name: null,
       visible: true
    },
-   sidebar: {
-      visible: true
-   },
    featureInfo: {
       expanded: false
    }
@@ -18,14 +15,6 @@ export const mapSlice = createSlice({
    name: 'map',
    initialState,
    reducers: {
-      toggleSidebar: (state, action) => {
-         return { 
-            ...state, 
-            sidebar: {
-               ...state.sidebar, ...action.payload
-            }
-         };
-      },
       toggleSymbol: (state, action) => {
          return { 
             ...state, 
@@ -45,6 +34,6 @@ export const mapSlice = createSlice({
    }
 });
 
-export const { toggleSidebar, toggleSymbol, toggleFeatureInfo } = mapSlice.actions;
+export const { toggleSymbol, toggleFeatureInfo } = mapSlice.actions;
 
 export default mapSlice.reducer;
