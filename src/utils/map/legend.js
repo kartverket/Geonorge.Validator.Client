@@ -29,6 +29,8 @@ export async function createLegend(featuresLayer) {
       const feature = featureGroup[0];
       const symbol = await createSymbol(featureName, feature, featureGroup.length, colors[i], vectorLayer);
 
+      symbol.style[0].setZIndex(1000 + i);
+
       legend.push(symbol);
    }
 
@@ -101,17 +103,17 @@ function createStyle(geometryType, color) {
          return [
             new Style({
                image: new CircleStyle({
-                 radius: 4,
-                 fill: new Fill({
-                   color
-                 }),
-                 stroke: new Stroke({
-                   color,
-                   width: 1
-                 })
+                  radius: 4,
+                  fill: new Fill({
+                     color
+                  }),
+                  stroke: new Stroke({
+                     color,
+                     width: 1
+                  })
                }),
                zIndex: Infinity
-             })
+            })
          ];
       default:
          return [
@@ -146,7 +148,7 @@ function generateColors(num) {
    const colors = colorGenerator.generate(START_COLOR, num).purer(0.1).get();
 
    return colors.map(color => {
-      const {r, g, b} = colorsys.hexToRgb(color);
+      const { r, g, b } = colorsys.hexToRgb(color);
 
       return `rgba(${r}, ${g}, ${b}, 0.75)`;
    });
