@@ -14,8 +14,7 @@ function createFeaturesLayer(mapDocument) {
    const features = new GeoJSON().readFeatures(mapDocument.geoJson);
 
    const featuresLayer = new VectorLayer({
-      source: new VectorSource({ features }),
-      declutter: true
+      source: new VectorSource({ features })
    });
 
    featuresLayer.set('id', 'features');

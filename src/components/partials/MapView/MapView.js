@@ -11,7 +11,7 @@ import { addGeometryInfo, addLegendToFeatures, highlightSelectedFeatures, toggle
 import { debounce, getLayer } from 'utils/map/helpers';
 import { createLegend } from 'utils/map/legend';
 import { createMap } from 'utils/map/map';
-import { addStyling } from 'utils/map/styling';
+import { addStyling, updateFeatureZIndex } from 'utils/map/styling';
 import './MapView.scss';
 
 function MapView({ mapDocument, mapId }) {
@@ -178,11 +178,20 @@ function MapView({ mapDocument, mapId }) {
       [sidebarVisible, map]
    );
 
+   function handleLegendSorted(sortedLegend) {
+      if (sortedLegend.every((symbol, index) => symbol.name === legend[index].name)) {
+         return;
+      }
+
+      updateFeatureZIndex(map, sortedLegend);
+      setLegend(sortedLegend);
+   }
+
    return (
       <div className={`content ${!sidebarVisible ? 'sidebar-hidden' : ''}`}>
          <div className="left-content">
             <MapInfo mapDocument={mapDocument} map={map} />
-            <Legend legend={legend} />
+            <Legend legend={legend} onListSorted={handleLegendSorted} />
          </div>
 
          <div className="right-content">

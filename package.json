@@ -12,6 +12,7 @@
       "dayjs": "^1.10.8",
       "filesize": "^8.0.7",
       "lodash.get": "^4.4.2",
+      "lodash.orderby": "^4.6.0",
       "ol": "^6.13.0",
       "proj4": "^2.7.5",
       "react": "^17.0.2",
@@ -20,9 +21,11 @@
       "react-files": "^2.4.9",
       "react-redux": "^7.2.6",
       "react-scripts": "4.0.3",
+      "react-sortablejs": "^6.1.1",
       "react-split": "^2.0.14",
       "redux": "^4.1.2",
-      "sass": "^1.49.9"
+      "sass": "^1.49.9",
+      "sortablejs": "^1.15.0"
    },
    "scripts": {
       "start": "react-scripts start",

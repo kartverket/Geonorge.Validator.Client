@@ -24,7 +24,7 @@ export function toggleFeature(feature) {
       feature.setStyle(savedStyle);
    } else {
       feature.set('savedStyle', feature.getStyle());
-      feature.setStyle(new Style(null));
+      feature.setStyle([new Style(null)]);
    }
 
    feature.set('visible', visible);
