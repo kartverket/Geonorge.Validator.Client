@@ -138,14 +138,6 @@
    right: unset;
 }
 
-.nav-tabs::before {
-   content: "";
-   background: url("../assets/gfx/logo-geonorge.svg") no-repeat center;
-   align-content: center;
-   width: 175px;
-   background-size: 150px;
-}
-
 .nav-tabs {
    .nav-link {
       margin-bottom: unset;

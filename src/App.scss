@@ -4,9 +4,22 @@
    text-align: left;
    margin: auto;
    position: relative;
-   max-width: 1440px;
-   min-height: 100vh;
-   margin: 0 auto;
+
+   max-height: calc(100vh - 140.25px);
+   top: 140.25px;
+   overflow: auto;
+   @media (min-width: 360px) {
+      max-height: calc(100vh - 102.75px);
+      top: 102.75px;
+   }
+   @media (min-width: 600px) {
+      max-height: calc(100vh - 62.5px);
+      top: 62.5px;
+   }
+   .container {
+      max-width: 1440px;
+      margin: 0 auto;
+   }
 
    &.fullscreen-toggled {
       max-width: unset;
@@ -39,14 +52,20 @@
    }
 }
 
+.tabs-container {
+   display: flex;
+}
+
 .toggle-fullscreen {
-   position: absolute;
-   right: 15px;
+   position: relative;
+   float: right;
+   right: 0;
    top: 11px;
    background: url("./assets/gfx/icon-maximize.svg") no-repeat center;
    width: 16px;
    height: 24px;
    background-size: 16px;
+   border: none;
 }
 
 .tab-content {
