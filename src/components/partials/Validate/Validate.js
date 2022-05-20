@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { HubConnectionBuilder } from '@microsoft/signalr';
 import { useSelector } from 'react-redux';
 import { useApi } from 'hooks';
 import Files from 'react-files'
@@ -6,14 +7,18 @@ import { Button, ProgressBar } from 'react-bootstrap';
 import UploadFileList from '../UploadFileList/UploadFileList';
 import fileSize from 'filesize';
 import { validateFilesForMapView } from 'utils/file-validator';
-import './Validate.scss';
 import { Tooltip } from 'components/custom-elements';
+import './Validate.scss';
 
 const VALIDATE_API_URL = process.env.REACT_APP_VALIDATE_API_URL;
+const SIGNAL_R_HUB_URL = process.env.REACT_APP_SIGNAL_R_HUB_URL;
 const MAX_FILE_SIZE_TOTAL = process.env.REACT_APP_MAX_FILE_SIZE_TOTAL;
 const API_TASK_ID = 'validation';
 
 function Validate({ onApiResponse }) {
+   const [connection, setConnection] = useState(null);
+   const [connectionId, setConnectionId] = useState(null);
+   const [notification, setNotification] = useState(null);
    const [xmlFiles, setXmlFiles] = useState([]);
    const [xsdFiles, setXsdFiles] = useState([]);
    const [fileSizeTotal, setFileSizeTotal] = useState(0);
@@ -24,6 +29,44 @@ function Validate({ onApiResponse }) {
    const xmlUploadElement = useRef(null);
    const xsdUploadElement = useRef(null);
    const sendAsync = useApi();
+
+
+   useEffect(
+      () => {
+         const newConnection = new HubConnectionBuilder()
+            .withUrl(SIGNAL_R_HUB_URL)
+            .withAutomaticReconnect({
+               nextRetryDelayInMilliseconds: _ => 5000
+            })
+            .build();
+
+         newConnection.onreconnected(connectionId => setConnectionId(connectionId));
+
+         setConnection(newConnection);
+      },
+      []
+   );
+
+   useEffect(
+      () => {
+         if (!connection) {
+            return;
+         }
+
+         async function connect() {
+            try {
+               await connection.start();
+               setConnectionId(connection.connectionId);
+               connection.on('ReceiveMessage', message => setNotification(message));
+            } catch (error) {
+               console.log('Tilkobling mislyktes: ', error);
+            }
+         }
+
+         connect();
+      },
+      [connection]
+   );
 
    useEffect(
       () => {
@@ -59,7 +102,10 @@ function Validate({ onApiResponse }) {
       xmlFiles.forEach(file => formData.append('xmlFiles', file));
       xsdFiles.forEach(file => formData.append('xsdFile', file));
 
-      const response = await sendAsync(API_TASK_ID, VALIDATE_API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      setNotification('Laster opp');
+
+      const headers = { 'Content-Type': 'multipart/form-data', 'SignalR-ConnectionId': connectionId }
+      const response = await sendAsync(API_TASK_ID, VALIDATE_API_URL, formData, { headers });
 
       if (response) {
          onApiResponse({
@@ -121,7 +167,7 @@ function Validate({ onApiResponse }) {
                   maxFiles={1}
                   clickable
                >
-                  Klikk for å legge til applikasjonsskjema (XSD) 
+                  Klikk for å legge til applikasjonsskjema (XSD)
                   <Tooltip
                      tooltip={"Valgfri dersom attributtet \"schemaLocation\" er spesifisert"}
                      trigger={
@@ -144,7 +190,7 @@ function Validate({ onApiResponse }) {
 
             <div className={`validating-progress ${!showProgressBar ? 'validating-progress-hidden' : ''}`}>
                <ProgressBar now={uploadProgress.completed} animated />
-               <span className="loading">{uploadProgress.completed !== 100 ? 'Laster opp' : 'Validerer'}</span>
+               <span className="loading">{notification}</span>
             </div>
          </div>
       </React.Fragment>

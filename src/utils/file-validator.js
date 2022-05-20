@@ -18,6 +18,7 @@ export async function validateFilesForMapView(files, validationResult) {
       validatedFiles.push({ 
          messages, 
          fileName: file.name,
+         size: fileSize(file.size, { separator: ','}),
          blob: !messages.length ? new File([file], file.name) : null
       });
    }

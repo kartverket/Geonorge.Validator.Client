@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Message from '../Message/Message';
 import './ResponseRow.scss';
 
 const getStatus = (status) => status === 'NOT_EXECUTED' ? 'skipped' : status.toLowerCase();
@@ -37,7 +38,13 @@ function ResponseRow({ data }) {
          {
             hasMessages ?
                <ol className="messages" style={{ display: expanded ? 'block' : 'none' }}>
-                  {data.messages.map((message, index) => <li key={index}>{message.message}</li>)}
+                  {data.messages.map((message, index) => {
+                     return (
+                        <li key={index}>
+                           <Message message={message} />
+                        </li>
+                     );
+                  })}
                </ol> :
                ''
          }

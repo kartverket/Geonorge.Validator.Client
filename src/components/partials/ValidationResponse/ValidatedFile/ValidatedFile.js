@@ -19,7 +19,7 @@ function ValidatedFile({ file, rules }) {
    const uploadProgress = useSelector(state => state.api.uploadProgress);
    const sendAsync = useApi();
    const dispatch = useDispatch();
-   
+
    useEffect(
       () => {
          setShowProgressBar(uploadProgress.taskId === file.fileName);
@@ -64,7 +64,7 @@ function ValidatedFile({ file, rules }) {
    return (
       !file.messages.length ?
          <div className="file">
-            {file.fileName}<Button variant="link" onClick={() => showInMap(file.blob)} disabled={mapLoading}>Vis i kart</Button>
+            {file.fileName} ({file.size})<Button variant="link" onClick={() => showInMap(file.blob)} disabled={mapLoading}>Vis i kart</Button>
 
             <div className={`validating-progress ${!showProgressBar ? 'validating-progress-hidden' : ''}`}>
                <ProgressBar now={uploadProgress.completed} animated />
@@ -72,7 +72,7 @@ function ValidatedFile({ file, rules }) {
             </div>
          </div> :
          <div className="file file-no-map">
-            {file.fileName}
+            {file.fileName} ({file.size})
 
             <Tooltip
                tooltip={
