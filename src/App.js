@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment } from 'react';
-import { MainNavigationContainer, MapView, Validator } from 'components/partials';
+import { Footer, MainNavigationContainer, MapView, Validator } from 'components/partials';
 import { Tabs, Tab } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveTab } from 'store/slices/tabSlice';
@@ -63,35 +63,36 @@ function App() {
 
    return (
       <Fragment>
-      <MainNavigationContainer />
-      <MapViewContext.Provider value={[mapViews, setMapViews]}>
-         <div className={`app ${fullscreen ? 'fullscreen-toggled' : ''}`}>
-            <div className='container'>
-            <button
-                  className="toggle-fullscreen"
-                  title={fullscreen ? 'Avslutt fullskjerm' : 'Vis i fullskjerm'}
-                  onClick={handleToggleFullscreenClick}
-               >
-               </button>
-                  <Tabs defaultActiveKey="validator" activeKey={activeTabKey} onSelect={handleTabSelect} transition={false}>
-                     <Tab eventKey="validator" title="Validator">
-                        <Validator onApiResponse={handleApiResponse} />
-                     </Tab>
-                     {mapViews.map(mapView => {
-                        return (
-                           <Tab tabClassName="map-tab" key={mapView.mapId} eventKey={mapView.mapId} title={mapView.mapDocument.fileName}>
-                              <MapView mapDocument={mapView.mapDocument} mapId={mapView.mapId} tabKey={mapView.mapId} activeTabKey={activeTabKey} />
-                           </Tab>
-                        );
-                     })}
-                     <Tab tabClassName="api-link" eventKey="api-link" title="Open API">
-                        <span></span>
-                     </Tab>
-                  </Tabs>
-                  
+         <MainNavigationContainer />
+         <MapViewContext.Provider value={[mapViews, setMapViews]}>
+            <div className={`app ${fullscreen ? 'fullscreen-toggled' : ''}`}>
+               <div className='container'>
+               <button
+                     className="toggle-fullscreen"
+                     title={fullscreen ? 'Avslutt fullskjerm' : 'Vis i fullskjerm'}
+                     onClick={handleToggleFullscreenClick}
+                  >
+                  </button>
+                     <Tabs defaultActiveKey="validator" activeKey={activeTabKey} onSelect={handleTabSelect} transition={false}>
+                        <Tab eventKey="validator" title="Validator">
+                           <Validator onApiResponse={handleApiResponse} />
+                        </Tab>
+                        {mapViews.map(mapView => {
+                           return (
+                              <Tab tabClassName="map-tab" key={mapView.mapId} eventKey={mapView.mapId} title={mapView.mapDocument.fileName}>
+                                 <MapView mapDocument={mapView.mapDocument} mapId={mapView.mapId} tabKey={mapView.mapId} activeTabKey={activeTabKey} />
+                              </Tab>
+                           );
+                        })}
+                        <Tab tabClassName="api-link" eventKey="api-link" title="Open API">
+                           <span></span>
+                        </Tab>
+                     </Tabs>
+                     
+               </div>
+               <Footer />
             </div>
-         </div>
-      </MapViewContext.Provider>
+         </MapViewContext.Provider>
       </Fragment>
    );
 }

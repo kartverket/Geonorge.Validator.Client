@@ -18,7 +18,7 @@
    }
    .container {
       max-width: 1440px;
-      margin: 0 auto;
+      margin: 40px auto 80px;
    }
 
    &.fullscreen-toggled {
@@ -70,9 +70,9 @@
 
 .tab-content {
    background-color: #ffffff;
-   min-height: calc(100vh - 45px);
    border-left: 1px solid #dee2e6;
    border-right: 1px solid #dee2e6;
+   border-bottom: 1px solid #dee2e6;
 }
 
 .content {
