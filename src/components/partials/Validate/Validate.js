@@ -30,7 +30,6 @@ function Validate({ onApiResponse }) {
    const xsdUploadElement = useRef(null);
    const sendAsync = useApi();
 
-
    useEffect(
       () => {
          const newConnection = new HubConnectionBuilder()
