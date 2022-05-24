@@ -17,6 +17,7 @@
       top: 62.5px;
    }
    .container {
+      position: relative;
       max-width: 1440px;
       margin: 40px auto 80px;
    }
@@ -57,9 +58,8 @@
 }
 
 .toggle-fullscreen {
-   position: relative;
-   float: right;
-   right: 0;
+   position: absolute;
+   right: 16px;
    top: 11px;
    background: url("./assets/gfx/icon-maximize.svg") no-repeat center;
    width: 16px;
