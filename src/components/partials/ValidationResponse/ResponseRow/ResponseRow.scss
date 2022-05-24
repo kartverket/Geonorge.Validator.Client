@@ -72,6 +72,27 @@
          &:last-child {
             margin-bottom: 0;
          }
+
+         button {
+            border: 0;
+            font-size: 12px !important;
+            vertical-align: 0;
+            color: unset;
+            text-decoration: none;    
+            
+            &:hover {
+               text-decoration: underline;
+            }
+         }
+
+         .message-info {
+            padding: 3px 16px;
+            display: none;
+
+            &.message-info-expanded {
+               display: block;
+            }
+         }
       }
    }
 }

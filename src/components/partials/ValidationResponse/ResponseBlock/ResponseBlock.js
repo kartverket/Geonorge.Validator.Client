@@ -3,8 +3,8 @@ import { useState } from 'react';
 import ResponseRow from '../ResponseRow/ResponseRow';
 import './ResponseBlock.scss';
 
-function ResponseBlock({ title, list, expandable = true, maxHeight = true }) {
-   const [expanded, setExpanded] = useState(false);
+function ResponseBlock({ title, list, expandable = true, defaultExpanded = false, maxHeight = true }) {
+   const [expanded, setExpanded] = useState(defaultExpanded);
 
    if (!list.length) {
       return null;
