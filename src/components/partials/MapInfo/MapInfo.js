@@ -1,7 +1,6 @@
 import { baseMap } from 'config/baseMap.config';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getScaleForResolution } from 'utils/map/scale';
-import dayjs from 'dayjs';
 import './MapInfo.scss';
 
 function MapInfo({ mapDocument, map }) {
@@ -49,11 +48,6 @@ function MapInfo({ mapDocument, map }) {
                <div className="box-row">
                   <div className="label">Kilde for basiskart:</div>
                   <div className="value">{baseMap.name}</div>
-               </div>
-
-               <div className="box-row">
-                  <div className="label">Dato for basiskart:</div>
-                  <div className="value">{dayjs(baseMap.updated).format('DD.MM.YYYY')}</div>
                </div>
 
                <div className="box-row">

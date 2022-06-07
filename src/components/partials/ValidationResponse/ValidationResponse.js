@@ -1,8 +1,9 @@
 import React from 'react';
-import ResponseBlock from './ResponseBlock/ResponseBlock';
 import ValidatedFile from './ValidatedFile/ValidatedFile';
 import { JsonPrint } from 'components/custom-elements';
 import './ValidationResponse.scss';
+import { Tab, Tabs } from 'react-bootstrap';
+import ResponseRow from './ResponseRow/ResponseRow';
 
 function ValidationResponse({ apiResponse }) {
    if (!apiResponse) {
@@ -20,14 +21,11 @@ function ValidationResponse({ apiResponse }) {
    return (
       <div className="response-container">
          <div className="row mb-2">
-            <div className="col-2">
-               <span className="h3">Resultat</span>
-            </div>
-            <div className="col-10">
+            <div className="col">
                {
                   result.errors === 0 ?
-                     <span className="passed">Datasettet validerer i henhold til gjeldende valideringsregler</span> :
-                     <span className="failed">Datasettet validerer ikke i henhold til gjeldende valideringsregler</span>
+                     <b className="passed">Datasettet validerer i henhold til gjeldende valideringsregler</b> :
+                     <b className="failed">Datasettet validerer ikke i henhold til gjeldende valideringsregler</b>
                }
             </div>
          </div>
@@ -49,20 +47,16 @@ function ValidationResponse({ apiResponse }) {
                </div>
             </div>
             <div className="row">
-               <div className="col-2">Antall feil:</div>
+               <div className="col-2">Feil:</div>
                <div className="col-10">{result.errors}</div>
             </div>
             <div className="row">
-               <div className="col-2">Antall advarsler:</div>
+               <div className="col-2">Advarsler:</div>
                <div className="col-10">{result.warnings}</div>
             </div>
             <div className="row">
-               <div className="col-2">Antall regler sjekket:</div>
-               <div className="col-10">{rulesCheckedCount}</div>
-            </div>
-            <div className="row">
-               <div className="col-2">Antall regler totalt:</div>
-               <div className="col-10">{result.rules.length}</div>
+               <div className="col-2">Regler sjekket:</div>
+               <div className="col-10">{rulesCheckedCount} av {result.rules.length} totalt</div>
             </div>
             <div className="row">
                <div className="col-2">Tidsbruk:</div>
@@ -70,10 +64,32 @@ function ValidationResponse({ apiResponse }) {
             </div>
          </div>
 
-         <ResponseBlock list={rulesWithMessages} title="Regler med feil eller advarsler" expandable={false} maxHeight={false} />
-         <ResponseBlock list={passedRules} title="Validerte regler" />
-         <ResponseBlock list={skippedRules} title="Regler som ikke er sjekket" />
-         <JsonPrint data={result} title="Svar fra API" />
+         <Tabs transition={false}>
+            {
+               rulesWithMessages.length ?
+                  <Tab eventKey="failed-rules" title={`Regler med feil eller advarsler (${rulesWithMessages.length})`}>
+                     {rulesWithMessages.map((element, index) => <ResponseRow key={'failed-rules-' + index} data={element} />)}
+                  </Tab> :
+                  null
+            }
+            {
+               passedRules.length ?
+                  <Tab eventKey="passed-rules" title={`Validerte regler (${passedRules.length})`}>
+                     {passedRules.map((element, index) => <ResponseRow key={'passed-rules-' + index} data={element} />)}
+                  </Tab> :
+                  null
+            }
+            {
+               skippedRules.length ?
+                  <Tab eventKey="skipped-rules" title={`Regler som ikke er sjekket (${skippedRules.length})`}>
+                     {skippedRules.map((element, index) => <ResponseRow key={'skipped-rules-' + index} data={element} />)}
+                  </Tab> :
+                  null
+            }
+            <Tab eventKey="json-response" title="Svar fra API">
+               <JsonPrint data={result} />
+            </Tab>
+         </Tabs>
       </div>
    );
 }

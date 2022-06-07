@@ -118,7 +118,7 @@ function Validate({ onApiResponse }) {
    }
 
    function renderTotalFileSize() {
-      const options = { separator: ',' };
+      const options = { separator: ',', standard: 'jedec' };
       const maxTotalSize = fileSize(MAX_FILE_SIZE_TOTAL, options);
 
       return (
@@ -144,10 +144,10 @@ function Validate({ onApiResponse }) {
                   multiple
                   clickable
                >
-                  Klikk for å legge til GML- eller XML-dokumenter
+                  <i>Klikk for å legge til GML- eller XML-filer</i>
 
                   <Tooltip
-                     tooltip="Må tilhøre samme navneområde med samme versjon av applikasjonsskjema"
+                     tooltip="Hvis flere filer, må alle tilhøre samme navneområde med samme versjon av applikasjonsskjema"
                      trigger={
                         <span className="file-info">?</span>
                      }
@@ -166,7 +166,8 @@ function Validate({ onApiResponse }) {
                   maxFiles={1}
                   clickable
                >
-                  Klikk for å legge til applikasjonsskjema (XSD)
+                  <i>Klikk for å legge til applikasjonsskjema (XSD)</i>
+
                   <Tooltip
                      tooltip={"Valgfri dersom attributtet \"schemaLocation\" er spesifisert"}
                      trigger={

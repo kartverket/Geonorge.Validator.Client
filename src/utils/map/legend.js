@@ -19,7 +19,7 @@ export async function createLegend(featuresLayer) {
    const [tempMap, tempMapElement] = createLegendTempMap();
    const vectorLayer = tempMap.getLayers().getArray()[0];
    const features = featuresLayer.getSource().getFeatures();
-   const groupedFeatures = groupBy(features, feature => feature.get('name'));
+   const groupedFeatures = groupBy(features, feature => feature.get('_name'));
    const featureNames = Object.keys(groupedFeatures);
    const colors = generateColors(featureNames.length);
    const legend = [];

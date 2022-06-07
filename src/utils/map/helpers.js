@@ -17,7 +17,7 @@ export function getFeatureById(vectorLayer, id) {
 
 export function getFeaturesByName(vectorLayer, name) {
    return vectorLayer.getSource().getFeatures()
-      .filter(feature => feature.get('name') === name);
+      .filter(feature => feature.get('_name') === name);
 }
 
 export function getSymbolById(legend, id) {

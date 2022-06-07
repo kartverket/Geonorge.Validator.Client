@@ -17,17 +17,17 @@ export function toggleFeatures(legend, map) {
 }
 
 export function toggleFeature(feature) {
-   const visible = !feature.get('visible');
+   const visible = !feature.get('_visible');
 
    if (visible) {
-      const savedStyle = feature.get('savedStyle');
+      const savedStyle = feature.get('_savedStyle');
       feature.setStyle(savedStyle);
    } else {
-      feature.set('savedStyle', feature.getStyle());
+      feature.set('_savedStyle', feature.getStyle());
       feature.setStyle([new Style(null)]);
    }
 
-   feature.set('visible', visible);
+   feature.set('_visible', visible);
 }
 
 export function addGeometryInfo(features) {
@@ -62,7 +62,7 @@ export function highlightSelectedFeatures(map, features) {
 
    const selectedFeatures = features.map(feature => {
       const cloned = feature.clone();
-      const errorMessages = feature.get('errorMessages');
+      const errorMessages = feature.get('_errorMessages');
 
       if (errorMessages) {
          const wkts = errorMessages
@@ -75,7 +75,7 @@ export function highlightSelectedFeatures(map, features) {
             const geoCollection = new GeometryCollection();
 
             geoCollection.setGeometries(geometries);
-            cloned.set('zoomTo', geoCollection);
+            cloned.set('_zoomTo', geoCollection);
          }
       }
 
@@ -89,7 +89,7 @@ export function highlightSelectedFeatures(map, features) {
 }
 
 export function addLegendToFeatures(features, legend) {
-   const groupedFeatures = groupBy(features, feature => feature.get('name'));
+   const groupedFeatures = groupBy(features, feature => feature.get('_name'));
    const featureNames = Object.keys(groupedFeatures);
 
    for (let i = 0; i < featureNames.length; i++) {
@@ -104,7 +104,7 @@ export function addLegendToFeatures(features, legend) {
 
       for (let j = 0; j < feats.length; j++) {
          const feature = feats[j];
-         feature.set('symbolId', symbol.id);
+         feature.set('_symbolId', symbol.id);
       }
    }
 }
@@ -130,10 +130,10 @@ export function addValidationResultToFeatures(mapDocument, features) {
          const feature = features.find(feat => feat.get('id') === gmlId);
 
          if (feature) {
-            const errorMessages = feature.get('errorMessages');
+            const errorMessages = feature.get('_errorMessages');
 
             if (!errorMessages) {
-               feature.set('errorMessages', [{ message: message.message, zoomTo: message.zoomTo }]);
+               feature.set('_errorMessages', [{ message: message.message, zoomTo: message.zoomTo }]);
             } else {
                errorMessages.push({ message: message.message, zoomTo: message.zoomTo });
             }
@@ -144,7 +144,7 @@ export function addValidationResultToFeatures(mapDocument, features) {
 
 function getHighlightStyle(feature) {
    const stroke = new Stroke({
-      color: feature.get('errorMessages')?.length ? ERROR_COLOR : HIGHLIGHT_COLOR,
+      color: feature.get('_errorMessages')?.length ? ERROR_COLOR : HIGHLIGHT_COLOR,
       lineCap: 'butt',
       width: 3
    });
@@ -168,7 +168,7 @@ function getHighlightStyle(feature) {
    }
 
    const zoomToStyles = [];
-   const zoomTo = feature.get('zoomTo');
+   const zoomTo = feature.get('_zoomTo');
 
    if (zoomTo) {
       const geometries = zoomTo.getGeometries();

@@ -24,7 +24,7 @@ function UploadFileList({ files, uploadElement }) {
 
                      <div className="info">
                         <span className="name">{file.name}</span>
-                        <span className="size">{fileSize(file.size, { separator: ','})}</span>
+                        <span className="size">{fileSize(file.size, { separator: ',', standard: 'jedec'})}</span>
                      </div>
 
                      <div className="remove">

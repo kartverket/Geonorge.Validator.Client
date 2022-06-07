@@ -8,7 +8,8 @@ const defaultStyle = {
    padding: '2px 10px',
    color: '#333333',
    fontSize: '12px',
-   borderRadius: 3
+   borderRadius: 3,
+   position: 'absolute'
 };
 
 function Tooltip({ trigger, tooltip, style }) {

@@ -1,7 +1,7 @@
 import { getFeaturesByName, getLayer, groupBy } from './helpers';
 
 export function addStyling(features, legend) {
-   const groupedFeatures = groupBy(features, feature => feature.get('name'));
+   const groupedFeatures = groupBy(features, feature => feature.get('_name'));
    const featureNames = Object.keys(groupedFeatures);
 
    for (let i = 0; i < featureNames.length; i++) {
@@ -10,7 +10,7 @@ export function addStyling(features, legend) {
 
       groupedFeatures[featureName].forEach(feature => {
          feature.setStyle(cloneStyles(styles));
-         feature.set('visible', true);
+         feature.set('_visible', true);
       });
    }
 }
@@ -26,7 +26,7 @@ export function updateFeatureZIndex(map, legend) {
          const zIndex = legend.length - i;
          feature.getStyle()[0].setZIndex(zIndex);
 
-         const savedStyle = feature.get('savedStyle');
+         const savedStyle = feature.get('_savedStyle');
 
          if (savedStyle) {
             savedStyle[0].setZIndex(zIndex);

@@ -1,0 +1,15 @@
+:fullscreen .validator {
+   height: calc(100vh - 46px);
+   display: flex;
+   flex-direction: column;
+
+   > div {
+      width: 100%;
+   }
+
+   > div:last-child {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+   }
+}

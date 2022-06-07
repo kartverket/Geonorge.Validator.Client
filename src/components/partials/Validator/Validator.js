@@ -1,5 +1,6 @@
 import { Validate, ValidationReponse } from 'components/partials'
 import { useState } from 'react';
+import './Validator.scss';
 
 function Validator({ onApiResponse }) {
    const [apiResponse, setApiResponse] = useState(null);

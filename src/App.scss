@@ -4,30 +4,24 @@
    text-align: left;
    margin: auto;
    position: relative;
-
    max-height: calc(100vh - 140.25px);
    top: 140.25px;
    overflow: auto;
+
    @media (min-width: 360px) {
       max-height: calc(100vh - 102.75px);
       top: 102.75px;
    }
+
    @media (min-width: 600px) {
       max-height: calc(100vh - 62.5px);
       top: 62.5px;
    }
+
    .container {
       position: relative;
       max-width: 1440px;
       margin: 40px auto 80px;
-   }
-
-   &.fullscreen-toggled {
-      max-width: unset;
-
-      .toggle-fullscreen {
-         background: url("./assets/gfx/icon-minimize.svg") no-repeat center;
-      }
    }
 
    .validator {
@@ -50,6 +44,10 @@
          font-size: 13px;
          font-weight: 500;
       }
+   }
+
+   .capitalize {
+      text-transform: capitalize;
    }
 }
 
@@ -161,6 +159,42 @@
             width: 65%;
             max-height: 200px;
             overflow-y: auto;
+         }
+
+         .label,
+         .value {
+            overflow-x: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+         }
+      }
+   }
+}
+
+:fullscreen {
+   main-navigation,
+   geonorge-footer {
+      display: none;
+   }
+   
+   .app {
+      max-width: unset;
+      max-height: unset !important;
+      top: 0 !important;
+   
+      > .container {
+         margin: 0 auto;
+   
+         > .nav-tabs::before {
+            content: "";
+            background: url("./assets/gfx/logo-geonorge.svg") no-repeat center;
+            align-content: center;
+            width: 175px;
+            background-size: 150px;
+         }
+   
+         .toggle-fullscreen {
+            background: url("./assets/gfx/icon-minimize.svg") no-repeat center;
          }
       }
    }

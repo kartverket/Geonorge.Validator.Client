@@ -101,7 +101,7 @@ function MapView({ mapDocument, mapId }) {
    useEffect(
       () => {
          async function create() {
-            const olMap = createMap(mapDocument);
+            const olMap = await createMap(mapDocument);
             const vectorLayer = getLayer(olMap, 'features');
             const legend = await createLegend(vectorLayer);
             const features = vectorLayer.getSource().getFeatures()

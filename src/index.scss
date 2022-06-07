@@ -4,18 +4,30 @@
 @import "./styles/_dialogs";
 @import "./styles/_forms";
 @import "./styles/_overrides";
+@import "./styles/_fonts";
 
 html {
    overflow-y: scroll;
+
+   &:fullscreen {
+      overflow-y: unset;
+   }
 }
 
 body {
    margin: 0;
-   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-      "Droid Sans", "Helvetica Neue", sans-serif;
+   font-family: 'OpenSans-Regular';
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
    background: #f7f7f7;
    color: #333333;
    font-size: 13px;
+}
+
+b, strong {
+   font-family: 'OpenSans-SemiBold';
+}
+
+i, em {
+   font-family: 'OpenSans-Italic';
 }

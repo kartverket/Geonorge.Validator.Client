@@ -18,7 +18,7 @@ export async function validateFilesForMapView(files, validationResult) {
       validatedFiles.push({ 
          messages, 
          fileName: file.name,
-         size: fileSize(file.size, { separator: ','}),
+         size: fileSize(file.size, { separator: ',', standard: 'jedec'}),
          blob: !messages.length ? new File([file], file.name) : null
       });
    }
@@ -31,7 +31,7 @@ async function validateFileForMapView(file, validationResult) {
     const messages = [];
 
     if (!validFileSize) {
-        messages.push(`Maksimal filstørrelse for kartvisning er ${fileSize(MAX_FILE_SIZE_MAP)}`);        
+        messages.push(`Maksimal filstørrelse for kartvisning er ${fileSize(MAX_FILE_SIZE_MAP, { standard: 'jedec' })}`);        
         return messages;
     }
 
@@ -50,13 +50,13 @@ async function validateFileForMapView(file, validationResult) {
     const epsgMatch = EPSG_REGEX.exec(fileContents);
 
     if (epsgMatch === null || !VALID_EPSG_CODES.includes(epsgMatch.groups.epsg)) {
-        messages.push(`GML-filen har ugyldig koordinatsystem. Gyldige koordinatsystem er: ${VALID_EPSG_CODES.join(', ')}`);
+        messages.push(`GML-filen benytter koordinatsystemet 'EPSG:${epsgMatch.groups.epsg}'. Kartvisningen støtter kun følgende: ${VALID_EPSG_CODES.join(', ')}`);
     }
 
     const dimensionsMatch = DIMENSIONS_REGEX.exec(fileContents);
     
     if (dimensionsMatch === null || VALID_DIMENSIONS !== dimensionsMatch.groups.dimensions) {
-        messages.push('GML-filens geometrier må være i to dimensjoner');
+        messages.push('Kartvisningen støtter kun todimensjonale geometrier');
     }
 
     return messages;

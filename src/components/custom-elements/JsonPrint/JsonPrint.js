@@ -20,8 +20,7 @@ const replacer = (_, pIndent, pKey, pValue, pEnd) => {
    return replaced + (pEnd || '');
 };
 
-function JsonPrint({ data, title }) {
-   const [expanded, setExpanded] = useState(false);
+function JsonPrint({ data }) {
    const [htmlString, setHtmlString] = useState(null);
 
    useEffect(
@@ -40,18 +39,11 @@ function JsonPrint({ data, title }) {
       return null;
    }
 
-   function handleClick() {
-      setExpanded(!expanded);
-   }
-
    return (
-      <div className={`json-print-container ${!expanded ? 'json-print-collapsed' : ''}`}>
-         <h3 onClick={handleClick}>{title}</h3>
-         <div className="json-print">
-            <code>
-               <pre dangerouslySetInnerHTML={{ __html: htmlString }}></pre>
-            </code>
-         </div>
+      <div className="json-print">
+         <code>
+            <pre dangerouslySetInnerHTML={{ __html: htmlString }}></pre>
+         </code>
       </div>
    );
 }

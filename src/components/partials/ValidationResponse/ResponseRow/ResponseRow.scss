@@ -1,8 +1,10 @@
 .response-row {
-   
-
    &:first-child .info {
       border-top: 0 none;
+   }
+
+   &:last-child .messages {
+     border-bottom: 1px solid #dee2e6;
    }
 
    .info {
@@ -64,6 +66,7 @@
       padding: 10px 20px 10px 120px;
       max-height: 300px;
       overflow-y: auto;
+      word-break: break-all;
 
       li {
          padding-left: 5px;

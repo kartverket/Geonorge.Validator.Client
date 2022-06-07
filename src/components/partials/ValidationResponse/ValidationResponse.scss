@@ -1,4 +1,12 @@
 .response-container {
+   display: flex;
+   flex-direction: column;
+   flex-grow: 1;
+
+   .tab-content {
+      flex-grow: 1;
+   }
+
    .passed::before {
       background-image: url('../../../assets/gfx/icon-passed.svg');
    }
@@ -29,7 +37,7 @@
       line-height: 22px;
    }
    
-   .response .label {
+   .response-row .label {
       color: #ffffff;
       padding: 2px 6px;
       border-radius: 4px;
