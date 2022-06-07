@@ -74,7 +74,7 @@ function App() {
                   >
                   </button>
                   <Tabs defaultActiveKey="validator" activeKey={activeTabKey} onSelect={handleTabSelect} transition={false}>
-                     <Tab eventKey="validator" title="Validator">
+                     <Tab eventKey="validator" title="GML-validator">
                         <Validator onApiResponse={handleApiResponse} />
                      </Tab>
                      {mapViews.map(mapView => {
