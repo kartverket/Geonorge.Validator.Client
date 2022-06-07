@@ -42,7 +42,7 @@ function createPropertyMap(obj, propertyList) {
 }
 
 function isGeoJSON(obj) {
-   return 'type' in obj && 'coordinates' in obj && typeof obj.type === 'string' && Array.isArray(obj.coordinates);
+   return hasValue(obj) && 'type' in obj && 'coordinates' in obj && typeof obj.type === 'string' && Array.isArray(obj.coordinates);
 }
 
 function hasValue(value) {
