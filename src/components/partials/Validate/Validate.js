@@ -24,11 +24,11 @@ function Validate({ onApiResponse }) {
    const [fileSizeTotal, setFileSizeTotal] = useState(0);
    const [showProgressBar, setShowProgressBar] = useState(false);
    const [validating, setValidating] = useState(false);
-   const apiTasks = useSelector(state => state.api.tasks);
-   const uploadProgress = useSelector(state => state.api.uploadProgress);
+   const apiTasks = useSelector(state => state.progress.tasks);
+   const uploadProgress = useSelector(state => state.progress.uploadProgress);
    const xmlUploadElement = useRef(null);
    const xsdUploadElement = useRef(null);
-   const sendAsync = useApi();
+   const fetchAsync = useApi();
 
    useEffect(
       () => {
@@ -104,7 +104,7 @@ function Validate({ onApiResponse }) {
       setNotification('Laster opp');
 
       const headers = { 'Content-Type': 'multipart/form-data', 'SignalR-ConnectionId': connectionId }
-      const response = await sendAsync(API_TASK_ID, VALIDATE_API_URL, formData, { headers });
+      const response = await fetchAsync(API_TASK_ID, VALIDATE_API_URL, formData, { headers });
 
       if (response) {
          onApiResponse({

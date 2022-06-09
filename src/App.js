@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment } from 'react';
-import { Footer, MainNavigationContainer, MapView, Validator } from 'components/partials';
+import { Footer, Information, MainNavigationContainer, MapView, Validator } from 'components/partials';
 import { Tabs, Tab } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveTab } from 'store/slices/tabSlice';
@@ -74,9 +74,12 @@ function App() {
                   >
                   </button>
                   <Tabs defaultActiveKey="validator" activeKey={activeTabKey} onSelect={handleTabSelect} transition={false}>
-                     <Tab eventKey="validator" title="GML-validator">
+                     <Tab eventKey="validator" tabClassName="validator-tab" title="GML-validator">
                         <Validator onApiResponse={handleApiResponse} />
                      </Tab>
+                     <Tab eventKey="info" tabClassName="info-tab" title="Informasjon">
+                        <Information />
+                     </Tab>                     
                      {mapViews.map(mapView => {
                         return (
                            <Tab tabClassName="map-tab" key={mapView.mapId} eventKey={mapView.mapId} title={mapView.mapDocument.fileName}>
@@ -84,7 +87,7 @@ function App() {
                            </Tab>
                         );
                      })}
-                     <Tab tabClassName="api-link" eventKey="api-link" title="Open API">
+                     <Tab eventKey="api-link" tabClassName="api-link" title="Open API">
                         <span></span>
                      </Tab>
                   </Tabs>

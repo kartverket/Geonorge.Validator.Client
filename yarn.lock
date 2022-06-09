@@ -7037,6 +7037,11 @@ last-call-webpack-plugin@^3.0.0:
     lodash "^4.17.5"
     webpack-sources "^1.1.0"
 
+latinize@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/latinize/-/latinize-0.5.0.tgz#b81cc6faf3b4e6373b771c50c1a6d96df653f392"
+  integrity sha512-SHzxgdcFP/64lUEfX3183QALY2KdSQxad3gmhCc/b03QN1mbx0AnJWvsQjqoJLbucY9pJuK+NMbnasUIocDmnQ==
+
 lerc@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/lerc/-/lerc-3.0.0.tgz#36f36fbd4ba46f0abf4833799fff2e7d6865f5cb"

@@ -172,7 +172,6 @@ a {
       border-left: 0 !important;
       padding: 0 15px;
       font-weight: 500;
-
       border-top: 1px solid #dee2e6;
       margin-top: 5px;
       height: 39px;
@@ -180,9 +179,26 @@ a {
       align-items: center;
       padding-bottom: 0px;
 
+      &.validator-tab {
+         display: flex;
+         align-items: center;
+         padding-left: 40px;
+
+         &::after {
+            content: "";
+            background: url("../assets/gfx/icon-validator.svg") no-repeat center;
+            background-size: 18px;
+            width: 18px;
+            height: 18px;
+            position: absolute;
+            left: 14px;
+         }
+      }
+
       &.map-tab {
          display: flex;
          align-items: center;
+         padding-left: 40px;
 
          &::after {
             content: "";
@@ -190,11 +206,28 @@ a {
             background-size: 18px;
             width: 18px;
             height: 18px;
-            margin-left: 10px;
+            position: absolute;
+            left: 14px;
          }
 
          &.active::after {
             background-position: center;
+         }
+      }
+      
+      &.info-tab {
+         display: flex;
+         align-items: center;
+         padding-left: 40px;
+
+         &::after {
+            content: "";
+            background: url("../assets/gfx/icon-info.svg") no-repeat center;
+            width: 19px;
+            height: 19px;
+            background-size: 19px;
+            position: absolute;
+            left: 14px;
          }
       }
 
@@ -204,7 +237,7 @@ a {
          border: 0;
          color: #3867c8;
          text-decoration: underline;
-         font-weight: 400;
+         padding-left: 40px;
 
          &:hover {
             text-decoration: none;
@@ -216,14 +249,14 @@ a {
             width: 21px;
             height: 21px;
             background-size: 21px;
-            margin-left: 7px;
+            position: absolute;
+            left: 14px;
          }
       }
 
       &.active {
          border-top: 0;
          background-color: #ffffff;
-         font-family: 'OpenSans-SemiBold';
          height: 45px;
          padding-top: 5px;
          padding-bottom: 0;

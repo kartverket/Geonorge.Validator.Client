@@ -4,7 +4,7 @@ import { ZoomToExtent } from 'ol/control';
 import { click } from 'ol/events/condition';
 import { Select } from 'ol/interaction';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleMapLoading } from 'store/slices/apiSlice';
+import { toggleMapLoading } from 'store/slices/progressSlice';
 import { toggleFeatureInfo } from 'store/slices/mapSlice';
 import { setActiveTab } from 'store/slices/tabSlice';
 import { addGeometryInfo, addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from 'utils/map/features';

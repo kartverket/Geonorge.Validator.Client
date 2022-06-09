@@ -5,9 +5,9 @@ import { useSelector } from 'react-redux';
 import { useContext, useEffect, useState } from 'react';
 import MapViewContext from 'context/MapViewContext';
 import { useDispatch } from 'react-redux';
-import { createId } from 'utils/map/helpers';
+import { createRandomId } from 'utils/map/helpers';
 import { setActiveTab } from 'store/slices/tabSlice';
-import { toggleMapLoading } from 'store/slices/apiSlice';
+import { toggleMapLoading } from 'store/slices/progressSlice';
 import './ValidatedFile.scss';
 
 const MAP_DOCUMENT_API_URL = process.env.REACT_APP_MAP_DOCUMENT_API_URL;
@@ -15,9 +15,9 @@ const MAP_DOCUMENT_API_URL = process.env.REACT_APP_MAP_DOCUMENT_API_URL;
 function ValidatedFile({ file, rules }) {
    const [mapViews, setMapViews] = useContext(MapViewContext);
    const [showProgressBar, setShowProgressBar] = useState(false);
-   const mapLoading = useSelector(state => state.api.mapLoading);
-   const uploadProgress = useSelector(state => state.api.uploadProgress);
-   const sendAsync = useApi();
+   const mapLoading = useSelector(state => state.progress.mapLoading);
+   const uploadProgress = useSelector(state => state.progress.uploadProgress);
+   const fetchAsync = useApi();
    const dispatch = useDispatch();
 
    useEffect(
@@ -34,7 +34,7 @@ function ValidatedFile({ file, rules }) {
          const mapDocument = await fetchMapDocument(file);
 
          if (mapDocument !== null) {
-            setMapViews([...mapViews, { mapId: createId(), mapDocument }]);
+            setMapViews([...mapViews, { mapId: createRandomId(), mapDocument }]);
          }
       } else {
          const mapId = mapViews[index].mapId;
@@ -49,7 +49,7 @@ function ValidatedFile({ file, rules }) {
       formData.append('gmlFile', file);
       formData.append('validate', false);
 
-      const mapDocument = await sendAsync(file.name, MAP_DOCUMENT_API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } }, false);
+      const mapDocument = await fetchAsync(file.name, MAP_DOCUMENT_API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } }, false);
 
       if (mapDocument === null) {
          dispatch(toggleMapLoading({ mapLoading: false }));

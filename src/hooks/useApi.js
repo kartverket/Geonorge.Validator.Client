@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { useModals } from 'context/ModalsContext';
 import { useDispatch } from 'react-redux';
-import { setUploadProgress, toggleLoading } from 'store/slices/apiSlice';
+import { setUploadProgress, toggleLoading } from 'store/slices/progressSlice';
 
 export default function useApi() {
    const { openModal } = useModals();
    const dispatch = useDispatch();
 
-   async function sendAsync(taskId, url, data, options = {}) {
+   async function fetchAsync(taskId, url, data, options = {}) {
       try {
          dispatch(toggleLoading(taskId));
          dispatch(setUploadProgress({ uploadProgress: { completed: 0, taskId } }));
@@ -50,5 +50,5 @@ export default function useApi() {
       }
    }
 
-   return sendAsync;
+   return fetchAsync;
 }

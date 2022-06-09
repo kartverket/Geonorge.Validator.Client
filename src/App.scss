@@ -23,39 +23,33 @@
       margin: 40px auto 80px;
    }
 
-   .validator {
+   .validator,
+   .information {
       padding: 20px;
 
       > div {
-         max-width: 1280px;
          margin: 0 auto 25px auto;
          border-top: 1px solid #dee2e6;
-         padding-top: 25px;
+         padding-top: 20px;
+         margin-top: 20px;
 
          &:first-child {
             border-top: 0;
             padding-top: 0;
             margin-bottom: 5px;
+            margin-top: 0;
          }
       }
 
-      h3,
+      /*h3,
       .h3 {
          font-size: 13px;
          font-weight: 500;
-      }
+      }*/
    }
 
    .capitalize {
       text-transform: capitalize;
-   }
-}
-
-.introtext {
-   h2 {
-      font-size: 13px;
-      margin-bottom: 5px;
-      font-family: 'OpenSans-SemiBold';
    }
 }
 
@@ -200,7 +194,7 @@
 
       > .container {
          margin: 0 auto;
-   
+
          > .nav-tabs::before {
             content: "";
             background: url("./assets/gfx/logo-geonorge.svg") no-repeat center;
@@ -208,14 +202,56 @@
             width: 175px;
             background-size: 150px;
          }
-   
+
          .toggle-fullscreen {
             background: url("./assets/gfx/icon-minimize.svg") no-repeat center;
          }
       }
 
-      .validator > div:last-child {
-         margin-bottom: 0;
+      .validator,
+      .information {
+         > div:last-child {
+            margin-bottom: 0;
+         }
+      }
+
+      .information {
+         min-height: calc(100vh - 46px);
+      }
+   }
+}
+
+.response-row,
+.ruleset {
+   .label {
+      color: #ffffff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 12px;
+      text-transform: uppercase;
+
+      &.label-passed {
+         background-color: #58a058;
+      }
+
+      &.label-warning {
+         background-color: #f0ad4e;
+      }
+
+      &.label-error,
+      &.label-system-error,
+      &.label-failed {
+         background-color: #d9534f;
+      }
+
+      &.label-skipped {
+         background-color: #c3c3c3;
+      }
+
+      &.label-default {
+         background-color: #00676f;
+         text-transform: lowercase;
       }
    }
 }

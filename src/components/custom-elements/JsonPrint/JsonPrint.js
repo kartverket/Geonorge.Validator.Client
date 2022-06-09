@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './JsonPrint.scss';
 
 const jsonLineRegex = /^( *)("[\w]+": )?("[^"]*"|[\w.+-]*|\[\])?([,[{])?$/mg;
@@ -22,6 +22,8 @@ const replacer = (_, pIndent, pKey, pValue, pEnd) => {
 
 function JsonPrint({ data }) {
    const [htmlString, setHtmlString] = useState(null);
+   const [copied, setCopied] = useState(false);
+   const jsonPrintRef = useRef(null);
 
    useEffect(
       () => {
@@ -35,13 +37,26 @@ function JsonPrint({ data }) {
       [data]
    );
 
+   function copyText() {
+      navigator.clipboard.writeText(jsonPrintRef.current.textContent)
+         .then(() => {
+            const timeout = setTimeout(() => {
+               setCopied(false);
+               clearTimeout(timeout);
+            }, 1500);
+
+            setCopied(true);
+         });
+   }
+
    if (!data) {
       return null;
    }
 
    return (
       <div className="json-print">
-         <code>
+         <button className={`copy-button ${copied ? 'copy-button--text-copied' : ''}`} onClick={copyText} title="Kopier tekst"></button>
+         <code ref={jsonPrintRef}>
             <pre dangerouslySetInnerHTML={{ __html: htmlString }}></pre>
          </code>
       </div>

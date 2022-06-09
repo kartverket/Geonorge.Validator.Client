@@ -44,3 +44,42 @@ button.close {
       }
    }
 }
+
+.expand-link {
+   display: inline-flex;
+   align-items: center;
+   font-weight: 400;
+   line-height: 16px;
+   user-select: none;
+   text-decoration: underline;
+   cursor: pointer;
+
+   &::after {
+      content: "";
+      background: url("../assets/gfx/icon-arrow.svg") no-repeat center;
+      background-size: 11px;
+      width: 11px;
+      height: 11px;      
+      transition: all 0.25s ease;
+      margin-left: 10px;
+      transform: rotate(90deg);
+   }
+
+   &:hover {
+      text-decoration: none;
+   }
+
+   & + * {
+      display: none;
+   }
+
+   &.expand-link--expanded {
+      & + * {
+         display: block;
+      }
+
+      &::after {
+         transform: rotate(-90deg);
+      }
+   }
+}

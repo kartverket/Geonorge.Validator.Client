@@ -16,7 +16,7 @@ html {
 
 body {
    margin: 0;
-   font-family: 'OpenSans-Regular';
+   font-family: "OpenSans-Regular";
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
    background: #f7f7f7;
@@ -24,10 +24,29 @@ body {
    font-size: 13px;
 }
 
-b, strong {
-   font-family: 'OpenSans-SemiBold';
+h2 {
+   font-size: 18px;
+   font-family: "OpenSans-Regular";
+   border-bottom: 2px solid #fe5000;
+   display: inline-block;
+   margin-bottom: 15px;
 }
 
-i, em {
-   font-family: 'OpenSans-Italic';
+h3 {
+   font-size: 14px;
+   margin-bottom: 5px;
+}
+
+h4 {
+   font-size: 13px;
+}
+
+b,
+strong {
+   font-family: "OpenSans-SemiBold";
+}
+
+i,
+em {
+   font-family: "OpenSans-Italic";
 }

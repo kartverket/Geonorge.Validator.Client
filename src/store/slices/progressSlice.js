@@ -6,8 +6,8 @@ const initialState = {
    uploadProgress: {}
 };
 
-export const apiSlice = createSlice({
-   name: 'api',
+export const progressSlice = createSlice({
+   name: 'progress',
    initialState,
    reducers: {
       toggleLoading: (state, action) => {
@@ -40,6 +40,6 @@ export const apiSlice = createSlice({
    }
 })
 
-export const { toggleLoading, toggleMapLoading, setUploadProgress } = apiSlice.actions
+export const { toggleLoading, toggleMapLoading, setUploadProgress } = progressSlice.actions
 
-export default apiSlice.reducer
+export default progressSlice.reducer

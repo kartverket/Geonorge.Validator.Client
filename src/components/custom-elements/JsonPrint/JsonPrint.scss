@@ -1,4 +1,6 @@
-.json-print {     
+.json-print {    
+   position: relative; 
+
    pre {
       background-color: #ffffff;
       padding: 10px 20px;
@@ -17,5 +19,27 @@
    
    .json-string {
       color: olive;
+   }
+
+   .copy-button {
+      background: url('../../../assets/gfx/icon-copy-text.svg') no-repeat center;
+      background-size: 25px !important;
+      width: 25px;
+      height: 25px;
+      border: 0;
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      opacity: .6;
+
+      &.copy-button--text-copied {
+         background: url('../../../assets/gfx/icon-text-copied.svg') no-repeat center;
+         background-size: 22px !important;
+         opacity: 1;
+      }
+
+      &:hover {
+         opacity: 1;
+      }
    }
 }

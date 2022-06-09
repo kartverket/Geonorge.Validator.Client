@@ -2,6 +2,7 @@ import { extend, getCenter } from 'ol/extent';
 import filesize from 'filesize';
 import { getArea, getLength } from 'ol/sphere';
 import WKT from 'ol/format/WKT';
+import latinize from 'latinize';
 
 const MAX_ZOOM = process.env.REACT_APP_MAX_ZOOM;
 
@@ -122,4 +123,6 @@ export const getFileSize = size => filesize(size, { separator: ',', spacer: ' ' 
 
 export const allEqual = array => array.every(value => value === array[0]);
 
-export const createId = () => '_' + Math.random().toString(36).substring(2, 11);
+export const createRandomId = () => '_' + Math.random().toString(36).substring(2, 11);
+
+export const createSafeString = text => latinize(text).replace(/\s/g, '-').toLowerCase();

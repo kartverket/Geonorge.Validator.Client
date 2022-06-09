@@ -8,7 +8,7 @@ import CircleStyle from 'ol/style/Circle';
 import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
 import Style from 'ol/style/Style';
-import { createId, groupBy } from './helpers';
+import { createRandomId, groupBy } from './helpers';
 import colorsys from 'colorsys';
 import orderBy from 'lodash.orderby';
 
@@ -48,7 +48,7 @@ async function createSymbol(name, feature, featureCount, color, vectorLayer) {
    tempFeature.setStyle(style);
 
    const symbol = {
-      id: createId(),
+      id: createRandomId(),
       name,
       geometryType,
       featureCount,

@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import apiReducer from './slices/apiSlice';
+import progressReducer from './slices/progressSlice';
 import mapReducer from './slices/mapSlice';
 import tabReducer from './slices/tabSlice';
 import notificationReducer from './slices/notificationSlice';
 
 export default configureStore({
    reducer: {
-      api: apiReducer,
+      progress: progressReducer,
       map: mapReducer,
       tab: tabReducer,
       notification: notificationReducer
