@@ -6,4 +6,9 @@ const modals = {
    INVALID_FILE: InvalidFileModal
 };
 
+export const modalType = {
+   ERROR: 'ERROR',
+   INVALID_FILE: 'INVALID_FILE'
+}
+
 export default modals;
