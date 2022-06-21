@@ -6,15 +6,16 @@ import './Rulesets.scss';
 const RULESETS_API_URL = process.env.REACT_APP_RULESETS_API_URL;
 
 function Rulesets() {
-   const { data: rulesets = [], loaded } = useApiGet(RULESETS_API_URL);
+   const { data: rulesets } = useApiGet(RULESETS_API_URL);
 
    return (
-      loaded ?
+      rulesets ?
          <div className="rulesets">
             <h2>Regler</h2>
             {
                rulesets.map(ruleset => {
                   const id = createSafeString(ruleset.name);
+
                   return <Ruleset key={id} ruleset={ruleset} id={id} />
                })
             }

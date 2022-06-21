@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-   toggled: []
+   opened: []
 };
 
 export const modalSlice = createSlice({
@@ -9,28 +9,26 @@ export const modalSlice = createSlice({
    initialState,
    reducers: {
       openModal: (state, action) => {
-         console.log(state.toggled);
-         const index = state.toggled.findIndex(modal => modal.type === action.payload.type);
+         const index = state.opened.findIndex(modal => modal.type === action.payload.type);
 
          if (index === -1) {
             return { 
-               toggled: [...state.toggled, action.payload]
+               opened: [...state.opened, action.payload]
             };
          }
 
-         return [...state.toggled];
+         return [...state.opened];
       },
       closeModal: (state, action) => {
-         const index = state.toggled.findIndex(modal => modal.type === action.payload.type);
+         const index = state.opened.findIndex(modal => modal.type === action.payload.type);
 
          if (index !== -1) {
-            debugger
             return {
-               toggled: [...state.toggled.slice(0, index), ...state.toggled.slice(index + 1)]
+               opened: [...state.opened.slice(0, index), ...state.opened.slice(index + 1)]
             };
          }
 
-         return [...state.toggled];
+         return [...state.opened];
       } 
    }
 });

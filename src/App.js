@@ -66,23 +66,11 @@ function App() {
       }
    }
 
-   function openMod1() {
-      dispatch(openModal({ type: 'ERROR', title: 'Feil!', message: 'Whatevah!' }));
-   }
-
-   
-   function openMod2() {
-      dispatch(openModal({ type: 'ERROR', title: 'Informasjon', message: 'Whatevah!' }));
-   }
-
-
    return (
       <Fragment>
          <MainNavigationContainer />
          <MapViewContext.Provider value={[mapViews, setMapViews]}>
             <div className="app">
-               <button onClick={openMod1}>Åpne feil</button>
-               <button onClick={openMod2}>Åpne info</button>
                <div className='container'>
                   <button
                      className="toggle-fullscreen"
