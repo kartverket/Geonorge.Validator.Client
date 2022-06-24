@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { FeatureContextMenu, FeatureInfo, Legend, MapInfo, MapNorthArrow, ScaleBar, ValidationErrors } from 'components/partials';
+import { FeatureContextMenu, FeatureInfo, GenericLegend, SldLegend, MapInfo, MapNorthArrow, ScaleBar, ValidationErrors } from 'components/partials';
 import { ZoomToExtent } from 'ol/control';
 import { click } from 'ol/events/condition';
 import { Select } from 'ol/interaction';
@@ -7,11 +7,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleMapLoading } from 'store/slices/progressSlice';
 import { toggleFeatureInfo } from 'store/slices/mapSlice';
 import { setActiveTab } from 'store/slices/tabSlice';
-import { addGeometryInfo, addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from 'utils/map/features';
+import { addGenericLegendToFeatures, addGeometryInfo, addSldLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from 'utils/map/features';
 import { debounce, getLayer } from 'utils/map/helpers';
-import { createLegend } from 'utils/map/legend';
+import { createGenericLegend } from 'utils/map/legend';
+import { createSldLegend, filterLegend } from 'utils/map/sld-legend';
 import { createMap } from 'utils/map/map';
-import { addStyling, updateFeatureZIndex } from 'utils/map/styling';
+import { addGenericStyling, updateFeatureZIndex } from 'utils/map/styling';
 import './MapView.scss';
 
 function MapView({ mapDocument, mapId }) {
@@ -19,10 +20,13 @@ function MapView({ mapDocument, mapId }) {
    const [contextMenuData, setContextMenuData] = useState(null);
    const [features, setFeatures] = useState([]);
    const [selectedFeatures, setSelectedFeatures] = useState([]);
-   const [legend, setLegend] = useState([]);
+   const [genericLegend, setGenericLegend] = useState([]);
+   const [sldLegend, setSldLegend] = useState([]);
+   const [filteredLegend, setFilteredLegend] = useState([]);
+   const [symbols, setSymbols] = useState([]);
    const [mapRendered, setMapRendered] = useState(false);
-   const [sidebarVisible, setSidebarVisible] = useState(true);   
-   const symbol = useSelector(state => state.map.symbol);
+   const [sidebarVisible, setSidebarVisible] = useState(true);
+   const legend = useSelector(state => state.map.legend);
    const activeTab = useSelector(state => state.tab.activeTab);
    const mapElement = useRef();
    const sidebarVisibleRef = useRef(true);
@@ -30,7 +34,7 @@ function MapView({ mapDocument, mapId }) {
 
    useEffect(
       () => {
-         if (activeTab !== mapId) {
+         if (activeTab !== mapId || map === null) {
             return;
          }
 
@@ -103,11 +107,19 @@ function MapView({ mapDocument, mapId }) {
          async function create() {
             const olMap = await createMap(mapDocument);
             const vectorLayer = getLayer(olMap, 'features');
-            const legend = await createLegend(vectorLayer);
             const features = vectorLayer.getSource().getFeatures()
 
-            addStyling(features, legend);
-            setLegend(legend);
+            if (mapDocument.styling) {
+               const legend = await createSldLegend(mapDocument.styling);
+               setSldLegend(legend);
+               setSymbols(legend.flatMap(leg => leg.symbols));
+            } else {
+               const legend = await createGenericLegend(vectorLayer);
+               addGenericStyling(features, legend);
+               setGenericLegend(legend);
+               setSymbols(legend);
+            }
+
             setMap(olMap);
             setFeatures(features);
          }
@@ -152,20 +164,25 @@ function MapView({ mapDocument, mapId }) {
 
    useEffect(
       () => {
-         if (features.length && legend.length) {
-            addLegendToFeatures(features, legend);
+         if (features.length) {
+            if (sldLegend.length) {
+               addSldLegendToFeatures(features, sldLegend);
+               setFilteredLegend(filterLegend(sldLegend, features));
+            } else if (genericLegend.length) {
+               addGenericLegendToFeatures(features, genericLegend);
+            }
          }
       },
-      [features, legend]
+      [features, sldLegend, genericLegend]
    );
 
    useEffect(
       () => {
-         if (symbol.name && map) {
-            toggleFeatures(symbol, map);
+         if (legend.name && map) {
+            toggleFeatures(legend, map);
          }
       },
-      [symbol, map]
+      [legend, map]
    );
 
    useEffect(
@@ -179,19 +196,23 @@ function MapView({ mapDocument, mapId }) {
    );
 
    function handleLegendSorted(sortedLegend) {
-      if (sortedLegend.every((symbol, index) => symbol.name === legend[index].name)) {
+      if (sortedLegend.every((symbol, index) => symbol.name === genericLegend[index].name)) {
          return;
       }
 
       updateFeatureZIndex(map, sortedLegend);
-      setLegend(sortedLegend);
+      setGenericLegend(sortedLegend);
    }
 
    return (
       <div className={`content ${!sidebarVisible ? 'sidebar-hidden' : ''}`}>
          <div className="left-content">
             <MapInfo mapDocument={mapDocument} map={map} />
-            <Legend legend={legend} onListSorted={handleLegendSorted} />
+            {
+               sldLegend.length ?
+                  <SldLegend legend={filteredLegend} /> :
+                  <GenericLegend legend={genericLegend} onListSorted={handleLegendSorted} />
+            }
          </div>
 
          <div className="right-content">
@@ -209,8 +230,8 @@ function MapView({ mapDocument, mapId }) {
 
             <ScaleBar map={map} numberOfSteps={4} minWidth={150} />
             <MapNorthArrow map={map} />
-            <FeatureContextMenu map={map} data={contextMenuData} legend={legend} onFeatureSelect={selectFeature} />
-            <FeatureInfo map={map} features={selectedFeatures} legend={legend} />
+            <FeatureContextMenu map={map} data={contextMenuData} symbols={symbols} onFeatureSelect={selectFeature} />
+            <FeatureInfo map={map} features={selectedFeatures} symbols={symbols} />
             <ValidationErrors map={map} validationResult={mapDocument?.validationResult} onMessageClick={selectFeature} />
          </div>
       </div>

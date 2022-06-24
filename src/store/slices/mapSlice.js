@@ -1,6 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+   legend: {
+      name: null,
+      visible: true
+   },
    symbol: {
       name: null,
       visible: true
@@ -15,11 +19,11 @@ export const mapSlice = createSlice({
    name: 'map',
    initialState,
    reducers: {
-      toggleSymbol: (state, action) => {
+      toggleLegend: (state, action) => {
          return { 
             ...state, 
-            symbol: {
-               ...state.symbol, ...action.payload
+            legend: {
+               ...state.legend, ...action.payload
             }
          };
       },
@@ -34,6 +38,6 @@ export const mapSlice = createSlice({
    }
 });
 
-export const { toggleSymbol, toggleFeatureInfo } = mapSlice.actions;
+export const { toggleLegend, toggleFeatureInfo } = mapSlice.actions;
 
 export default mapSlice.reducer;

@@ -1,25 +1,26 @@
 import axios from 'axios';
+import { modalType } from 'components/modals';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { openModal } from 'store/slices/modalSlice';
-import { toggleLoading } from 'store/slices/progressSlice';
 
 export default function useApiGet(url, options) {
    const [data, setData] = useState(null);
    const [error, setError] = useState('');
    const [loaded, setLoaded] = useState(false);
    const dispatch = useDispatch();
-   
+
+
    useEffect(
       () => {
-         (async () => {
+         const opts = options || {};
+
+         (async () => {            
             try {
-               const b = options || {};
-               dispatch(toggleLoading(b.taskId));
-               const response = await axios.get(url, b);
+               const response = await axios.get(url, opts);
                setData(response.data);
             } catch (error) {
-               dispatch(openModal({ type: 'ERROR', title: 'Feil!', message: error.message }));
+               dispatch(openModal({ type: modalType.ERROR, title: 'Feil!', body: error.message }));
                setError(error.message);
             } finally {
                setLoaded(true);

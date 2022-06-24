@@ -3,7 +3,10 @@ import filesize from 'filesize';
 import { getArea, getLength } from 'ol/sphere';
 import WKT from 'ol/format/WKT';
 import latinize from 'latinize';
+import Url from 'url-parse';
 
+const PROXY_HOSTS = process.env.REACT_APP_PROXY_HOSTS.split(',');
+const PROXY_URL = process.env.REACT_APP_PROXY_URL;
 const MAX_ZOOM = process.env.REACT_APP_MAX_ZOOM;
 
 export function getLayer(map, id) {
@@ -21,8 +24,8 @@ export function getFeaturesByName(vectorLayer, name) {
       .filter(feature => feature.get('_name') === name);
 }
 
-export function getSymbolById(legend, id) {
-   return legend.find(symbol => symbol.id === id);
+export function getSymbolById(symbols, id) {
+   return symbols.find(symbol => symbol.id === id);
 }
 
 export function zoomTo(map, features) {
@@ -117,6 +120,19 @@ export function getLengthFormatted(line) {
    }
 
    return `${Math.round(length * 100) / 100} m`.replace('.', ',');
+}
+
+export function generateProxyUrl(urlString) {
+   const url = new Url(urlString);
+
+   if (PROXY_HOSTS.includes(url.host)) {
+      const proxyUrl = new Url(PROXY_URL);
+      proxyUrl.set('query', `url=${urlString}`);
+
+      return proxyUrl.toString();
+   }
+   
+   return urlString;
 }
 
 export const getFileSize = size => filesize(size, { separator: ',', spacer: ' ' });

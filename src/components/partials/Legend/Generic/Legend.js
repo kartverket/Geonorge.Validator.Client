@@ -8,7 +8,7 @@ function Legend({ legend, onListSorted }) {
    }
 
    return (
-      <div className="legend box">
+      <div className="generic-legend box">
          <div className="box-header">Tegnforklaringer</div>
 
          <div className="box-content">

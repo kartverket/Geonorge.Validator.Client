@@ -1,17 +1,13 @@
-import React, { useEffect, useState, Fragment, useRef } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { Footer, Information, MainNavigationContainer, MapView, Validator } from 'components/partials';
 import { Tabs, Tab } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveTab } from 'store/slices/tabSlice';
 import MapViewContext from 'context/MapViewContext';
+import { ErrorModal, InvalidFileModal } from 'components/modals';
 import './App.scss';
-import Modals from 'components/partials/Modals/Modals';
-import { openModal } from 'store/slices/modalSlice';
-import { createRandomId } from 'utils/map/helpers';
-import { useApi } from 'hooks';
 
 const OPEN_API_URL = process.env.REACT_APP_OPEN_API_URL;
-const RULESETS_API_URL = process.env.REACT_APP_RULESETS_API_URL;
 
 function App() {
    const [mapViews, setMapViews] = useState([]);
@@ -99,7 +95,9 @@ function App() {
                </div>
                <Footer />
             </div>
-            <Modals />
+            
+            <ErrorModal />
+            <InvalidFileModal />
          </MapViewContext.Provider>
       </Fragment>
    );

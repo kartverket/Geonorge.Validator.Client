@@ -283,8 +283,13 @@ a {
 
 .response-container .tab-content {
    height: 400px;
-   overflow-y: auto;
-   overscroll-behavior: contain;
+   overflow-y: hidden;
+   
+   > div:not(:last-child) {
+      height: 400px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+   }
 }
 
 :fullscreen .response-container .tab-content {
@@ -306,4 +311,8 @@ a {
    height: 23px;
    margin: -5px 10px;
    color: #6f92a7;
+}
+
+.checkbox {
+   font-size: 13px;
 }

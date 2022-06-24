@@ -1,25 +1,5 @@
-.json-print {    
-   position: relative; 
-
-   pre {
-      background-color: #ffffff;
-      padding: 10px 20px;
-      white-space: pre-wrap;
-      margin: 0;
-      font-size: 12px;
-   }
-   
-   .json-key {
-      color: brown;
-   }
-   
-   .json-value {
-      color: navy;
-   }
-   
-   .json-string {
-      color: olive;
-   }
+.json-print-container {
+   position: relative;
 
    .copy-button {
       background: url('../../../assets/gfx/icon-copy-text.svg') no-repeat center;
@@ -28,7 +8,7 @@
       height: 25px;
       border: 0;
       position: absolute;
-      right: 15px;
+      right: 32px;
       top: 15px;
       opacity: .6;
 
@@ -40,6 +20,32 @@
 
       &:hover {
          opacity: 1;
+      }
+   }
+
+   .json-print {    
+      height: 400px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+
+      pre {
+         background-color: #ffffff;
+         padding: 10px 20px;
+         white-space: pre-wrap;
+         margin: 0;
+         font-size: 12px;
+      }
+      
+      .json-key {
+         color: brown;
+      }
+      
+      .json-value {
+         color: navy;
+      }
+      
+      .json-string {
+         color: olive;
       }
    }
 }

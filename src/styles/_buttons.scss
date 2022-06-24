@@ -1,3 +1,24 @@
+.btn-close {
+   background: url('../assets/gfx/icon-close-white.svg') no-repeat center;
+   width: 14px;
+   height: 14px;
+   border: 0 none;
+   background-size: 14px;
+   opacity: .75;
+
+   &:hover {
+      opacity: 1;
+   }
+
+   &:focus {
+      box-shadow: none;
+   }
+
+   > * {
+      display: none;
+   }
+}
+
 button.close {
    background: url('../assets/gfx/icon-close-white.svg');
    width: 12px;

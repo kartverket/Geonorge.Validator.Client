@@ -3,17 +3,16 @@ import fileSize from 'filesize';
 const MAX_FILE_SIZE_MAP = process.env.REACT_APP_MAX_FILE_SIZE_MAP;
 const VALID_DIMENSIONS = process.env.REACT_APP_MAP_VALID_DIMENSIONS;
 const VALID_EPSG_CODES = process.env.REACT_APP_MAP_VALID_EPSG_CODES.split(',');
-const XSD_RULE_ID = process.env.REACT_APP_XSD_RULE_ID;
-const GML_REGEX = /<\?xml.*?<gml:FeatureCollection.*?xmlns:gml="http:\/\/www\.opengis\.net\/gml\/3\.2"/s;
+const GML_REGEX = /<\?xml.*?<\w+:FeatureCollection.*?xmlns:\w+="http:\/\/www\.opengis\.net\/gml\/3\.2"/s;
 const DIMENSIONS_REGEX = /srsDimension="(?<dimensions>\d)"/;
-const EPSG_REGEX = /srsName="(http:\/\/www\.opengis\.net\/def\/crs\/EPSG\/0\/|urn:ogc:def:crs:EPSG::)(?<epsg>\d+)"/;
+const EPSG_REGEX = /srsName="(http:\/\/www\.opengis\.net\/def\/crs\/EPSG\/0\/|urn:ogc:def:crs:EPSG::|EPSG:)(?<epsg>\d+)"/i;
 
-export async function validateFilesForMapView(files, validationResult) {
+export async function validateFilesForMapView(files) {
    const validatedFiles = [];
 
    for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      const messages = await validateFileForMapView(file, validationResult);
+      const messages = await validateFileForMapView(file);
       
       validatedFiles.push({ 
          messages, 
@@ -26,17 +25,12 @@ export async function validateFilesForMapView(files, validationResult) {
    return validatedFiles;   
 }
 
-async function validateFileForMapView(file, validationResult) {
+async function validateFileForMapView(file) {
     const validFileSize = file.size <= MAX_FILE_SIZE_MAP;
     const messages = [];
 
     if (!validFileSize) {
         messages.push(`Maksimal filstørrelse for kartvisning er ${fileSize(MAX_FILE_SIZE_MAP, { standard: 'jedec' })}`);        
-        return messages;
-    }
-
-    if (xsdRuleFailed(file, validationResult)) {
-        messages.push('GML-filen er ugyldig i henhold til applikasjonsskjemaet');
         return messages;
     }
 
@@ -50,7 +44,7 @@ async function validateFileForMapView(file, validationResult) {
     const epsgMatch = EPSG_REGEX.exec(fileContents);
 
     if (epsgMatch === null || !VALID_EPSG_CODES.includes(epsgMatch.groups.epsg)) {
-        messages.push(`GML-filen benytter koordinatsystemet 'EPSG:${epsgMatch.groups.epsg}'. Kartvisningen støtter kun følgende: ${VALID_EPSG_CODES.join(', ')}`);
+        messages.push(`GML-filen benytter koordinatsystemet '${epsgMatch.groups.epsg}'. Kartvisningen støtter kun følgende koordinatsystemer: ${VALID_EPSG_CODES.join(', ')}`);
     }
 
     const dimensionsMatch = DIMENSIONS_REGEX.exec(fileContents);
@@ -60,10 +54,4 @@ async function validateFileForMapView(file, validationResult) {
     }
 
     return messages;
-}
-
-function xsdRuleFailed(file, validationResult) {
-    const xsdRule = validationResult.rules.find(rule => rule.id === XSD_RULE_ID);
-
-    return xsdRule !== undefined && xsdRule.messages.some(message => message.fileName === file.name);
 }

@@ -54,11 +54,14 @@ function JsonPrint({ data }) {
    }
 
    return (
-      <div className="json-print">
+      <div className="json-print-container">
          <button className={`copy-button ${copied ? 'copy-button--text-copied' : ''}`} onClick={copyText} title="Kopier tekst"></button>
-         <code ref={jsonPrintRef}>
-            <pre dangerouslySetInnerHTML={{ __html: htmlString }}></pre>
-         </code>
+         
+         <div className="json-print">            
+            <code ref={jsonPrintRef}>
+               <pre dangerouslySetInnerHTML={{ __html: htmlString }}></pre>
+            </code>
+         </div>
       </div>
    );
 }

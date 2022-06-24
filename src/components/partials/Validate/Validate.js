@@ -109,7 +109,7 @@ function Validate({ onApiResponse }) {
       if (response) {
          onApiResponse({
             validationResult: response,
-            files: await validateFilesForMapView(xmlFiles, response)
+            files: await validateFilesForMapView(xmlFiles)
          });
 
          xmlUploadElement.current.removeFiles();

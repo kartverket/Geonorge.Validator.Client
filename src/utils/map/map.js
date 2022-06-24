@@ -12,10 +12,11 @@ import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import VectorSource from 'ol/source/Vector';
 import { addValidationResultToFeatures } from './features';
 import axios from 'axios';
+import { addSldStyling } from './styling';
 
 let wmtsOptions = null;
 
-function createFeaturesLayer(mapDocument) {
+async function createFeaturesLayer(mapDocument) {
    const features = new GeoJSON().readFeatures(mapDocument.geoJson);
 
    const featuresLayer = new VectorLayer({
@@ -25,6 +26,10 @@ function createFeaturesLayer(mapDocument) {
    featuresLayer.set('id', 'features');
 
    addValidationResultToFeatures(mapDocument, features);
+   
+   if (mapDocument.styling) {
+      await addSldStyling(features, mapDocument.styling, () => { featuresLayer.changed() });
+   }
 
    return featuresLayer;
 }
@@ -104,7 +109,7 @@ export async function createMap(mapDocument) {
    return new Map({
       layers: [
          await createTileLayer(mapDocument.epsg.code),
-         createFeaturesLayer(mapDocument),
+         await createFeaturesLayer(mapDocument),
          createSelectedFeaturesLayer()
       ],
       view: new View({

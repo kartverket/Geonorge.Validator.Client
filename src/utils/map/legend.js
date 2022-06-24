@@ -15,8 +15,8 @@ import orderBy from 'lodash.orderby';
 const LEGEND_SIZE = 50;
 const START_COLOR = '#86bff2';
 
-export async function createLegend(featuresLayer) {
-   const [tempMap, tempMapElement] = createLegendTempMap();
+export async function createGenericLegend(featuresLayer) {
+   const [tempMap, tempMapElement] = createLegendTempMap(LEGEND_SIZE);
    const vectorLayer = tempMap.getLayers().getArray()[0];
    const features = featuresLayer.getSource().getFeatures();
    const groupedFeatures = groupBy(features, feature => feature.get('_name'));
@@ -39,6 +39,28 @@ export async function createLegend(featuresLayer) {
    const ordered = orderLegend(legend);
 
    return ordered;
+}
+
+export function createLegendTempMap(legendSize) {
+   const map = new Map({
+      layers: [
+         new VectorLayer({
+            source: new VectorSource()
+         })
+      ],
+      view: new View({
+         extent: [0, 0, legendSize, legendSize]
+      })
+   });
+
+   const mapElement = document.createElement('div');
+   Object.assign(mapElement.style, { position: 'absolute', top: '-9999px', left: '-9999px', width: `${legendSize}px`, height: `${legendSize}px` });
+   document.getElementsByTagName('body')[0].appendChild(mapElement);
+
+   map.setTarget(mapElement);
+   map.getView().fit([0, 0, legendSize, legendSize], map.getSize());
+
+   return [map, mapElement];
 }
 
 async function createSymbol(name, feature, featureCount, color, vectorLayer) {
@@ -121,28 +143,6 @@ function createStyle(geometryType, color) {
             new Style({ fill: new Fill({ color }) })
          ];
    }
-}
-
-function createLegendTempMap() {
-   const map = new Map({
-      layers: [
-         new VectorLayer({
-            source: new VectorSource()
-         })
-      ],
-      view: new View({
-         extent: [0, 0, LEGEND_SIZE, LEGEND_SIZE]
-      })
-   });
-
-   const mapElement = document.createElement('div');
-   Object.assign(mapElement.style, { position: 'absolute', top: '-9999px', left: '-9999px', width: `${LEGEND_SIZE}px`, height: `${LEGEND_SIZE}px` });
-   document.getElementsByTagName('body')[0].appendChild(mapElement);
-
-   map.setTarget(mapElement);
-   map.getView().fit([0, 0, LEGEND_SIZE, LEGEND_SIZE], map.getSize());
-
-   return [map, mapElement];
 }
 
 function orderLegend(legend) {

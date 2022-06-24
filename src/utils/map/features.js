@@ -3,6 +3,7 @@ import { Stroke, Style, Fill, Circle } from 'ol/style';
 import GeometryType from 'ol/geom/GeometryType';
 import { getAreaFormatted, getFeaturesByName, getLayer, getLengthFormatted, groupBy } from './helpers';
 import WKT from 'ol/format/WKT';
+import { filterSelector } from 'utils/sld-reader/Filter';
 
 const HIGHLIGHT_COLOR = 'rgb(0 109 173 / 50%)';
 const ERROR_COLOR = 'rgb(255 0 0 / 50%)';
@@ -88,7 +89,7 @@ export function highlightSelectedFeatures(map, features) {
    layerSource.addFeatures(selectedFeatures);
 }
 
-export function addLegendToFeatures(features, legend) {
+export function addGenericLegendToFeatures(features, legend) {
    const groupedFeatures = groupBy(features, feature => feature.get('_name'));
    const featureNames = Object.keys(groupedFeatures);
 
@@ -105,6 +106,31 @@ export function addLegendToFeatures(features, legend) {
       for (let j = 0; j < feats.length; j++) {
          const feature = feats[j];
          feature.set('_symbolId', symbol.id);
+      }
+   }
+}
+
+export function addSldLegendToFeatures(features, legends) {
+   const groupedFeatures = groupBy(features, feature => feature.get('_name'));
+   const featureNames = Object.keys(groupedFeatures);
+
+   for (let i = 0; i < featureNames.length; i++) {
+      const featureName = featureNames[i];
+      const symbols = legends.find(legend => legend.name === featureName)?.symbols || [];
+
+      if (!symbols.length) {
+         continue;
+      }
+
+      const feats = groupedFeatures[featureName];
+
+      for (let j = 0; j < feats.length; j++) {
+         const feature = feats[j];
+         const symbol = symbols.find(sym => !sym.rule.filter || filterSelector(sym.rule.filter, feature));
+
+         if (symbol) {
+            feature.set('_symbolId', symbol.id);
+         }
       }
    }
 }

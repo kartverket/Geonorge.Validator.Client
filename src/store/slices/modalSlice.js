@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-   opened: []
+   added: []
 };
 
 export const modalSlice = createSlice({
@@ -9,27 +9,54 @@ export const modalSlice = createSlice({
    initialState,
    reducers: {
       openModal: (state, action) => {
-         const index = state.opened.findIndex(modal => modal.type === action.payload.type);
-
-         if (index === -1) {
-            return { 
-               opened: [...state.opened, action.payload]
-            };
-         }
-
-         return [...state.opened];
-      },
-      closeModal: (state, action) => {
-         const index = state.opened.findIndex(modal => modal.type === action.payload.type);
+         const index = state.added.findIndex(modal => modal.type === action.payload.type);
 
          if (index !== -1) {
             return {
-               opened: [...state.opened.slice(0, index), ...state.opened.slice(index + 1)]
+               ...state,
+               added: [
+                  ...state.added.slice(0, index),
+                  { 
+                     ...action.payload, 
+                     visible: true 
+                  },
+                  ...state.added.slice(index + 1)
+               ]
             };
          }
 
-         return [...state.opened];
-      } 
+         return {
+            ...state,
+            added: [
+               ...state.added,
+               {
+                  ...action.payload,
+                  visible: true
+               }
+            ]
+         };
+      },
+      closeModal: (state, action) => {
+         const index = state.added.findIndex(modal => modal.type === action.payload.type);
+
+         if (index !== -1) {
+            return {
+               ...state,
+               added: [
+                  ...state.added.slice(0, index),
+                  { 
+                     ...state.added[index],
+                     visible: false 
+                  },
+                  ...state.added.slice(index + 1)
+               ]
+            };
+         }
+
+         return {
+            ...state
+         }
+      }
    }
 });
 
