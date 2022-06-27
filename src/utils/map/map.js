@@ -13,6 +13,7 @@ import VectorSource from 'ol/source/Vector';
 import { addValidationResultToFeatures } from './features';
 import axios from 'axios';
 import { addSldStyling } from './styling';
+import { getAdjustedEpsgCode } from 'config/epsg.config';
 
 let wmtsOptions = null;
 
@@ -81,8 +82,8 @@ async function getWMTSOptions(epsgCode) {
    const capabilities = new WMTSCapabilities().read(response.data);
 
    wmtsOptions = optionsFromCapabilities(capabilities, {
-      layer: baseMap.layer,
-      matrixSet: epsgCode,
+      layer: baseMap.layer,      
+      matrixSet: epsgCode
    });
 
    return wmtsOptions;
@@ -106,17 +107,26 @@ export async function createMap(mapDocument) {
       return null;
    }
 
-   return new Map({
-      layers: [
-         await createTileLayer(mapDocument.epsg.code),
-         await createFeaturesLayer(mapDocument),
-         createSelectedFeaturesLayer()
-      ],
-      view: new View({
-         projection: mapDocument.epsg.code,
-         padding: [25, 25, 25, 25]
-      }),
+   const map = new Map({
       controls: defaultControls().extend([new FullScreen()]),
       interactions: defaultInteractions().extend([new DragRotateAndZoom()]),
    });
+
+   let epsgCode = getAdjustedEpsgCode(mapDocument.epsg.code);
+   
+   if (epsgCode !== null) {
+      map.addLayer(await createTileLayer(epsgCode));
+   } else {
+      epsgCode = mapDocument.epsg.code;
+   }
+
+   map.addLayer(await createFeaturesLayer(mapDocument));
+   map.addLayer(createSelectedFeaturesLayer());
+
+   map.setView(new View({
+      padding: [25, 25, 25, 25],
+      projection: epsgCode
+   }));
+
+   return map;
 }

@@ -282,14 +282,9 @@ a {
 }
 
 .response-container .tab-content {
-   height: 400px;
-   overflow-y: hidden;
-   
-   > div:not(:last-child) {
-      height: 400px;
-      overflow-y: auto;
-      overscroll-behavior: contain;
-   }
+   height: 410px;
+   overflow-y: auto;
+   overscroll-behavior: contain;
 }
 
 :fullscreen .response-container .tab-content {

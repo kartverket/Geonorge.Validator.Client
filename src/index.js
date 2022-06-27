@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import App from './App';
 import store from 'store';
 import 'config/projections.config';
+import 'config/extents.config';
 import './index.scss';
 
 ReactDOM.render(

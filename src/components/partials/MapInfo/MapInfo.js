@@ -52,7 +52,7 @@ function MapInfo({ mapDocument, map }) {
 
                <div className="box-row">
                   <div className="label">Koordinatsystem:</div>
-                  <div className="value">{mapDocument.epsg.description}</div>
+                  <div className="value" title={mapDocument.epsg.description}>{mapDocument.epsg.description}</div>
                </div>
             </div>
             <div>

@@ -17,7 +17,7 @@ function ErrorModal() {
    useEffect(
       () => {
          const modal = modals.find(modal => modal.type === modalType.ERROR);
-         console.log('sdfsdf');
+
          if (modal) {
             setShow(modal.visible);
             setTitle(modal.title);

@@ -7,8 +7,8 @@
       width: 25px;
       height: 25px;
       border: 0;
-      position: absolute;
-      right: 32px;
+      position: sticky;
+      left: calc(100% - 35px);
       top: 15px;
       opacity: .6;
 
@@ -24,9 +24,7 @@
    }
 
    .json-print {    
-      height: 400px;
-      overflow-y: auto;
-      overscroll-behavior: contain;
+      margin-top: -30px;
 
       pre {
          background-color: #ffffff;

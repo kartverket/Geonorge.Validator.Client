@@ -20,11 +20,11 @@
       }
 
       .status {
-         width: 100px;
+         width: 120px;
       }
 
       .name {
-         width: calc(100% - 200px);
+         width: calc(100% - 220px);
          padding-right: 10px;
          
          .documentation {
@@ -63,7 +63,7 @@
       border-top: 1px solid #dee2e6;
       font-size: 12px;
       margin: 0;
-      padding: 10px 20px 10px 120px;
+      padding: 10px 20px 10px 140px;
       max-height: 300px;
       overflow-y: auto;
       word-break: break-word;

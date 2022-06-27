@@ -67,14 +67,14 @@ function ValidationResponse({ apiResponse }) {
          <Tabs transition={false}>
             {
                rulesWithMessages.length ?
-                  <Tab eventKey="failed-rules" title={`Regler med feil eller advarsler (${rulesWithMessages.length})`}>
+                  <Tab eventKey="failed-rules" title={`Regler som gir feil eller advarsler (${rulesWithMessages.length})`}>
                      {rulesWithMessages.map((element, index) => <ResponseRow key={'failed-rules-' + index} data={element} />)}
                   </Tab> :
                   null
             }
             {
                passedRules.length ?
-                  <Tab eventKey="passed-rules" title={`Validerte regler (${passedRules.length})`}>
+                  <Tab eventKey="passed-rules" title={`Regler som passerer valideringen uten feil eller advarsler (${passedRules.length})`}>
                      {passedRules.map((element, index) => <ResponseRow key={'passed-rules-' + index} data={element} />)}
                   </Tab> :
                   null
