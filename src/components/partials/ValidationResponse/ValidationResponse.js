@@ -31,10 +31,6 @@ function ValidationResponse({ apiResponse }) {
          </div>
          <div className="summary">
             <div className="row">
-               <div className="col-2">Navneområde:</div>
-               <div className="col-10">{result.namespace}</div>
-            </div>
-            <div className="row">
                <div className="col-2">Datasett:</div>
                <div className="col-10">
                   <div className="dataset">
@@ -45,6 +41,10 @@ function ValidationResponse({ apiResponse }) {
                      }
                   </div>
                </div>
+            </div>
+            <div className="row">
+               <div className="col-2">Navneområde:</div>
+               <div className="col-10">{result.namespace}</div>
             </div>
             <div className="row">
                <div className="col-2">Feil:</div>

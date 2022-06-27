@@ -172,5 +172,5 @@ async function loadLegendFromIndexedDb(namespace) {
       await set(IDB_KEY, null);    
    }
 
-   return legends.find(legend => legend.namespace === namespace)?.legends;
+   return legends?.find(legend => legend.namespace === namespace)?.legends;
 }
