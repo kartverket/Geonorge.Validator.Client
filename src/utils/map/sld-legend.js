@@ -7,7 +7,7 @@ import { createRandomId } from './helpers';
 import { createLegendTempMap } from './legend';
 import { get, set } from 'idb-keyval';
 
-const APP_VERSION = process.env.REACT_APP_VERSION;
+const BUILD_NUMBER = process.env.REACT_APP_BUILD_NUMBER;
 const IDB_KEY = 'geonorge-gml-kart';
 const SYMBOLIZER = { POLYGON: 'POLYGON', LINE: 'LINE', POINT: 'POINT', TEXT: 'TEXT' };
 const LEGEND_SIZE = 64;
@@ -161,14 +161,14 @@ function getSymbolizerType(rule) {
 
 async function saveLegendToIndexedDb(namespace, legends) {
    const data = await get(IDB_KEY) || {};
-   const updatedData = { version: APP_VERSION, legends: [...data.legends || [], { namespace, legends }] };
+   const updatedData = { version: BUILD_NUMBER, legends: [...data.legends || [], { namespace, legends }] };
    await set(IDB_KEY, updatedData);
 }
 
 async function loadLegendFromIndexedDb(namespace) {
    const { version, legends } = await get(IDB_KEY) || {};
 
-   if (legends && version !== APP_VERSION) {
+   if (legends && version !== BUILD_NUMBER) {
       await set(IDB_KEY, null);    
    }
 
