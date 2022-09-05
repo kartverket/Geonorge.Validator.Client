@@ -25,9 +25,9 @@
 
    .validator,
    .information {
-      padding: 20px;
+      padding: 20px 40px;
 
-      > div {
+      /*> div {
          margin: 0 auto 25px auto;
          border-top: 1px solid #dee2e6;
          padding-top: 20px;
@@ -43,7 +43,7 @@
          &:last-child {
             margin-bottom: 0;
          }
-      }
+      }*/
    }
 
    .capitalize {
@@ -252,4 +252,8 @@
          text-transform: lowercase;
       }
    }
+}
+
+.file-selector {
+   min-height: 386px;
 }

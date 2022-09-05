@@ -1,0 +1,117 @@
+.react-checkbox-tree {
+   > ol {
+      padding: 0;
+   }
+   
+   ol {
+      list-style: none;
+   }
+
+   .rct-node {
+      margin-bottom: 3px;
+
+      &.rct-node-parent {
+         margin-bottom: 10px;
+      }
+   }
+
+   .rct-title {
+      white-space: pre;
+   }
+
+   .rct-collapse-btn {
+      cursor: pointer;
+      user-select: none;
+      display: inline-block;
+      margin-bottom: 0;
+      border: 0;
+      background: none;
+      padding: 0;
+
+      &::after {
+         content: "";
+         background: url("../assets/gfx/icon-arrow.svg") no-repeat center;
+         width: 10px;
+         height: 12px;
+         display: inline-block;
+         background-size: 11px;
+         margin-left: 10px;
+         transform: rotate(90deg);
+        // transition: all 0.25s ease;
+         margin: 0;
+         vertical-align: 3px;
+      }
+
+      & + label {
+         margin-bottom: 10px;
+      }
+   }
+
+   .rct-node-expanded .rct-collapse-btn::after {
+      transform: rotate(-90deg) !important;
+   }
+
+   label {
+      display: inline-flex;
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 18px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      margin-left: 10px;
+
+      &:has(input:disabled) {
+         cursor: not-allowed;
+      }
+
+      &:hover input ~ .rct-checkbox .rct-icon {
+         background-color: #cccccc !important;
+      }
+
+      input {
+         display: none;
+
+         &:checked ~ .rct-checkbox .rct-icon {
+            background-color: #7492b8;
+
+            &::after {
+               display: block;
+            }
+         }
+
+         &:disabled ~ .rct-checkbox .rct-icon {
+            background-color: #cccccc !important;
+         }
+      }
+
+      .rct-checkbox .rct-icon {
+         position: relative;
+         height: 18px;
+         width: 18px;
+         background-color: #eeeeee;
+         margin-right: 8px;
+         display: block;
+
+         &::after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 6px;
+            top: 3px;
+            width: 6px;
+            height: 10px;
+            border: solid #ffffff;
+            border-width: 0 3px 3px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+         }
+      }
+
+      .rct-node-icon .rct-icon {
+         display: none;
+      }
+   }
+}

@@ -20,10 +20,16 @@ export const notificationSlice = createSlice({
             ...state,
             messages: [...state.messages, action.payload]
          };
+      },
+      clearMessages: (state) => {
+         return {
+            ...state,
+            messages: []
+         };
       }
    }
 });
 
-export const { setConnectionId, addMessage } = notificationSlice.actions;
+export const { setConnectionId, addMessage, clearMessages } = notificationSlice.actions;
 
 export default notificationSlice.reducer;

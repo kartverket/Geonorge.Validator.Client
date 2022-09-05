@@ -4,6 +4,7 @@ import mapReducer from './slices/mapSlice';
 import modalReducer from './slices/modalSlice';
 import tabReducer from './slices/tabSlice';
 import notificationReducer from './slices/notificationSlice';
+import validationReducer from './slices/validationSlice';
 
 export default configureStore({
    reducer: {
@@ -11,6 +12,7 @@ export default configureStore({
       map: mapReducer,
       modals: modalReducer,
       tab: tabReducer,
-      notification: notificationReducer
+      notification: notificationReducer,
+      validation: validationReducer
    }
 });

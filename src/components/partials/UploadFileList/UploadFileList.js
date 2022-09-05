@@ -5,7 +5,7 @@ function UploadFileList({ files, uploadElement }) {
    if (!files.length) {
       return null;
    }
-   
+
    function removeFile(file) {
       uploadElement.current.removeFile(file);
    }
@@ -24,11 +24,11 @@ function UploadFileList({ files, uploadElement }) {
 
                      <div className="info">
                         <span className="name">{file.name}</span>
-                        <span className="size">{fileSize(file.size, { separator: ',', standard: 'jedec'})}</span>
+                        <span className="size">{fileSize(file.size, { separator: ',', standard: 'jedec' })}</span>
                      </div>
 
                      <div className="remove">
-                        <button onClick={() => removeFile(file)} title="Slett"></button>                        
+                        <button onClick={() => removeFile(file)} title="Slett"></button>
                      </div>
                   </div>
                );

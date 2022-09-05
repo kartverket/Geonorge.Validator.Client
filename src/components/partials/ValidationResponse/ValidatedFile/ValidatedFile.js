@@ -17,7 +17,7 @@ function ValidatedFile({ file, rules }) {
    const [showProgressBar, setShowProgressBar] = useState(false);
    const mapLoading = useSelector(state => state.progress.mapLoading);
    const uploadProgress = useSelector(state => state.progress.uploadProgress);
-   const fetchAsync = useApi();
+   const { post } = useApi();
    const dispatch = useDispatch();
 
    useEffect(
@@ -49,7 +49,7 @@ function ValidatedFile({ file, rules }) {
       formData.append('gmlFile', file);
       formData.append('validate', false);
 
-      const mapDocument = await fetchAsync(file.name, MAP_DOCUMENT_API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } }, false);
+      const mapDocument = await post(file.name, MAP_DOCUMENT_API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } }, false);
 
       if (mapDocument === null) {
          dispatch(toggleMapLoading({ mapLoading: false }));

@@ -1,13 +1,40 @@
 import axios from 'axios';
+import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { openModal } from 'store/slices/modalSlice';
 import { setUploadProgress, toggleLoading } from 'store/slices/progressSlice';
 
 export default function useApi() {
    const dispatch = useDispatch();
+   
+   const get = useCallback(
+      async (taskId, url, options = {}) => {
+         try {
+            dispatch(toggleLoading(taskId));
 
-   async function fetchAsync(taskId, url, data, options = {}) {
-      try {
+            const defaultOptions = {
+               method: 'get',
+               url
+            };
+
+            const response = await axios({ ...defaultOptions, ...options });
+            dispatch(toggleLoading(taskId));
+
+            return Promise.resolve(response.data || null);
+         } catch (error) {
+            dispatch(toggleLoading(taskId));
+
+            const errorMessage = getMessage(error);
+            dispatch(openModal({ type: 'ERROR', title: 'Feil!', body: errorMessage }));
+
+            return await Promise.reject(errorMessage);
+         }
+      },
+      [dispatch]
+   );
+
+   const post = useCallback(
+      async (taskId, url, data, options = {}) => {
          dispatch(toggleLoading(taskId));
          dispatch(setUploadProgress({ uploadProgress: { completed: 0, taskId } }));
 
@@ -21,19 +48,24 @@ export default function useApi() {
             }
          };
 
-         const response = await axios({ ...defaultOptions, ...options });
-         dispatch(toggleLoading(taskId));
-         dispatch(setUploadProgress({ uploadProgress: {} }));
+         try {
+            const response = await axios({ ...defaultOptions, ...options });
+            dispatch(toggleLoading(taskId));
+            dispatch(setUploadProgress({ uploadProgress: {} }));
 
-         return response.data || null;
-      } catch (error) {
-         dispatch(toggleLoading(taskId));
-         dispatch(setUploadProgress({ uploadProgress: {} }));
-         dispatch(openModal({ type: 'ERROR', title: 'Feil!', body: getMessage(error) }));
+            return Promise.resolve(response.data || null);
+         } catch (error) {
+            dispatch(toggleLoading(taskId));
+            dispatch(setUploadProgress({ uploadProgress: {} }));
 
-         return null;
-      }
-   }
+            const errorMessage = getMessage(error);
+            dispatch(openModal({ type: 'ERROR', title: 'Feil!', body: errorMessage }));
+
+            return await Promise.reject(errorMessage);
+         }
+      },
+      [dispatch]
+   );
 
    function getMessage(error) {
       if (!error.response) {
@@ -48,5 +80,5 @@ export default function useApi() {
       }
    }
 
-   return fetchAsync;
+   return { get, post }
 }

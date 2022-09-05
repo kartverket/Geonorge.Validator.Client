@@ -1,9 +1,9 @@
 import React from 'react';
 import ValidatedFile from './ValidatedFile/ValidatedFile';
 import { JsonPrint } from 'components/custom-elements';
-import './ValidationResponse.scss';
 import { Tab, Tabs } from 'react-bootstrap';
 import ResponseRow from './ResponseRow/ResponseRow';
+import './ValidationResponse.scss';
 
 function ValidationResponse({ apiResponse }) {
    if (!apiResponse) {
@@ -117,5 +117,4 @@ function groupValidationResultByFileName(validationResult) {
    return groupedValidationResult;
 }
 
-
-export default ValidationResponse
+export default ValidationResponse;

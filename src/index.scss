@@ -5,6 +5,7 @@
 @import "./styles/_forms";
 @import "./styles/_overrides";
 @import "./styles/_fonts";
+@import "./styles/_react-checkbox-tree";
 
 html {
    overflow-y: scroll;
@@ -25,7 +26,7 @@ body {
 }
 
 h2 {
-   font-size: 18px;
+   font-size: 15px;
    font-family: "OpenSans-Regular";
    border-bottom: 2px solid #fe5000;
    display: inline-block;
@@ -49,4 +50,8 @@ strong {
 i,
 em {
    font-family: "OpenSans-Italic";
+}
+
+.hidden2 {
+   display: none;
 }

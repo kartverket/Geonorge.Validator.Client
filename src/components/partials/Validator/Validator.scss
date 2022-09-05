@@ -13,3 +13,17 @@
       flex-grow: 1;
    }
 }
+
+.wizard-footer {
+   .wizard-footer__buttons {
+      display: flex;
+
+      > button:first-child {
+         margin-right: 50px;
+      }
+
+      > button:only-child {
+         margin: 0 !important;
+      }
+   }
+}

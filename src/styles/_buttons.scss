@@ -104,3 +104,46 @@ button.close {
       }
    }
 }
+
+.button__next {
+   display: flex !important;
+   align-items: center;
+
+   &::after {
+      content: '';
+      background: url('../assets/gfx/icon-arrow-white.svg') no-repeat center;
+      width: 10px;
+      height: 10px;
+      background-size: 10px;
+      margin-left: 10px;
+   }
+}
+
+.button__prev {
+   display: flex !important;
+   align-items: center;
+
+   &::before {
+      content: '';
+      background: url('../assets/gfx/icon-arrow-white.svg') no-repeat center;
+      width: 10px;
+      height: 10px;
+      background-size: 10px;
+      margin-right: 10px;
+      transform: rotate(180deg);
+   }
+}
+
+.button__finish {
+   display: flex !important;
+   align-items: center;
+
+   &::after {
+      content: '';
+      background: url('../assets/gfx/icon-checked.svg') no-repeat center;
+      width: 10px;
+      height: 10px;
+      background-size: 10px;
+      margin-left: 10px;
+   }
+}

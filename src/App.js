@@ -1,10 +1,10 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Footer, Information, MainNavigationContainer, MapView, Validator } from 'components/partials';
 import { Tabs, Tab } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveTab } from 'store/slices/tabSlice';
-import MapViewContext from 'context/MapViewContext';
 import { ErrorModal, InvalidFileModal } from 'components/modals';
+import { MapViewContext } from 'context';
 import './App.scss';
 
 const OPEN_API_URL = process.env.REACT_APP_OPEN_API_URL;
