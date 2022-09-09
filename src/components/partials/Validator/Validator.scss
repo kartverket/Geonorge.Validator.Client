@@ -17,13 +17,14 @@
 .wizard-footer {
    .wizard-footer__buttons {
       display: flex;
+      align-items: center;
 
-      > button:first-child {
-         margin-right: 50px;
+      > button {
+         margin-left: 50px;
       }
 
-      > button:only-child {
-         margin: 0 !important;
+      > button:first-child {
+         margin-left: 0;
       }
    }
 }

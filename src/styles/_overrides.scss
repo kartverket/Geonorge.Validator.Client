@@ -57,6 +57,20 @@ a {
    }
 }
 
+.dropdown-menu {
+   border-radius: 0 !important;
+
+   .dropdown-item {
+      font-size: 13px;
+      user-select: none;
+      cursor: pointer;
+
+      &:active {
+         background-color: #8aaec3;
+     }
+   }
+}
+
 .modal-open {
    padding-right: 0 !important;
 }
@@ -302,10 +316,10 @@ a {
 }
 
 .spinner-border {
-   width: 23px;
-   height: 23px;
-   margin: -5px 10px;
+   width: 25px;
+   height: 25px;
    color: #6f92a7;
+   margin-left: 15px;
 }
 
 .checkbox {

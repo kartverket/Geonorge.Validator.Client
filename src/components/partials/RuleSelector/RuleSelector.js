@@ -1,43 +1,16 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { useApi } from 'hooks';
 import { useWizard } from 'react-use-wizard';
 import { ValidationContext } from 'context';
 import CheckboxTree from 'react-checkbox-tree';
 import './RuleSelector.scss';
 
-const RULESETS_API_URL = process.env.REACT_APP_RULESETS_API_URL;
-const API_TASK_ID = 'rule-selector';
-
 function RuleSelector() {
    const [checked, setChecked] = useState([]);
    const [expanded, setExpanded] = useState([]);
    const [ruleIds, setRuleIds] = useState([]);
-   const [rulesets, setRulesets] = useState([]);
-   const { files, schemas, setSkippedRules } = useContext(ValidationContext);
+   const { rulesets, setSkippedRules } = useContext(ValidationContext);
    const { previousStep, nextStep } = useWizard();
-   const { post } = useApi();
-
-   useEffect(
-      () => {
-         async function fetchRuleSets() {
-            const formData = new FormData();
-
-            await addFileSlicesToFormData(files, 'files', formData);
-            await addFileSlicesToFormData(schemas, 'schema', formData);
-
-            const headers = { 'Content-Type': 'multipart/form-data' }
-            const response = await post(API_TASK_ID, RULESETS_API_URL, formData, { headers });
-
-            if (response) {
-               setRulesets(response);
-            }
-         }
-
-         fetchRuleSets();
-      },
-      [post, files, schemas]
-   );
 
    useEffect(
       () => {
@@ -61,14 +34,6 @@ function RuleSelector() {
       },
       [rulesets]
    );
-
-   async function addFileSlicesToFormData(files, name, formData) {
-      for (let i = 0; i < files.length; i++) {
-         const file = files[i];
-         const sliced = await file.slice(0, 50000);
-         formData.append(name, sliced);
-      }
-   }
 
    const nodes = rulesets
       .map(ruleset => {
@@ -106,7 +71,7 @@ function RuleSelector() {
          <div className="wizard-footer">
             <div className="wizard-footer__buttons">
                <Button variant="primary" className="button__prev" onClick={() => previousStep()}>Forrige</Button>
-               <Button variant="primary" className="button__next" onClick={() => nextStep()}>Validér</Button>
+               <Button variant="primary" className="button__next" onClick={() => nextStep()} disabled={!rulesets.length}>Validér</Button>
             </div>
          </div>
       </Fragment>

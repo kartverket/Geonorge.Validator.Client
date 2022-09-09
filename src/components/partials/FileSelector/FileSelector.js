@@ -1,20 +1,22 @@
 import { Fragment, useContext, useEffect, useRef, useState } from 'react';
-import { useApi } from 'hooks';
 import Files from 'react-files'
-import { Button } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import UploadFileList from '../UploadFileList/UploadFileList';
 import fileSize from 'filesize';
 import { Tooltip } from 'components/custom-elements';
 import { useWizard } from 'react-use-wizard';
 import { ValidationContext } from 'context';
+import { useApi } from 'hooks';
+import { useSelector } from 'react-redux';
 
-const RULESETS_API_URL = process.env.REACT_APP_RULESETS_API_URL;
 const MAX_FILE_SIZE_TOTAL = process.env.REACT_APP_MAX_FILE_SIZE_TOTAL;
-const API_TASK_ID = 'file-selector';
+const RULESETS_API_URL = process.env.REACT_APP_RULESETS_API_URL;
+const API_TASK_ID = 'rule-selector';
 
 function FileSelector() {
    const { files, setFiles, schemas, setSchemas, setRulesets } = useContext(ValidationContext);
    const [fileSizeTotal, setFileSizeTotal] = useState(0);
+   const apiTasks = useSelector(state => state.progress.tasks);
    const filesUploadElement = useRef(null);
    const schemaUploadElement = useRef(null);
    const { handleStep, nextStep } = useWizard();
@@ -78,14 +80,14 @@ function FileSelector() {
                      ref={filesUploadElement}
                      className='files-dropzone'
                      onChange={setFiles}
-                     accepts={['.xml', '.gml']}
+                     accepts={['.xml', '.gml', '.json', '.geojson']}
                      multiple
                      clickable
                   >
-                     <i>Klikk for å legge til GML- eller XML-filer</i>
+                     <i>Klikk for å legge til datasett (GML, XML, JSON, GEOJSON)</i>
 
                      <Tooltip
-                        tooltip="Hvis flere filer, må alle tilhøre samme navneområde med samme versjon av applikasjonsskjema"
+                        tooltip="Hvis flere filer, må alle benytte samme applikasjonsskjema"
                         trigger={
                            <span className="file-info">?</span>
                         }
@@ -100,14 +102,14 @@ function FileSelector() {
                      ref={schemaUploadElement}
                      className='files-dropzone'
                      onChange={setSchemas}
-                     accepts={['.xsd']}
+                     accepts={['.xsd', '.json']}
                      maxFiles={1}
                      clickable
                   >
-                     <i>Klikk for å legge til applikasjonsskjema (XSD)</i>
+                     <i>Klikk for å legge til applikasjonsskjema (XSD, JSON)</i>
 
                      <Tooltip
-                        tooltip={"Valgfri dersom attributtet \"schemaLocation\" er spesifisert"}
+                        tooltip={"Valgfri dersom applikasjonsskjema er inkludert i datasettet"}
                         trigger={
                            <span className="file-info">?</span>
                         }
@@ -127,11 +129,12 @@ function FileSelector() {
          <div className="wizard-footer">
             <div className="wizard-footer__buttons">
                <Button variant="primary" className="button__next" onClick={() => nextStep()} disabled={!files.length || fileSizeTotal > MAX_FILE_SIZE_TOTAL}>Neste</Button>
+               {
+                  apiTasks.includes(API_TASK_ID) ?
+                     <Spinner animation="border" role="status" /> :
+                     null
+               }
             </div>
-         </div>
-
-         <div className="validate-button">
-
          </div>
       </Fragment>
    )

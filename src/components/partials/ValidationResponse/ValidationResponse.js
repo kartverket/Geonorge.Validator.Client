@@ -42,10 +42,14 @@ function ValidationResponse({ apiResponse }) {
                   </div>
                </div>
             </div>
-            <div className="row">
-               <div className="col-2">Navneområde:</div>
-               <div className="col-10">{result.namespace}</div>
-            </div>
+            {
+               result.namespace ?
+                  <div className="row">
+                     <div className="col-2">Navneområde:</div>
+                     <div className="col-10">{result.namespace}</div>
+                  </div> :
+                  null
+            }
             <div className="row">
                <div className="col-2">Feil:</div>
                <div className="col-10">{result.errors}</div>
