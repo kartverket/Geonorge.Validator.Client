@@ -81,7 +81,8 @@
             font-size: 12px !important;
             vertical-align: 0;
             color: unset;
-            text-decoration: none;    
+            text-decoration: none;
+            text-align: left;
             
             &:hover {
                text-decoration: underline;
@@ -92,8 +93,20 @@
             padding: 3px 16px;
             display: none;
 
-            &.message-info-expanded {
+            &.message-info--expanded {
                display: block;
+            }
+
+            .message-info__row {
+               display: flex;
+
+               .message-info__row__label {
+                  width: 12%;
+               }
+
+               .message-info__row__value {
+                  width: 88%;
+               }
             }
          }
       }

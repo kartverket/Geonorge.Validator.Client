@@ -84,10 +84,10 @@ function FileSelector() {
                      multiple
                      clickable
                   >
-                     <i>Klikk for å legge til datasett (GML, XML, JSON, GEOJSON)</i>
+                     <i>Klikk for å legge til datasett (.gml, .xml, .geojson, .json)</i>
 
                      <Tooltip
-                        tooltip="Hvis flere filer, må alle benytte samme applikasjonsskjema"
+                        tooltip="Hvis flere filer, må alle være av samme type og benytte samme applikasjonsskjema"
                         trigger={
                            <span className="file-info">?</span>
                         }
@@ -106,7 +106,7 @@ function FileSelector() {
                      maxFiles={1}
                      clickable
                   >
-                     <i>Klikk for å legge til applikasjonsskjema (XSD, JSON)</i>
+                     <i>Klikk for å legge til applikasjonsskjema (.xsd, .json)</i>
 
                      <Tooltip
                         tooltip={"Valgfri dersom applikasjonsskjema er inkludert i datasettet"}

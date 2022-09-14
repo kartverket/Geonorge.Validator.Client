@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 
 function Message({ message }) {
    const [expanded, setExpanded] = useState(false);
-   const showDetails = message.gmlIds?.length || message.xPaths?.length || message.jsonPath;
+   const showDetails = message.gmlIds?.length || message.xPaths?.length || message.jsonPath || message.lineNumber || message.linePosition;
 
    return (
       !showDetails ?
@@ -11,34 +11,50 @@ function Message({ message }) {
          <React.Fragment>
             <Button variant="link" onClick={() => setExpanded(!expanded)}>{message.message}</Button>
 
-            <div className={`message-info ${expanded ? 'message-info-expanded' : ''}`}>
+            <div className={`message-info ${expanded ? 'message-info--expanded' : ''}`}>
                {
                   message.xPaths?.length ?
-                     <div className="row">
-                        <div className="col-1">XPath:</div>
-                        <div className="col-11">{message.xPaths.join(', ')}</div>
+                     <div className="message-info__row">
+                        <div className="message-info__row__label">XPath:</div>
+                        <div className="message-info__row__value">{message.xPaths.join(', ')}</div>
                      </div> :
                      null
                }
                {
                   message.gmlIds?.length ?
-                     <div className="row">
-                        <div className="col-1">GML-ID:</div>
-                        <div className="col-11">{message.gmlIds.join(', ')}</div>
+                     <div className="message-info__row">
+                        <div className="message-info__row__label">GML-ID:</div>
+                        <div className="message-info__row__value">{message.gmlIds.join(', ')}</div>
                      </div> :
                      null
                }
                {
                   message.jsonPath ?
-                     <div className="row">
-                        <div className="col-1">JSONPath:</div>
-                        <div className="col-11">{message.jsonPath}</div>
+                     <div className="message-info__row">
+                        <div className="message-info__row__label">JSONPath:</div>
+                        <div className="message-info__row__value">{message.jsonPath}</div>
                      </div> :
                      null
-               }                                             
-               <div className="row">
-                  <div className="col-1">Filnavn:</div>
-                  <div className="col-11">{message.fileName}</div>
+               }
+               {
+                  message.lineNumber ?
+                     <div className="message-info__row">
+                        <div className="message-info__row__label">Linje:</div>
+                        <div className="message-info__row__value">{message.lineNumber}</div>
+                     </div> :
+                     null
+               }
+               {
+                  message.linePosition ?
+                     <div className="message-info__row">
+                        <div className="message-info__row__label">Posisjon:</div>
+                        <div className="message-info__row__value">{message.linePosition}</div>
+                     </div> :
+                     null
+               }
+               <div className="message-info__row">
+                  <div className="message-info__row__label">Filnavn:</div>
+                  <div className="message-info__row__value">{message.fileName}</div>
                </div>
             </div>
          </React.Fragment>
