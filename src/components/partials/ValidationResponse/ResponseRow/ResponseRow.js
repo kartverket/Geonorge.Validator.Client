@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import Message from '../Message/Message';
+import { groupBy } from 'utils/map/helpers';
+import Messages from '../Messages/Messages';
 import './ResponseRow.scss';
 
 const getStatus = (status) => status === 'NOT_EXECUTED' ? 'skipped' : status.toLowerCase();
@@ -19,6 +20,8 @@ function ResponseRow({ data }) {
 
    const hasMessages = data.messages.length > 0;
    const status = getStatus(data.status);
+   const groupedMessages = groupBy(data.messages, message => message.fileName);
+   const fileCount = Object.keys(groupedMessages).length;
 
    return (
       <div className={`response-row ${hasMessages ? 'response-row-with-messages' : ''}`}>
@@ -37,16 +40,16 @@ function ResponseRow({ data }) {
          </div>
          {
             hasMessages ?
-               <ol className="messages" style={{ display: expanded ? 'block' : 'none' }}>
-                  {data.messages.map((message, index) => {
-                     return (
-                        <li key={index}>
-                           <Message message={message} />
-                        </li>
-                     );
-                  })}
-               </ol> :
-               ''
+               (
+                  <div className={`messages-container ${expanded ? 'messages-container--expanded' : ''}`}>
+                     {
+                        fileCount === 1 ?
+                           <Messages messages={data.messages} /> :
+                           Object.keys(groupedMessages).map(key => <Messages messages={groupedMessages[key]} fileName={key} key={key} />)
+                     }
+                  </div>
+               ) :
+               null
          }
       </div>
    );

@@ -10,6 +10,10 @@ function UploadFileList({ files, uploadElement }) {
       uploadElement.current.removeFile(file);
    }
 
+   function getExtension(file) {
+      return file.extension === 'geojson' ? 'json' : file.extension;
+   }
+
    return (
       <div className="file-list">
          {
@@ -17,8 +21,8 @@ function UploadFileList({ files, uploadElement }) {
                return (
                   <div className="file" key={'file-' + index}>
                      <div className="type">
-                        <div className="icon">
-                           <span>{file.extension}</span>
+                        <div className={`icon icon--${file.extension}`}>
+                           <span>{getExtension(file)}</span>
                         </div>
                      </div>
 

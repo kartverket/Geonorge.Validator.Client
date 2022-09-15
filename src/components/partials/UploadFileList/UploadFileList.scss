@@ -51,20 +51,37 @@
    }
 
    .icon {
-      background-image: url("../../../assets/gfx/icon-file.svg");
       width: 34px;
       height: 44px;
       background-size: 34px 44px;
       display: flex;
       justify-content: center;
 
+      &.icon--gml {
+         background-image: url("../../../assets/gfx/icon-gml.svg");
+      }
+
+      &.icon--xml {
+         background-image: url("../../../assets/gfx/icon-xml.svg");
+      }
+
+      &.icon--xsd {
+         background-image: url("../../../assets/gfx/icon-xsd.svg");
+      }
+
+      &.icon--json,
+      &.icon--geojson {
+         background-image: url("../../../assets/gfx/icon-json.svg");
+      }
+
       span {
          display: flex;
          align-self: end;
          text-transform: uppercase;
          color: #ffffff;
+         font-family: 'OpenSans-SemiBold';
          font-size: 10px;
-         font-weight: 600;
+         font-weight: 500;
       }
    }
 }
