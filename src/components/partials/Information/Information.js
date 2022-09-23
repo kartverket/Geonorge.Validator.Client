@@ -1,4 +1,5 @@
 import Rulesets from '../Rulesets/Rulesets';
+import './Information.scss';
 
 function Information() {
    return (

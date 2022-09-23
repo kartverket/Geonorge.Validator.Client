@@ -59,3 +59,11 @@
    }
 }
 
+.rulesets-tabs {
+   display: flex;
+   width: 100%;
+
+   .tab-content {
+      width: calc(100% - 300px);
+   }
+}

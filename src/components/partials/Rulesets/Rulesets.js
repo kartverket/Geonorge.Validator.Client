@@ -3,6 +3,7 @@ import { createSafeString } from 'utils/map/helpers';
 import { useApi } from 'hooks';
 import { useEffect, useState } from 'react';
 import './Rulesets.scss';
+import { Tab, Tabs } from 'react-bootstrap';
 
 const RULESETS_API_URL = process.env.REACT_APP_RULESETS_API_URL;
 const API_TASK_ID = 'rulesets';
@@ -30,13 +31,23 @@ function Rulesets() {
       rulesets ?
          <div className="rulesets">
             <h2>Regler</h2>
-            {
-               rulesets.map(ruleset => {
-                  const id = createSafeString(ruleset.name);
 
-                  return <Ruleset key={id} ruleset={ruleset} id={id} />
-               })
-            }
+            <div className="rulesets-tabs">
+               <Tabs transition={false}>
+                  {
+                     rulesets.map(ruleset => {
+                        const id = createSafeString(ruleset.name);
+
+                        return (
+                           <Tab title={ruleset.name} key={id} eventKey={id}>
+                              <Ruleset ruleset={ruleset} id={id} />
+                           </Tab>
+                        )
+                     })
+                  }
+               </Tabs>
+            </div>
+
          </div> :
          null
    );

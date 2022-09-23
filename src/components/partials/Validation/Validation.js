@@ -12,7 +12,7 @@ const VALIDATE_API_URL = process.env.REACT_APP_VALIDATE_API_URL;
 const API_TASK_ID = 'validation';
 
 function Validate() {
-   const { files, setFiles, schemas, setSchemas, setRulesets, skippedRules, setSkippedRules, notification, setNotification, connectionId } = useContext(ValidationContext);
+   const { files, setFiles, schemas, setSchemas, schemaUri, setSchemaUri, setRulesets, skippedRules, setSkippedRules, notification, setNotification, connectionId } = useContext(ValidationContext);
    const [apiResponse, setApiResponse] = useState(null);
    const uploadProgress = useSelector(state => state.progress.uploadProgress);
    const { goToStep } = useWizard();
@@ -28,6 +28,10 @@ function Validate() {
 
             if (skippedRules.length) {
                formData.append('skipRules', skippedRules.join(', '));
+            }
+
+            if (schemaUri) {
+               formData.append('schemaUri', schemaUri);
             }
 
             setNotification('Laster opp');
@@ -47,12 +51,13 @@ function Validate() {
             validate();
          }
       },
-      [files, schemas, skippedRules, connectionId, setNotification, post]
+      [files, schemas, schemaUri, skippedRules, connectionId, setNotification, post]
    );
 
    function goToFirstStep() {
       setFiles([]);
       setSchemas([]);
+      setSchemaUri(null);
       setRulesets([]);
       setSkippedRules([]);
       setNotification(null);

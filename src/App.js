@@ -65,22 +65,24 @@ function App() {
    return (
       <Fragment>
          <MainNavigationContainer />
-         <MapViewContext.Provider value={[mapViews, setMapViews]}>
-            <div className="app">
-               <div className='container'>
-                  <button
-                     className="toggle-fullscreen"
-                     title={fullscreen ? 'Avslutt fullskjerm' : 'Vis i fullskjerm'}
-                     onClick={handleToggleFullscreenClick}
-                  >
-                  </button>
+
+         <div className="app">
+            <div className='container'>
+               <button
+                  className="toggle-fullscreen"
+                  title={fullscreen ? 'Avslutt fullskjerm' : 'Vis i fullskjerm'}
+                  onClick={handleToggleFullscreenClick}
+               >
+               </button>
+               
+               <MapViewContext.Provider value={[mapViews, setMapViews]}>
                   <Tabs defaultActiveKey="validator" activeKey={activeTabKey} onSelect={handleTabSelect} transition={false}>
                      <Tab eventKey="validator" tabClassName="validator-tab" title="GML-validator">
                         <Validator onApiResponse={handleApiResponse} />
                      </Tab>
                      <Tab eventKey="info" tabClassName="info-tab" title="Informasjon">
                         <Information />
-                     </Tab>                     
+                     </Tab>
                      {mapViews.map(mapView => {
                         return (
                            <Tab tabClassName="map-tab" key={mapView.mapId} eventKey={mapView.mapId} title={mapView.mapDocument.fileName}>
@@ -92,13 +94,13 @@ function App() {
                         <span></span>
                      </Tab>
                   </Tabs>
-               </div>
-               <Footer />
+               </MapViewContext.Provider>
             </div>
-            
-            <ErrorModal />
-            <InvalidFileModal />
-         </MapViewContext.Provider>
+            <Footer />
+         </div>
+
+         <ErrorModal />
+         <InvalidFileModal />
       </Fragment>
    );
 }

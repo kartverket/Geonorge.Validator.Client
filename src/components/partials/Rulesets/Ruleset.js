@@ -38,8 +38,7 @@ function Ruleset({ ruleset, id }) {
    }
 
    return (
-      <div className="ruleset">
-         <h3 className={`expand-link ${expanded ? 'expand-link--expanded' : ''}`} onClick={() => setExpanded(!expanded)}>{ruleset.name} ({ruleCount})</h3>
+      <div className="ruleset">         
          <div className="ruleset-groups">
             {ruleset.groups.map((group, idx) => renderGroup(group, `${id}-${idx}`))}
          </div>

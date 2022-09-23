@@ -1,0 +1,72 @@
+.application-schema {
+   display: flex;
+   flex-direction: column;
+
+   .application-schema__upload {
+      height: 66px;
+      margin-bottom: 20px;
+
+      .files-dropzone {
+         margin-bottom: 0;
+      }
+
+      .file-list {
+         margin-bottom: 0;
+      }
+   }
+
+   .application-schema__label {
+      display: block;
+      font-family: 'OpenSans-Italic';
+      margin-bottom: 8px;
+   }
+
+   .application-schema__geonorge {
+      display: flex;
+      flex-direction: column;
+
+      .application-schema__geonorge__select {
+         display: flex;
+         justify-content: space-between;
+         margin-bottom: 8px;
+         width: 100%;
+   
+         > div:first-child {
+            width: 70%;
+         }
+   
+         > div:last-child {
+            width: 27%;
+         }
+      }
+
+      .application-schema__geonorge__docref {
+         a {
+            word-break: break-all;
+         }
+      }
+   }
+
+   .validator__control {
+      border-radius: 0;
+      border-color: #dee2e6;
+
+      &.validator__control--is-focused {
+         border-color: #dee2e6;
+         box-shadow: none;
+         outline: none;
+      }
+   }
+
+   .validator__menu {
+      .validator__option {
+         &.validator__option--is-focused {
+            background-color: #c8d9e3
+         }
+
+         &.validator__option--is-selected {
+            background-color: #8aaec3
+         }
+      }
+   }
+}
