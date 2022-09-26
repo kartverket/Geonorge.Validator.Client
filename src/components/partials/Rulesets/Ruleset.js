@@ -1,9 +1,4 @@
-import { useState } from 'react';
-
-function Ruleset({ ruleset, id }) {
-   const [expanded, setExpanded] = useState(false);
-   const ruleCount = ruleset.groups.flatMap(group => group.rules).length;
-
+function Ruleset({ ruleset, id }) {  
    function renderGroup(group, id) {
       return (
          <div className="rule-group" key={'rule-group-' + id}>

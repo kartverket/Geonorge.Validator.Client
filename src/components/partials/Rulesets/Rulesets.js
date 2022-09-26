@@ -30,16 +30,17 @@ function Rulesets() {
    return (
       rulesets ?
          <div className="rulesets">
-            <h2>Regler</h2>
+            <h3>Regler</h3>
 
             <div className="rulesets-tabs">
                <Tabs transition={false}>
                   {
                      rulesets.map(ruleset => {
                         const id = createSafeString(ruleset.name);
+                        const ruleCount = ruleset.groups.flatMap(group => group.rules).length;
 
                         return (
-                           <Tab title={ruleset.name} key={id} eventKey={id}>
+                           <Tab title={`${ruleset.name} (${ruleCount})`} key={id} eventKey={id}>
                               <Ruleset ruleset={ruleset} id={id} />
                            </Tab>
                         )
