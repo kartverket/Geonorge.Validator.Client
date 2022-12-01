@@ -10,7 +10,7 @@ const replacer = (_, pIndent, pKey, pValue, pEnd) => {
    let replaced = pIndent || '';
 
    if (pKey) {
-      replaced = replaced + key + pKey.replace(/[": ]/g, '') + '</span>: ';
+      replaced = replaced + key + '"' + pKey.replace(/[": ]/g, '') + '"</span>: ';
    }
 
    if (pValue) {
