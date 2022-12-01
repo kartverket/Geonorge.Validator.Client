@@ -48,9 +48,15 @@ function ValidatedFile({ file, rules }) {
 
       formData.append('gmlFile', file);
       formData.append('validate', false);
+      let mapDocument;
 
-      const mapDocument = await post(file.name, MAP_DOCUMENT_API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } }, false);
-
+      try {
+         mapDocument = await post(file.name, MAP_DOCUMENT_API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } }, false);
+      } catch (error) {
+         dispatch(toggleMapLoading({ mapLoading: false }));         
+         return null;   
+      }
+      
       if (mapDocument === null) {
          dispatch(toggleMapLoading({ mapLoading: false }));
          return null;
