@@ -1,8 +1,8 @@
-import { Fragment, useContext, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import Files from 'react-files'
 import { Button, Spinner } from 'react-bootstrap';
 import UploadFileList from '../UploadFileList/UploadFileList';
-import fileSize from 'filesize';
+import { filesize } from 'filesize';
 import Url from 'url-parse';
 import { Tooltip } from 'components/custom-elements';
 import { useWizard } from 'react-use-wizard';
@@ -139,14 +139,14 @@ function FileSelector() {
 
    function renderTotalFileSize() {
       const options = { separator: ',', standard: 'jedec' };
-      const maxTotalSize = fileSize(MAX_FILE_SIZE_TOTAL, options);
+      const maxTotalSize = filesize(MAX_FILE_SIZE_TOTAL, options);
 
       return (
          <div className={`total-file-size ${fileSizeTotal > MAX_FILE_SIZE_TOTAL ? 'total-file-size-exceeded' : ''}`}>
             {
                fileSizeTotal === 0 ?
                   <span>Maks. total filstørrelse: {maxTotalSize}</span> :
-                  <span>Total filstørrelse: <span className="file-size-total">{fileSize(fileSizeTotal, options)}</span> (maks. {maxTotalSize})</span>
+                  <span>Total filstørrelse: <span className="file-size-total">{filesize(fileSizeTotal, options)}</span> (maks. {maxTotalSize})</span>
             }
          </div>
       );

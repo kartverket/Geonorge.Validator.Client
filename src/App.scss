@@ -257,3 +257,19 @@
 .file-selector {
    min-height: 386px;
 }
+
+.map-tab {
+   span {
+      display: flex;
+      align-items: center;
+
+      .map-tab-close {
+         background: url("assets/gfx/icon-close.svg") no-repeat center;
+         width: 12px;
+         height: 12px;
+         background-size: 12px;
+         margin-left: 12px;
+      }
+   }
+}
+

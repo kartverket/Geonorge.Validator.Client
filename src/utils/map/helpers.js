@@ -1,5 +1,5 @@
 import { extend, getCenter } from 'ol/extent';
-import filesize from 'filesize';
+import { filesize } from 'filesize';
 import { getArea, getLength } from 'ol/sphere';
 import WKT from 'ol/format/WKT';
 import latinize from 'latinize';

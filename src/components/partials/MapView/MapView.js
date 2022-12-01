@@ -29,6 +29,7 @@ function MapView({ mapDocument, mapId }) {
    const legend = useSelector(state => state.map.legend);
    const activeTab = useSelector(state => state.tab.activeTab);
    const mapElement = useRef();
+   const mapCreated = useRef(false);
    const sidebarVisibleRef = useRef(true);
    const dispatch = useDispatch();
 
@@ -105,6 +106,8 @@ function MapView({ mapDocument, mapId }) {
    useEffect(
       () => {
          async function create() {
+            mapCreated.current = true;
+
             const olMap = await createMap(mapDocument);
             const vectorLayer = getLayer(olMap, 'features');
             const features = vectorLayer.getSource().getFeatures()
@@ -121,10 +124,10 @@ function MapView({ mapDocument, mapId }) {
             }
 
             setMap(olMap);
-            setFeatures(features);
+            setFeatures(features);            
          }
-
-         if (mapDocument) {
+         
+         if (mapDocument && mapCreated.current === false) {
             create();
          }
       },

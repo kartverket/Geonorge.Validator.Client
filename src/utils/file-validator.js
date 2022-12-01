@@ -1,4 +1,4 @@
-import fileSize from 'filesize';
+import { filesize } from 'filesize';
 
 const MAX_FILE_SIZE_MAP = process.env.REACT_APP_MAX_FILE_SIZE_MAP;
 const GML_REGEX = /<\?xml.*?<\w+:FeatureCollection.*?xmlns:\w+="http:\/\/www\.opengis\.net\/gml\/3\.2"/s;
@@ -13,7 +13,7 @@ export async function validateFilesForMapView(files) {
       validatedFiles.push({ 
          messages, 
          fileName: file.name,
-         size: fileSize(file.size, { separator: ',', standard: 'jedec'}),
+         size: filesize(file.size, { separator: ',', standard: 'jedec'}),
          blob: !messages.length ? new File([file], file.name) : null
       });
    }
@@ -26,7 +26,7 @@ async function validateFileForMapView(file) {
     const messages = [];
 
     if (!validFileSize) {
-        messages.push(`Maksimal filstørrelse for kartvisning er ${fileSize(MAX_FILE_SIZE_MAP, { standard: 'jedec' })}`);        
+        messages.push(`Maksimal filstørrelse for kartvisning er ${filesize(MAX_FILE_SIZE_MAP, { standard: 'jedec' })}`);        
         return messages;
     }
 

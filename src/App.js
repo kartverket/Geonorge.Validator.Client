@@ -62,6 +62,13 @@ function App() {
       }
    }
 
+   function closeMapTab(mapId) {
+      const filtered = mapViews.filter(mapView => mapView.mapId !== mapId);
+      setMapViews(filtered);
+      setActiveTabKey('validator');
+      handleTabSelect('validator');
+   }
+
    return (
       <Fragment>
          <MainNavigationContainer />
@@ -85,7 +92,17 @@ function App() {
                      </Tab>
                      {mapViews.map(mapView => {
                         return (
-                           <Tab tabClassName="map-tab" key={mapView.mapId} eventKey={mapView.mapId} title={mapView.mapDocument.fileName}>
+                           <Tab 
+                              tabClassName="map-tab" 
+                              key={mapView.mapId} 
+                              eventKey={mapView.mapId} 
+                              title={
+                                 <span>
+                                    {mapView.mapDocument.fileName}
+                                    <span className="map-tab-close" role="button" title="Lukk" onClick={() => closeMapTab(mapView.mapId)}></span>
+                                 </span>
+                              }
+                           >
                               <MapView mapDocument={mapView.mapDocument} mapId={mapView.mapId} tabKey={mapView.mapId} activeTabKey={activeTabKey} />
                            </Tab>
                         );

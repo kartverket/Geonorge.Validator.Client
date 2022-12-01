@@ -127,6 +127,17 @@ a {
    &:hover {
       background-color: unset;
    }
+
+   button {
+      color: #ffffff;
+      background-color: rgba(0, 60, 136, 0.5);
+
+      &:hover {
+         background-color: rgba(0, 60, 136, 0.7);
+         color: #ffffff;
+         outline: none;
+      }
+   }
 }
 
 .ol-full-screen {
