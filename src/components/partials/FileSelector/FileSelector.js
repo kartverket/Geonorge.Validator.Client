@@ -18,7 +18,7 @@ const RULESETS_API_URL = process.env.REACT_APP_RULESETS_API_URL;
 const RULESETS_API_TASK_ID = 'rule-selector';
 
 function FileSelector() {
-   const { files, setFiles, schemas, setSchemas, schemaRegistryOptions, setSchemaUri, setRulesets } = useContext(ValidationContext);
+   const { files, setFiles, schemas, setSchemas, schemaRegistryOptions, schemaUri, setSchemaUri, setRulesets } = useContext(ValidationContext);
    const [fileSizeTotal, setFileSizeTotal] = useState(0);
    const [schemaVersionOptions, setSchemaVersionOptions] = useState([]);
    const [selectedSchemaRegistryEntry, setSelectedSchemaRegistryEntry] = useState(null);
@@ -102,7 +102,12 @@ function FileSelector() {
       const formData = new FormData();
 
       await addFileSlicesToFormData(files, 'files', formData);
-      schemas.forEach(file => formData.append('schema', file));
+
+      if (schemaUri) {
+         formData.append('schemaUri', schemaUri);
+      } else {
+         schemas.forEach(file => formData.append('schema', file));
+      }
 
       const headers = { 'Content-Type': 'multipart/form-data' }
       const response = await post(RULESETS_API_TASK_ID, RULESETS_API_URL, formData, { headers });

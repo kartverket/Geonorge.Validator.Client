@@ -42,7 +42,7 @@ function Validate() {
             if (response) {
                setApiResponse({
                   validationResult: response,
-                  files: await validateFilesForMapView(files)
+                  files: await validateFilesForMapView(files, response)
                });
             }
          }

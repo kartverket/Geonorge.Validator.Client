@@ -13,7 +13,7 @@ import VectorSource from 'ol/source/Vector';
 import { addValidationResultToFeatures } from './features';
 import axios from 'axios';
 import { addSldStyling } from './styling';
-import { getAdjustedEpsgCode } from 'config/epsg.config';
+import { baseMapEpsgCodes } from 'config/epsg.config';
 
 let wmtsOptions = null;
 
@@ -48,9 +48,16 @@ function createSelectedFeaturesLayer() {
 }
 
 async function createTileLayer(epsgCode) {
-   const tileLayer = await createTileLayerWMTS(epsgCode)
+   /*let tileLayer = await createTileLayerWMTS(epsgCode);
 
-   return tileLayer !== null ? tileLayer : createTileLayerWMS();
+   if (tileLayer === null) {
+      tileLayer = createTileLayerWMS();
+   }*/
+
+   const tileLayer = createTileLayerWMS();
+   tileLayer.set('id', 'baseMap');
+
+   return tileLayer;
 }
 
 function createTileLayerWMS() {
@@ -62,7 +69,7 @@ function createTileLayerWMS() {
             VERSION: '1.1.1',
          }
       }),
-      maxZoom: baseMap.maxZoom
+      maxZoom: baseMap.maxZoom,
    });
 }
 
@@ -89,6 +96,7 @@ async function getWMTSOptions(epsgCode) {
    return wmtsOptions;
 }
 
+// eslint-disable-next-line
 async function createTileLayerWMTS(epsgCode) {
    const options = await getWMTSOptions(epsgCode);
 
@@ -112,12 +120,10 @@ export async function createMap(mapDocument) {
       interactions: defaultInteractions().extend([new DragRotateAndZoom()]),
    });
 
-   let epsgCode = getAdjustedEpsgCode(mapDocument.epsg.code);
+   const epsgCode = mapDocument.epsg.code2d;
    
-   if (epsgCode !== null) {
+   if (baseMapEpsgCodes.includes(epsgCode)) {
       map.addLayer(await createTileLayer(epsgCode));
-   } else {
-      epsgCode = mapDocument.epsg.code;
    }
 
    map.addLayer(await createFeaturesLayer(mapDocument));

@@ -181,8 +181,10 @@ function getHighlightStyle(feature) {
       return [];
    }
 
+   const color = feature.get('_errorMessages')?.length ? ERROR_COLOR : HIGHLIGHT_COLOR;
+
    const stroke = new Stroke({
-      color: feature.get('_errorMessages')?.length ? ERROR_COLOR : HIGHLIGHT_COLOR,
+      color,
       lineCap: 'butt',
       width: 3
    });
@@ -197,15 +199,25 @@ function getHighlightStyle(feature) {
          highlightStyle = styles[0].clone();
          highlightStyle.getText().setStroke(stroke);
       } else if (feature.getGeometry().getType() === GeometryType.Point) {
-         const image = feature.getStyle()[0].getImage();
+         const image = feature.getStyle()[0]?.getImage();
 
-         highlightStyle = new Style({
-            image: new Circle({
-               radius: image.getRadius(),
-               fill: image.getFill(),
-               stroke
-            })
-         });
+         if (image) {
+            highlightStyle = new Style({
+               image: new Circle({
+                  radius: image.getRadius(),
+                  fill: image.getFill(),
+                  stroke
+               })
+            });
+         } else {
+            highlightStyle = new Style({
+               geometry: feature.getGeometry(),
+               image: new Circle({
+                  radius: 5,
+                  fill: new Fill({ color })
+               })
+            });
+         }
       } else {
          highlightStyle = new Style({
             stroke
