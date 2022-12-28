@@ -86,7 +86,7 @@ function App() {
                
                <MapViewContext.Provider value={[mapViews, setMapViews]}>
                   <Tabs defaultActiveKey="validator" activeKey={activeTabKey} onSelect={handleTabSelect} transition={false}>
-                     <Tab eventKey="validator" tabClassName="validator-tab" title="GML-validator">
+                     <Tab eventKey="validator" tabClassName="validator-tab" title="Validator">
                         <Validator onApiResponse={handleApiResponse} />
                      </Tab>
                      <Tab eventKey="info" tabClassName="info-tab" title="Informasjon">
