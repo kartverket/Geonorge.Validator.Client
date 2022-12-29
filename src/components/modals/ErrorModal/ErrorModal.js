@@ -30,6 +30,7 @@ function ErrorModal() {
 
    function handleOnHide() {
       dispatch(closeModal({ type: modalType.ERROR }));
+      document.dispatchEvent(new CustomEvent('onErrorModalClose', null));
    }
 
    return (

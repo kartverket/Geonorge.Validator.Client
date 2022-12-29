@@ -74,6 +74,7 @@ export default function useApi() {
 
       switch (error.response.status) {
          case 400:
+         case 500:
             return error.response.data;
          default:
             return error.message;

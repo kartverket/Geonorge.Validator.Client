@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useCallback, useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useApi } from 'hooks';
 import { Button, ProgressBar } from 'react-bootstrap';
@@ -17,6 +17,30 @@ function Validate() {
    const uploadProgress = useSelector(state => state.progress.uploadProgress);
    const { goToStep } = useWizard();
    const { post } = useApi();
+   
+   const goToFirstStep = useCallback(
+      () => {
+         setFiles([]);
+         setSchemas([]);
+         setSchemaUri(null);
+         setRulesets([]);
+         setSkippedRules([]);
+         setNotification(null);
+         goToStep(0)
+      },
+      [setFiles, setSchemas, setSchemaUri, setRulesets, setSkippedRules, setNotification, goToStep]
+   );
+
+   useEffect(
+      () => {
+         document.addEventListener('onErrorModalClose', goToFirstStep);
+
+         return () => {
+            document.removeEventListener('onErrorModalClose', goToFirstStep);
+         }
+      },
+      [goToFirstStep]
+   );
 
    useEffect(
       () => {
@@ -37,13 +61,18 @@ function Validate() {
             setNotification('Laster opp');
 
             const headers = { 'Content-Type': 'multipart/form-data', 'SignalR-ConnectionId': connectionId };
-            const response = await post(API_TASK_ID, VALIDATE_API_URL, formData, { headers });
 
-            if (response) {
-               setApiResponse({
-                  validationResult: response,
-                  files: await validateFilesForMapView(files, response)
-               });
+            try {
+               const response = await post(API_TASK_ID, VALIDATE_API_URL, formData, { headers });
+
+               if (response) {
+                  setApiResponse({
+                     validationResult: response,
+                     files: await validateFilesForMapView(files, response)
+                  });
+               }
+            } catch {
+               
             }
          }
 
@@ -53,16 +82,6 @@ function Validate() {
       },
       [files, schemas, schemaUri, skippedRules, connectionId, setNotification, post]
    );
-
-   function goToFirstStep() {
-      setFiles([]);
-      setSchemas([]);
-      setSchemaUri(null);
-      setRulesets([]);
-      setSkippedRules([]);
-      setNotification(null);
-      goToStep(0);
-   }
 
    return (
       <Fragment>
