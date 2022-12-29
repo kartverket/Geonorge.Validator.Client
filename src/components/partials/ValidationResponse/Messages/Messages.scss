@@ -45,6 +45,7 @@
             color: unset;
             text-decoration: none;
             text-align: left;
+            user-select: text;
             
             &:hover {
                text-decoration: underline;

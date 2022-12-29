@@ -54,7 +54,7 @@ function RuleSelector() {
 
    return (
       <Fragment>
-         <div className="rule-selector">
+         <div className="rule-selector" role="region" aria-label="Regelsett">
             {
                rulesets.length ?
                   <CheckboxTree
@@ -70,8 +70,8 @@ function RuleSelector() {
 
          <div className="wizard-footer">
             <div className="wizard-footer__buttons">
-               <Button variant="primary" className="button__prev" onClick={() => previousStep()}>Forrige</Button>
-               <Button variant="primary" className="button__next" onClick={() => nextStep()} disabled={!rulesets.length}>Validér</Button>
+               <Button variant="primary" className="button__prev" aria-label="Forrige" onClick={() => previousStep()}>Forrige</Button>
+               <Button variant="primary" className="button__next" aria-label="Validér" onClick={() => nextStep()} disabled={!rulesets.length}>Validér</Button>
             </div>
          </div>
       </Fragment>

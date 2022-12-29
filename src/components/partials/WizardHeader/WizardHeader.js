@@ -16,7 +16,7 @@ function WizardHeader() {
             {
                WIZARD_STEPS.map((step, index) => {
                   return (
-                     <div key={'step-' + index} className={`step ${activeStep === index ? 'active' : ''}`}>
+                     <div key={'step-' + index} className={`step ${activeStep === index ? 'active' : ''}`} role="region" aria-label={step}>
                         <span className="step-number">{index + 1}</span>
                         <span>{step}</span>
                      </div>

@@ -30,7 +30,7 @@ function ValidationResponse({ apiResponse }) {
             </div>
          </div>
          <div className="summary">
-            <div className="row">
+            <div className="row" role="region" aria-label="Datasett">
                <div className="col-2">Datasett:</div>
                <div className="col-10">
                   <div className="dataset">
@@ -44,25 +44,25 @@ function ValidationResponse({ apiResponse }) {
             </div>
             {
                result.namespace ?
-                  <div className="row">
+                  <div className="row" role="region" aria-label="Navneområde">
                      <div className="col-2">Navneområde:</div>
                      <div className="col-10">{result.namespace}</div>
                   </div> :
                   null
             }
-            <div className="row">
+            <div className="row" role="region" aria-label="Feil">
                <div className="col-2">Feil:</div>
                <div className="col-10">{result.errors}</div>
             </div>
-            <div className="row">
+            <div className="row" role="region" aria-label="Advarsler">
                <div className="col-2">Advarsler:</div>
                <div className="col-10">{result.warnings}</div>
             </div>
-            <div className="row">
+            <div className="row" role="region" aria-label="Regler sjekket">
                <div className="col-2">Regler sjekket:</div>
                <div className="col-10">{rulesCheckedCount} av {result.rules.length} totalt</div>
             </div>
-            <div className="row">
+            <div className="row" role="region" aria-label="Tidsbruk">
                <div className="col-2">Tidsbruk:</div>
                <div className="col-10">{timeUsed} sek.</div>
             </div>

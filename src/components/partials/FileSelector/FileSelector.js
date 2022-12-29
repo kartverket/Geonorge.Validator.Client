@@ -171,7 +171,7 @@ function FileSelector() {
       <Fragment>
          <div className="file-selector">
             <div className="uploads">
-               <div>
+               <div role="region" aria-label="Legg til datasett">
                   <Files
                      ref={filesUploadElement}
                      className='files-dropzone'
@@ -193,9 +193,9 @@ function FileSelector() {
 
                   <UploadFileList files={files} uploadElement={filesUploadElement} />
                </div>
-               <div className="application-schema">
+               <div className="application-schema" role="region" aria-label="Legg til applikasjonsskjema">
                   <div className="application-schema__upload">
-                     <div style={!schemas.length ? { display: 'block' } : { display: 'none' }}>
+                     <div>
                         <Files
                            ref={schemaUploadElement}
                            className='files-dropzone'
@@ -257,7 +257,7 @@ function FileSelector() {
             </div>
          </div>
 
-         <div className="validator-info">
+         <div className="validator-info" role="region" aria-label="Total filstørrelse">
             {renderTotalFileSize()}
          </div>
 

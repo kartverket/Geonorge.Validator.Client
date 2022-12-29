@@ -109,7 +109,7 @@ function App() {
                            </Tab>
                         );
                      })}
-                     <Tab eventKey="api-link" tabClassName="api-link" title="Open API">
+                     <Tab eventKey="api-link" tabClassName="api-link" title="Open API" aria-label="Link til Open API">
                         <span></span>
                      </Tab>
                   </Tabs>
