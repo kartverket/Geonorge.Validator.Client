@@ -3,38 +3,18 @@ import { getPropertyList } from 'utils/map/feature-info';
 import { getSymbolById, zoomTo, zoomToGeometry } from 'utils/map/helpers';
 
 function Feature({ feature, map, symbols }) {
-   function getFeatureInfo(feature) {
-      const propertyList = getPropertyList(feature);
+   function renderId(feature) {
+      const id = feature.get('id');
 
-      if (propertyList.size === 0) {
-         return null;
-      }
-
-      const featureId = feature.get('id');
-      const rows = [];
-
-      propertyList.forEach((values, key) => {
-         const value = values.join(', ');
-
-         rows.push(
-            <div className="box-row" key={`${featureId}-${key}`}>
-               <div className="label capitalize" title={key}>{key}:</div>
-               <div className="value" title={value}>{value}</div>
-            </div>
-         );
-      });
-
-      return (
-         <Fragment>
-            <div className="divider"></div>
-            {
-               rows.map(row => row)
-            }
-         </Fragment>
-      )
+      return id ?
+         <div className="box-row">
+            <div className="label">ID:</div>
+            <div className="value">{id}</div>
+         </div> :
+         null
    }
 
-   function getGeometryInfo(feature) {
+   function renderGeometryInfo(feature) {
       let label, value;
       const area = feature.get('_area');
       const length = feature.get('_length');
@@ -57,12 +37,36 @@ function Feature({ feature, map, symbols }) {
       );
    }
 
+   function renderFeatureInfo(feature) {
+      const propertyList = getPropertyList(feature);
 
-   function getSymbolImage(id) {
-      return getSymbolById(symbols, id)?.image;
+      if (propertyList.size === 0) {
+         return null;
+      }
+
+      const featureId = feature.get('id') || 'id';
+      const rows = [];
+
+      propertyList.forEach((values, key) => {
+         const value = values.join(', ');
+
+         rows.push(
+            <div className="box-row" key={`${featureId}-${key}`}>
+               <div className="label capitalize" title={key}>{key}:</div>
+               <div className="value" title={value}>{value}</div>
+            </div>
+         );
+      });
+
+      return (
+         <Fragment>
+            <div className="divider"></div>
+            {rows.map(row => row)}
+         </Fragment>
+      )
    }
 
-   function getErrorMessages(feature) {
+   function renderErrorMessages(feature) {
       const errorMessages = feature.get('_errorMessages');
 
       if (!errorMessages?.length) {
@@ -95,6 +99,10 @@ function Feature({ feature, map, symbols }) {
       );
    }
 
+   function getSymbolImage(id) {
+      return getSymbolById(symbols, id)?.image;
+   }
+
    return (
       <div className="feature">
          <div className="feature-header">
@@ -108,16 +116,10 @@ function Feature({ feature, map, symbols }) {
          </div>
 
          <div className="feature-content">
-            <div className="box-row">
-               <div className="label">GML-ID:</div>
-               <div className="value">{feature.get('id')}</div>
-            </div>
-
-            {getGeometryInfo(feature)}
-
-            {getFeatureInfo(feature)}
-
-            {getErrorMessages(feature)}
+            {renderId(feature)}
+            {renderGeometryInfo(feature)}
+            {renderFeatureInfo(feature)}
+            {renderErrorMessages(feature)}
          </div>
       </div>
    );

@@ -9,6 +9,7 @@ import { createRandomId } from 'utils/map/helpers';
 import { setActiveTab } from 'store/slices/tabSlice';
 import { toggleMapLoading } from 'store/slices/progressSlice';
 import './ValidatedFile.scss';
+import { createMapDocument } from 'utils/map/geojson';
 
 const MAP_DOCUMENT_API_URL = process.env.REACT_APP_MAP_DOCUMENT_API_URL;
 
@@ -28,11 +29,18 @@ function ValidatedFile({ file, rules }) {
    );
 
    async function showInMap(file) {
-      let index = mapViews.findIndex(mapView => mapView.mapDocument.fileName === file.name);
+      let index = mapViews.findIndex(mapView => mapView.mapDocument.fileName === file.blob.name);
 
       if (index === -1) {
-         const mapDocument = await fetchMapDocument(file);
+         let mapDocument = null;
 
+         if (file.result.type === 'GML') {
+            mapDocument = await fetchMapDocument(file.blob);
+         } else if (file.result.type === 'GeoJSON') {
+            mapDocument = createMapDocument(file.blob, file.result.data, file.result.epsgCode, rules);
+         }
+
+         debugger
          if (mapDocument !== null) {
             setMapViews([...mapViews, { mapId: createRandomId(), mapDocument }]);
          }
@@ -50,7 +58,7 @@ function ValidatedFile({ file, rules }) {
       let mapDocument;
 
       try {
-         mapDocument = await post(file.name, MAP_DOCUMENT_API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } }, false);
+         mapDocument = await post(file.name, MAP_DOCUMENT_API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       } catch (error) {
          dispatch(toggleMapLoading({ mapLoading: false }));         
          return null;   
@@ -67,9 +75,9 @@ function ValidatedFile({ file, rules }) {
    }
 
    return (
-      !file.messages.length ?
+      !file.result.messages.length ?
          <div className="file">
-            {file.fileName} ({file.size})<Button variant="link" onClick={() => showInMap(file.blob)} disabled={mapLoading}>Vis i kart</Button>
+            {file.fileName} ({file.size})<Button variant="link" onClick={() => showInMap(file)} disabled={mapLoading}>Vis i kart</Button>
 
             <div className={`validating-progress ${!showProgressBar ? 'validating-progress-hidden' : ''}`}>
                <ProgressBar now={uploadProgress.completed} animated />
@@ -82,7 +90,7 @@ function ValidatedFile({ file, rules }) {
             <Tooltip
                tooltip={
                   <ul className="file-messages">
-                     {file.messages.map((message, index) => <li key={`${file.fileName}-message-${index}`}>{message}</li>)}
+                     {file.result.messages.map((message, index) => <li key={`${file.fileName}-message-${index}`}>{message}</li>)}
                   </ul>
                }
                trigger={
