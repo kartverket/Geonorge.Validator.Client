@@ -11,13 +11,13 @@ export async function validateFilesForMapView(files, validationResult) {
 
    for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      const messages = await validateFileForMapView(file, validationResult);
+      const result = await validateFileForMapView(file, validationResult);
 
       validatedFiles.push({
-         messages,
+         result,
          fileName: file.name,
          size: filesize(file.size, { separator: ',', standard: 'jedec' }),
-         blob: !messages.length ? new File([file], file.name) : null
+         blob: !result.messages.length ? new File([file], file.name) : null
       });
    }
 
@@ -26,33 +26,75 @@ export async function validateFilesForMapView(files, validationResult) {
 
 async function validateFileForMapView(file, validationResult) {
    const validFileSize = file.size <= MAX_FILE_SIZE_MAP;
-   const messages = [];
+
+   const result = {
+      messages: [],
+      epsgCode: null,
+      data: null,
+      type: null
+   };
 
    if (!validFileSize) {
-      messages.push(`Maksimal filstørrelse for kartvisning er ${filesize(MAX_FILE_SIZE_MAP, { standard: 'jedec' })}`);
-      return messages;
+      result.messages.push(`Maksimal filstørrelse for kartvisning er ${filesize(MAX_FILE_SIZE_MAP, { standard: 'jedec' })}`);
+      return result;
    }
 
    if (xsdRuleFailed(file, validationResult)) {
-      messages.push('GML-filen er ugyldig i henhold til applikasjonsskjemaet');
-      return messages;
+      result.messages.push('Filen er ugyldig i henhold til applikasjonsskjemaet');
+      return result;
    }
 
    const fileContents = await file.slice(0, 100000).text();
+   const isGml = GML_REGEX.test(fileContents);
+   let isGeoJson = true;
+   let featureCollection;
+   let epsgCode;
 
-   if (!GML_REGEX.test(fileContents)) {
-      messages.push('Filen er ikke en GML-fil');
-      return messages;
+   if (isGml) {
+      const epsgMatch = EPSG_REGEX.exec(fileContents);
+      epsgCode = parseInt(epsgMatch.groups.epsg);
+
+      if (isNaN(epsgCode) || !mapConfig.supportedEpsgCodes.includes(epsgCode)) {
+         result.messages.push('GML-filen har ugyldig koordinatsystem.');
+      }
+      return result;
    }
 
-   const epsgMatch = EPSG_REGEX.exec(fileContents);
-   const epsgCode = parseInt(epsgMatch.groups.epsg);
+   const geoJson = await file.text();
 
-   if (isNaN(epsgCode) || !mapConfig.supportedEpsgCodes.includes(epsgCode)) {
-      messages.push('GML-filen har ugyldig koordinatsystem.');
+   try {
+      featureCollection = JSON.parse(geoJson);
+   } catch {
+      isGeoJson = false         
    }
 
-   return messages;
+   if (!isGml && !isGeoJson) {
+      result.messages.push('Filen er ikke en GML- eller GeoJSON-fil.');
+      return result;
+   }
+
+   if (featureCollection.type !== 'FeatureCollection' || !Array.isArray(featureCollection.features)) {
+      result.messages.push('Filen er ikke en gyldig GeoJSON-fil.');
+      return result;
+   }
+
+   const epsgCodeStr = featureCollection.crs?.properties?.name;
+
+   if (epsgCodeStr) {
+      epsgCode = parseInt(epsgCodeStr.split(':')[1]);
+
+      if (isNaN(epsgCode) || !mapConfig.supportedEpsgCodes.includes(epsgCode)) {
+         result.messages.push('GeoJSON-filen har ugyldig koordinatsystem.');
+      }
+   } else {
+      result.messages.push('GeoJSON-filen har ikke angitt koordinatsystem.');
+   }
+
+   result.epsgCode = epsgCode;
+   result.data = featureCollection;
+   result.type = isGml ? 'GML' : 'GeoJSON';
+   
+   return result;
 }
 
 function xsdRuleFailed(file, validationResult) {
