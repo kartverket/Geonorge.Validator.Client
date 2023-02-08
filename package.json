@@ -7,6 +7,7 @@
       "@kartverket/geonorge-web-components": "^1.0.22",
       "@microsoft/signalr": "^7.0.0",
       "@reduxjs/toolkit": "^1.9.1",
+      "@turf/flip": "^6.5.0",
       "axios": "^1.2.0",
       "bootstrap": "5.2.3",
       "colors-generator": "^0.3.4",

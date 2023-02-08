@@ -1,5 +1,6 @@
 .rule-selector {
-   height: 400px;
+   display: flex;
+   flex-grow: 1;
    overflow-y: auto;
    border: 1px solid #dee2e6;
    padding: 20px;

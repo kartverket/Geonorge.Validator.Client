@@ -4,6 +4,8 @@ import { getArea, getLength } from 'ol/sphere';
 import WKT from 'ol/format/WKT';
 import latinize from 'latinize';
 import Url from 'url-parse';
+import flip from '@turf/flip';
+import GeoJSON from 'ol/format/GeoJSON';
 
 const PROXY_HOSTS = process.env.REACT_APP_PROXY_HOSTS.split(',');
 const PROXY_URL = process.env.REACT_APP_PROXY_URL;
@@ -39,10 +41,24 @@ export function zoomTo(map, features) {
 }
 
 export function zoomToGeometry(map, wkt) {
-   const geometry = new WKT().readGeometry(wkt);
-   const extent = geometry.getExtent()
+   const geometry = createGeometry(new WKT().readGeometry(wkt), map);
+   const extent = geometry.getExtent();
 
    zoom(map, extent);
+}
+
+export function createGeometry(geometry, map) {
+   const projection = map.get('projection');
+
+   if (projection.axisOrientation === 'enu') {
+      return geometry;
+   }
+
+   const geoJsonStr = new GeoJSON().writeGeometry(geometry);
+   const geoJson = JSON.parse(geoJsonStr);
+   const flipped = flip(geoJson)
+
+   return new GeoJSON().readGeometry(flipped);
 }
 
 function zoom(map, extent) {

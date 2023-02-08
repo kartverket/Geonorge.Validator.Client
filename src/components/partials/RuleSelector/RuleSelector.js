@@ -54,23 +54,24 @@ function RuleSelector() {
 
    return (
       <Fragment>
-         <div className="rule-selector" role="region" aria-label="Regelsett">
-            {
-               rulesets.length ?
-                  <CheckboxTree
-                     nodes={nodes}
-                     checked={checked}
-                     expanded={expanded}
-                     onCheck={setChecked}
-                     onExpand={setExpanded}
-                  /> :
-                  null
-            }
+         <div className="wizard-content">
+            <div className="rule-selector" role="region" aria-label="Regelsett">
+               {
+                  rulesets.length ?
+                     <CheckboxTree
+                        nodes={nodes}
+                        checked={checked}
+                        expanded={expanded}
+                        onCheck={setChecked}
+                        onExpand={setExpanded}
+                     /> :
+                     null
+               }
+            </div>
          </div>
-
          <div className="wizard-footer">
-            <div className="wizard-footer__buttons">
-               <Button variant="primary" className="button__prev" aria-label="Forrige" onClick={() => previousStep()}>Forrige</Button>
+            <div className="wizard-footer__buttons" style={{ justifyContent: 'space-between' }}>
+               <Button variant="primary" className="button__prev" aria-label="Forrige" onClick={() => previousStep()}>Velg datasett</Button>
                <Button variant="primary" className="button__next" aria-label="Validér" onClick={() => nextStep()} disabled={!rulesets.length}>Validér</Button>
             </div>
          </div>

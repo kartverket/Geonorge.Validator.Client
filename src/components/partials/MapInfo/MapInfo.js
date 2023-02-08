@@ -1,4 +1,4 @@
-import { baseMap } from 'config/baseMap.config';
+import { mapConfig } from 'config/map-config';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getLayer } from 'utils/map/helpers';
 import { getScaleForResolution } from 'utils/map/scale';
@@ -58,13 +58,13 @@ function MapInfo({ mapDocument, map }) {
                   hasBaseMap() ?
                      <div className="box-row">
                         <div className="label">Kilde for basiskart:</div>
-                        <div className="value">{baseMap.name}</div>
+                        <div className="value">{mapConfig.baseMap.name}</div>
                      </div> :
                      null
                }
                <div className="box-row">
                   <div className="label">Koordinatsystem:</div>
-                  <div className="value" title={mapDocument.epsg.description}>{mapDocument.epsg.description}</div>
+                  <div className="value" title={mapDocument.projection.description}>{mapDocument.projection.description}</div>
                </div>
             </div>
             <div>
@@ -72,7 +72,7 @@ function MapInfo({ mapDocument, map }) {
                   hasBaseMap() ?
                      <div className="box-row">
                         <div className="label">Ekvidistanse:</div>
-                        <div className="value">{baseMap.equidistance} m</div>
+                        <div className="value">{mapConfig.baseMap.equidistance} m</div>
                      </div> :
                      null
                }

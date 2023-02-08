@@ -1,4 +1,4 @@
-import { suportedEpsgCodes } from 'config/epsg.config';
+import { mapConfig } from 'config/map-config';
 import { filesize } from 'filesize';
 
 const MAX_FILE_SIZE_MAP = process.env.REACT_APP_MAX_FILE_SIZE_MAP;
@@ -46,9 +46,10 @@ async function validateFileForMapView(file, validationResult) {
    }
 
    const epsgMatch = EPSG_REGEX.exec(fileContents);
+   const epsgCode = parseInt(epsgMatch.groups.epsg);
 
-   if (epsgMatch === null || !suportedEpsgCodes.includes('EPSG:' + epsgMatch.groups.epsg)) {
-       messages.push('GML-filen har ugyldig koordinatsystem.');
+   if (isNaN(epsgCode) || !mapConfig.supportedEpsgCodes.includes(epsgCode)) {
+      messages.push('GML-filen har ugyldig koordinatsystem.');
    }
 
    return messages;

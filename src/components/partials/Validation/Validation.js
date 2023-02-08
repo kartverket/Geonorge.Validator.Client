@@ -17,7 +17,7 @@ function Validate() {
    const uploadProgress = useSelector(state => state.progress.uploadProgress);
    const { goToStep } = useWizard();
    const { post } = useApi();
-   
+
    const goToFirstStep = useCallback(
       () => {
          setFiles([]);
@@ -72,7 +72,7 @@ function Validate() {
                   });
                }
             } catch {
-               
+
             }
          }
 
@@ -102,7 +102,7 @@ function Validate() {
          </div>
 
          <div className="wizard-footer">
-            <div className="wizard-footer__buttons">
+            <div className="wizard-footer__buttons" style={{ justifyContent: 'flex-end' }}>
                <Button variant="primary" className="button__finish" onClick={() => goToFirstStep()} disabled={apiResponse === null}>Ferdig</Button>
             </div>
          </div>

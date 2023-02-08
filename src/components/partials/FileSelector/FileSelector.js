@@ -169,106 +169,110 @@ function FileSelector() {
 
    return (
       <Fragment>
-         <div className="file-selector">
-            <div className="uploads">
-               <div role="region" aria-label="Legg til datasett">
-                  <Files
-                     ref={filesUploadElement}
-                     className='files-dropzone'
-                     onChange={handleFilesAdded}
-                     accepts={['.xml', '.gml', '.json', '.geojson']}
-                     multiple
-                     clickable
-                  >
-                     <i>Klikk for å legge til datasett (.gml, .xml, .geojson, .json)</i>
-
-                     <Tooltip
-                        tooltip="Hvis flere filer, må alle være av samme type og benytte samme applikasjonsskjema"
-                        trigger={
-                           <span className="file-info">?</span>
-                        }
+         <div className="wizard-content">
+            <div className="file-selector">
+               <div className="uploads">
+                  <div role="region" aria-label="Legg til datasett">
+                     <Files
+                        ref={filesUploadElement}
+                        className='files-dropzone'
+                        onChange={handleFilesAdded}
+                        accepts={['.xml', '.gml', '.json', '.geojson']}
+                        multiple
+                        clickable
                      >
-                     </Tooltip>
-                  </Files>
+                        <i>Klikk for å legge til datasett (.gml, .xml, .geojson, .json)</i>
 
-                  <UploadFileList files={files} uploadElement={filesUploadElement} />
-               </div>
-               <div className="application-schema" role="region" aria-label="Legg til applikasjonsskjema">
-                  <div className="application-schema__upload">
-                     <div>
-                        <Files
-                           ref={schemaUploadElement}
-                           className='files-dropzone'
-                           onChange={setSchemas}
-                           accepts={['.xsd', '.json']}
-                           maxFiles={1}
-                           clickable
+                        <Tooltip
+                           tooltip="Hvis flere filer, må alle være av samme type og benytte samme applikasjonsskjema"
+                           trigger={
+                              <span className="file-info">?</span>
+                           }
                         >
-                           <i>Klikk for å legge til applikasjonsskjema (.xsd, .json)</i>
-                        </Files>
+                        </Tooltip>
+                     </Files>
+
+                     <UploadFileList files={files} uploadElement={filesUploadElement} />
+
+                     <div className="validator-info" role="region" aria-label="Total filstørrelse">
+                        {renderTotalFileSize()}
                      </div>
-
-                     <UploadFileList files={schemas} uploadElement={schemaUploadElement} />
                   </div>
-
-                  <div className="application-schema__label">
-                     eller velg et GML-applikasjonsskjema fra <a href="https://register.geonorge.no/gml-applikasjonsskjema" target="_blank" rel="noreferrer">register.geonorge.no</a>:
-                  </div>
-
-                  <div className="application-schema__geonorge">
-                     <div className="application-schema__geonorge__select">
+                  <div className="application-schema" role="region" aria-label="Legg til applikasjonsskjema">
+                     <div className="application-schema__upload">
                         <div>
-                           <ReactSelect
-                              options={schemaRegistryOptions}
-                              getOptionValue={option => option.id}
-                              onChange={handleSchemaRegistrySelectChange}
-                              value={selectedSchemaRegistryEntry}
-                              isClearable={true}
-                              placeholder="Velg applikasjonsskjema..."
-                              classNamePrefix="validator"
-                           />
+                           <Files
+                              ref={schemaUploadElement}
+                              className='files-dropzone'
+                              onChange={setSchemas}
+                              accepts={['.xsd', '.json']}
+                              maxFiles={1}
+                              clickable
+                           >
+                              <i>Klikk for å legge til applikasjonsskjema (.xsd, .json)</i>
+                           </Files>
                         </div>
-                        <div style={schemaVersionOptions.length ? { display: 'block' } : { display: 'none' }}>
-                           <ReactSelect
-                              options={schemaVersionOptions}
-                              getOptionLabel={option => `${option.versionName}\u0020\u0020\u0020(${option.status})`}
-                              getOptionValue={option => option.documentReference}
-                              onChange={handleSchemaVersionChange}
-                              value={selectedSchemaVersion}
-                              classNamePrefix="validator"
-                           />
-                        </div>
+
+                        <UploadFileList files={schemas} uploadElement={schemaUploadElement} />
                      </div>
-                     {
-                        selectedSchemaVersion ?
-                           <div className="application-schema__geonorge__docref">
-                              <a
-                                 href={selectedSchemaVersion.documentReference}
-                                 title={selectedSchemaVersion.documentReference}
-                                 target="_blank"
-                                 rel="noreferrer">
-                                 {selectedSchemaVersion.documentReference}
-                              </a>
-                           </div> :
-                           null
-                     }
+
+                     <div className="application-schema__label">
+                        eller velg et GML-applikasjonsskjema fra <a href="https://register.geonorge.no/gml-applikasjonsskjema" target="_blank" rel="noreferrer">register.geonorge.no</a>:
+                     </div>
+
+                     <div className="application-schema__geonorge">
+                        <div className="application-schema__geonorge__select">
+                           <div>
+                              <ReactSelect
+                                 options={schemaRegistryOptions}
+                                 getOptionValue={option => option.id}
+                                 onChange={handleSchemaRegistrySelectChange}
+                                 value={selectedSchemaRegistryEntry}
+                                 isClearable={true}
+                                 placeholder="Velg applikasjonsskjema..."
+                                 classNamePrefix="validator"
+                              />
+                           </div>
+                           <div style={schemaVersionOptions.length ? { display: 'block' } : { display: 'none' }}>
+                              <ReactSelect
+                                 options={schemaVersionOptions}
+                                 getOptionLabel={option => `${option.versionName}\u0020\u0020\u0020(${option.status})`}
+                                 getOptionValue={option => option.documentReference}
+                                 onChange={handleSchemaVersionChange}
+                                 value={selectedSchemaVersion}
+                                 classNamePrefix="validator"
+                              />
+                           </div>
+                        </div>
+                        {
+                           selectedSchemaVersion ?
+                              <div className="application-schema__geonorge__docref">
+                                 <a
+                                    href={selectedSchemaVersion.documentReference}
+                                    title={selectedSchemaVersion.documentReference}
+                                    target="_blank"
+                                    rel="noreferrer">
+                                    {selectedSchemaVersion.documentReference}
+                                 </a>
+                              </div> :
+                              null
+                        }
+                     </div>
                   </div>
                </div>
             </div>
          </div>
 
-         <div className="validator-info" role="region" aria-label="Total filstørrelse">
-            {renderTotalFileSize()}
-         </div>
-
          <div className="wizard-footer">
-            <div className="wizard-footer__buttons">
-               <Button variant="primary" className="button__next" onClick={() => nextStep()} disabled={!files.length || fileSizeTotal > MAX_FILE_SIZE_TOTAL}>Neste</Button>
-               {
-                  apiTasks.includes(RULESETS_API_TASK_ID) ?
-                     <Spinner animation="border" role="status" /> :
-                     null
-               }
+            <div className="wizard-footer__buttons" style={{ justifyContent: 'flex-end' }}>
+               <div className="button-container">
+                  <Button variant="primary" className="button__next" onClick={() => nextStep()} disabled={!files.length || fileSizeTotal > MAX_FILE_SIZE_TOTAL}>Velg regler</Button>
+                  {
+                     apiTasks.includes(RULESETS_API_TASK_ID) ?
+                        <Spinner animation="border" role="status" /> :
+                        null
+                  }
+               </div>
             </div>
          </div>
       </Fragment>

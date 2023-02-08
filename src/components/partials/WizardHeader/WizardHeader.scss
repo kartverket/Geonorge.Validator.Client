@@ -50,3 +50,31 @@
       }
    }
 }
+
+.wizard-content {
+   display: flex;
+   flex-direction: column;
+   flex-grow: 1;
+}
+
+.wizard-footer {
+   display: flex;
+   justify-content: center;
+
+   .wizard-footer__buttons {
+      display: flex;
+      align-items: center;
+      width: 67%;
+
+      .button-container {
+         position: relative;
+
+         .spinner-border {
+            position: absolute;
+            left: 100%;
+            top: 5px;
+            margin-left: 10px;
+         }
+      }
+   }
+}

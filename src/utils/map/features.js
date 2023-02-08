@@ -1,7 +1,7 @@
 import { GeometryCollection } from 'ol/geom';
 import { Stroke, Style, Fill, Circle } from 'ol/style';
 import { GeometryType } from './constants';
-import { getAreaFormatted, getFeaturesByName, getLayer, getLengthFormatted, groupBy } from './helpers';
+import { createGeometry, getAreaFormatted, getFeaturesByName, getLayer, getLengthFormatted, groupBy } from './helpers';
 import WKT from 'ol/format/WKT';
 import { filterSelector } from 'utils/sld-reader/Filter';
 
@@ -80,7 +80,7 @@ export function highlightSelectedFeatures(map, features) {
 
          if (wkts.length) {
             const format = new WKT();
-            const geometries = wkts.map(wkt => format.readGeometry(wkt));
+            const geometries = wkts.map(wkt => createGeometry(format.readGeometry(wkt), map));
             const geoCollection = new GeometryCollection();
 
             geoCollection.setGeometries(geometries);

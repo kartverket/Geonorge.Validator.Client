@@ -47,7 +47,6 @@ function ValidatedFile({ file, rules }) {
       const formData = new FormData();
 
       formData.append('gmlFile', file);
-      formData.append('validate', false);
       let mapDocument;
 
       try {
@@ -62,7 +61,7 @@ function ValidatedFile({ file, rules }) {
          return null;
       }
 
-      mapDocument.validationResult.rules = rules || [];
+      mapDocument.validationResult = { rules: rules || [] };
 
       return mapDocument;
    }

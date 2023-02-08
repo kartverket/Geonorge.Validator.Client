@@ -1,4 +1,3 @@
-import { baseMap } from 'config/baseMap.config';
 import { View } from 'ol';
 import { defaults as defaultControls, FullScreen } from 'ol/control';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -11,13 +10,13 @@ import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import VectorSource from 'ol/source/Vector';
 import { addValidationResultToFeatures } from './features';
-import axios from 'axios';
 import { addSldStyling } from './styling';
-import { baseMapEpsgCodes } from 'config/epsg.config';
+import { mapConfig } from 'config/map-config';
+import axios from 'axios';
 
 let wmtsOptions = null;
 
-async function createFeaturesLayer(mapDocument) {
+async function createFeaturesLayer(mapDocument) {  
    const features = new GeoJSON().readFeatures(mapDocument.geoJson);
 
    const featuresLayer = new VectorLayer({
@@ -47,14 +46,13 @@ function createSelectedFeaturesLayer() {
    return selectedFeaturesLayer;
 }
 
-async function createTileLayer(epsgCode) {
-   /*let tileLayer = await createTileLayerWMTS(epsgCode);
+async function createTileLayer(epsg) {
+   let tileLayer = await createTileLayerWMTS(epsg);
 
    if (tileLayer === null) {
       tileLayer = createTileLayerWMS();
-   }*/
+   }
 
-   const tileLayer = createTileLayerWMS();
    tileLayer.set('id', 'baseMap');
 
    return tileLayer;
@@ -63,13 +61,13 @@ async function createTileLayer(epsgCode) {
 function createTileLayerWMS() {
    return new TileLayer({
       source: new TileWMS({
-         url: baseMap.wmsUrl,
+         url: mapConfig.baseMap.wmsUrl,
          params: {
-            LAYERS: baseMap.layer,
+            LAYERS: mapConfig.baseMap.layer,
             VERSION: '1.1.1',
          }
       }),
-      maxZoom: baseMap.maxZoom,
+      maxZoom: mapConfig.baseMap.maxZoom,
    });
 }
 
@@ -81,7 +79,7 @@ async function getWMTSOptions(epsgCode) {
    let response;
 
    try {
-      response = await axios.get(baseMap.wmtsCapabilitiesUrl);
+      response = await axios.get(mapConfig.baseMap.wmtsCapabilitiesUrl);
    } catch {
       return null;
    }
@@ -89,7 +87,7 @@ async function getWMTSOptions(epsgCode) {
    const capabilities = new WMTSCapabilities().read(response.data);
 
    wmtsOptions = optionsFromCapabilities(capabilities, {
-      layer: baseMap.layer,      
+      layer: mapConfig.baseMap.layer,      
       matrixSet: epsgCode
    });
 
@@ -97,8 +95,8 @@ async function getWMTSOptions(epsgCode) {
 }
 
 // eslint-disable-next-line
-async function createTileLayerWMTS(epsgCode) {
-   const options = await getWMTSOptions(epsgCode);
+async function createTileLayerWMTS(projection) {
+   const options = await getWMTSOptions(projection.epsg2d.codeString);
 
    if (options === null) {
       return null;
@@ -106,7 +104,7 @@ async function createTileLayerWMTS(epsgCode) {
 
    return new TileLayer({
       source: new WMTS(options),
-      maxZoom: baseMap.maxZoom
+      maxZoom: mapConfig.baseMap.maxZoom
    });
 }
 
@@ -120,18 +118,19 @@ export async function createMap(mapDocument) {
       interactions: defaultInteractions().extend([new DragRotateAndZoom()]),
    });
 
-   const epsgCode = mapDocument.epsg.code2d;
-   
-   if (baseMapEpsgCodes.includes(epsgCode)) {
-      map.addLayer(await createTileLayer(epsgCode));
+   const epsgCode = mapDocument.projection.epsg2d.code;
+
+   if (mapConfig.baseMapEpsgCodes.includes(epsgCode)) {
+     map.addLayer(await createTileLayer(mapDocument.projection));
    }
 
    map.addLayer(await createFeaturesLayer(mapDocument));
    map.addLayer(createSelectedFeaturesLayer());
+   map.set('projection', mapDocument.projection);
 
    map.setView(new View({
       padding: [25, 25, 25, 25],
-      projection: epsgCode
+      projection: mapDocument.projection.epsg2d.codeString
    }));
 
    return map;

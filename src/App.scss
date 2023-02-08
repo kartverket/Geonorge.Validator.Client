@@ -26,24 +26,9 @@
    .validator,
    .information {
       padding: 20px 40px;
-
-      /*> div {
-         margin: 0 auto 25px auto;
-         border-top: 1px solid #dee2e6;
-         padding-top: 20px;
-         margin-top: 20px;
-
-         &:first-child {
-            border-top: 0;
-            padding-top: 0;
-            margin-bottom: 5px;
-            margin-top: 0;
-         }
-
-         &:last-child {
-            margin-bottom: 0;
-         }
-      }*/
+      min-height: calc(100vh - 180px);
+      display: flex;
+      flex-direction: column;
    }
 
    .capitalize {
@@ -216,6 +201,10 @@
       .information {
          min-height: calc(100vh - 46px);
       }
+
+      .map-container .map {      
+         height: calc(100vh - 88px);
+      }
    }
 }
 
@@ -272,4 +261,3 @@
       }
    }
 }
-

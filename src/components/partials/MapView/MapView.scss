@@ -3,11 +3,12 @@
 }
 
 .map-container {
-   display: flex;   
+   display: flex;
+   border: 1px solid #dee2e6;
 
    .map {
       width: 100%;
-      height: calc(100vh - 86px);
+      height: calc(100vh - 220px);
    }
 }
 
