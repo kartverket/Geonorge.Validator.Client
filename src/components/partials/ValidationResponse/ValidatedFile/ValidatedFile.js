@@ -40,7 +40,6 @@ function ValidatedFile({ file, rules }) {
             mapDocument = createMapDocument(file.blob, file.result.data, file.result.epsgCode, rules);
          }
 
-         debugger
          if (mapDocument !== null) {
             setMapViews([...mapViews, { mapId: createRandomId(), mapDocument }]);
          }
