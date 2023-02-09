@@ -53,9 +53,10 @@ async function validateFileForMapView(file, validationResult) {
    if (isGml) {
       const epsgMatch = EPSG_REGEX.exec(fileContents);
       epsgCode = parseInt(epsgMatch.groups.epsg);
+      result.type = 'GML';
 
       if (isNaN(epsgCode) || !mapConfig.supportedEpsgCodes.includes(epsgCode)) {
-         result.messages.push('GML-filen har ugyldig koordinatsystem.');
+         result.messages.push('GML-filen har ugyldig koordinatsystem.');         
       }
       return result;
    }
