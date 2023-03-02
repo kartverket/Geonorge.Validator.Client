@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useContext, useEffect, useState } from 'react';
+import { Fragment, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useApi } from 'hooks';
 import { Button, ProgressBar } from 'react-bootstrap';
@@ -15,6 +15,7 @@ function Validate() {
    const { files, setFiles, schemas, setSchemas, schemaUri, setSchemaUri, setRulesets, skippedRules, setSkippedRules, notification, setNotification, connectionId } = useContext(ValidationContext);
    const [apiResponse, setApiResponse] = useState(null);
    const uploadProgress = useSelector(state => state.progress.uploadProgress);
+   const isValidatingRef = useRef(false);
    const { goToStep } = useWizard();
    const { post } = useApi();
 
@@ -72,11 +73,13 @@ function Validate() {
                   });
                }
             } catch {
-
+            } finally {
+               isValidatingRef.current = false;
             }
          }
 
-         if (files.length) {
+         if (!isValidatingRef.current && files.length) {
+            isValidatingRef.current = true;
             validate();
          }
       },
