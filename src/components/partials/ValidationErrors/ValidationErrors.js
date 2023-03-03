@@ -22,6 +22,10 @@ function ValidationErrors({ map, validationResult, onMessageClick }) {
    }
 
    function handleMessageClick(gmlIds) {
+      if (!gmlIds?.length) {
+         return;
+      }
+      
       const featureLayer = getLayer(map, 'features');
 
       const features = gmlIds
