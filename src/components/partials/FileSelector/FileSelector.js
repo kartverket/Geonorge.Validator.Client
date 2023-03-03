@@ -123,6 +123,11 @@ function FileSelector() {
       setFiles(unique);
    }
 
+   function handleSchemaAdded(added) {
+      clearSchemaRegistrySelect();
+      setSchemas(added);
+   }
+
    function getUniqueFiles(files) {
       const uniqueNames = new Set();
 
@@ -161,10 +166,21 @@ function FileSelector() {
       setSelectedSchemaRegistryEntry(option);
       setSchemaVersionOptions(option?.versions || [])
       setSelectedSchemaVersion(option?.versions[0]);
+
+      if (option === null) {
+         setSchemaUri(null);
+      }
    }
 
    function handleSchemaVersionChange(option) {
       setSelectedSchemaVersion(option);
+   }
+
+   function clearSchemaRegistrySelect() {
+      setSchemaUri(null);
+      setSelectedSchemaRegistryEntry(null);
+      setSchemaVersionOptions([])
+      setSelectedSchemaVersion(null);
    }
 
    return (
@@ -204,7 +220,7 @@ function FileSelector() {
                            <Files
                               ref={schemaUploadElement}
                               className='files-dropzone'
-                              onChange={setSchemas}
+                              onChange={handleSchemaAdded}
                               accepts={['.xsd', '.json']}
                               maxFiles={1}
                               clickable
