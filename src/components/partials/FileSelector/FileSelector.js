@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import Files from 'react-files'
 import { Button, Spinner } from 'react-bootstrap';
 import UploadFileList from '../UploadFileList/UploadFileList';
@@ -50,6 +50,20 @@ function FileSelector() {
       [selectedSchemaVersion, setSchemaUri]
    );
 
+   const handleSchemaRegistrySelectChange = useCallback(
+      option => {
+         setSelectedSchemaRegistryEntry(option);
+         setSchemaVersionOptions(option?.versions || [])
+         setSelectedSchemaVersion(option?.versions[0]);
+         setSchemas([]);
+
+         if (option === null) {
+            setSchemaUri(null);
+         }
+      },
+      [setSchemaUri, setSchemas]
+   );
+
    useEffect(
       () => {
          async function getGeonorgeSchemaFromFiles() {
@@ -95,7 +109,7 @@ function FileSelector() {
             handleSchemaRegistrySelectChange(null);
          }
       },
-      [files, schemaRegistryOptions]
+      [files, schemaRegistryOptions, handleSchemaRegistrySelectChange]
    );
 
    handleStep(async () => {
@@ -160,16 +174,6 @@ function FileSelector() {
             }
          </div>
       );
-   }
-
-   function handleSchemaRegistrySelectChange(option) {
-      setSelectedSchemaRegistryEntry(option);
-      setSchemaVersionOptions(option?.versions || [])
-      setSelectedSchemaVersion(option?.versions[0]);
-
-      if (option === null) {
-         setSchemaUri(null);
-      }
    }
 
    function handleSchemaVersionChange(option) {
