@@ -4,7 +4,7 @@ import { filesize } from 'filesize';
 const MAX_FILE_SIZE_MAP = process.env.REACT_APP_MAX_FILE_SIZE_MAP;
 const XSD_RULE_ID = process.env.REACT_APP_XSD_RULE_ID;
 const GML_REGEX = /<\?xml.*?<\w+:FeatureCollection.*?xmlns:\w+="http:\/\/www\.opengis\.net\/gml\/3\.2"/s;
-const EPSG_REGEX = /srsName="(http:\/\/www\.opengis\.net\/def\/crs\/EPSG\/0\/|urn:ogc:def:crs:EPSG::)(?<epsg>\d+)"/;
+const EPSG_REGEX = /srsName="(http:\/\/www\.opengis\.net\/def\/crs\/EPSG\/0\/|urn:ogc:def:crs:EPSG::|EPSG:)(?<epsg>\d+)"/;
 
 export async function validateFilesForMapView(files, validationResult) {
    const validatedFiles = [];
@@ -52,12 +52,18 @@ async function validateFileForMapView(file, validationResult) {
 
    if (isGml) {
       const epsgMatch = EPSG_REGEX.exec(fileContents);
-      epsgCode = parseInt(epsgMatch.groups.epsg);
-      result.type = 'GML';
 
-      if (isNaN(epsgCode) || !mapConfig.supportedEpsgCodes.includes(epsgCode)) {
-         result.messages.push('GML-filen har ugyldig koordinatsystem.');         
+      if (epsgMatch === null) {
+         result.messages.push('GML-filen har ugyldig koordinatsystem.');
+      } else {
+         epsgCode = parseInt(epsgMatch.groups.epsg);
+         result.type = 'GML';
+   
+         if (isNaN(epsgCode) || !mapConfig.supportedEpsgCodes.includes(epsgCode)) {
+            result.messages.push('GML-filen har ugyldig koordinatsystem.');         
+         }
       }
+
       return result;
    }
 
