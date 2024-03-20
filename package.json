@@ -4,7 +4,7 @@
    "version": "1.0.0",
    "private": true,
    "dependencies": {
-      "@kartverket/geonorge-web-components": "^1.0.22",
+      "@kartverket/geonorge-web-components": "^2.20.4",
       "@microsoft/signalr": "^7.0.0",
       "@reduxjs/toolkit": "^1.9.1",
       "@turf/flip": "^6.5.0",
